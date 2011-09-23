@@ -20,10 +20,10 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.ui.IObjectActionDelegate;
 
-public class SyncStartAction extends AbstractSyncLaunch implements IObjectActionDelegate {
+public class SyncDebugAction extends AbstractSyncLaunch implements IObjectActionDelegate {
 
 	public void run(IAction action) {
-		launchMode = ILaunchManager.RUN_MODE;
+		launchMode = ILaunchManager.DEBUG_MODE;
 		
 		super.run(action);
 	}
