@@ -6,12 +6,8 @@
  *    http://www.eclipse.org/legal/epl-v10.html
  *    
  *     Contributors:
- *        IBM Corporation - initial API and implementation
- *           - This code is based on WTP SDK frameworks and Tomcat Server Adapters
- *           org.eclipse.jst.server.core
- *           org.eclipse.jst.server.ui
- *           
- *       Naci Dai and Murat Yener, Eteration A.S. 
+ *        Eteration A.S. - initial API and implementation
+ *        Naci Dai and Murat Yener, Eteration A.S. 
  *******************************************************************************/
 package org.eclipse.libra.framework.ui.internal.actions;
 
