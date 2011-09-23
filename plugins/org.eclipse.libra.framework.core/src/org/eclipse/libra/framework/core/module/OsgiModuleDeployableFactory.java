@@ -19,9 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.libra.framework.core.Trace;
 import org.eclipse.wst.common.componentcore.ComponentCore;
+import org.eclipse.wst.common.componentcore.internal.StructureEdit;
 import org.eclipse.wst.common.componentcore.internal.resources.VirtualComponent;
 import org.eclipse.wst.common.componentcore.resources.IVirtualComponent;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
@@ -86,6 +88,7 @@ public class OsgiModuleDeployableFactory extends ProjectModuleFactoryDelegate {
 		return new IModule[] { module };
 	}
 
+	
 	private boolean isValidModule(IProject project) {
 		try {
 			IFacetedProject facetedProject = ProjectFacetsManager
@@ -98,6 +101,22 @@ public class OsgiModuleDeployableFactory extends ProjectModuleFactoryDelegate {
 		} catch (Exception e) {
 			return false;
 		}
+	}
+	
+	/**
+	 * Returns the list of resources that the module should listen to
+	 * for state changes. The paths should be project relative paths.
+	 * Subclasses can override this method to provide the paths.
+	 *
+	 * @return a possibly empty array of paths
+	 */
+	@Override
+	protected IPath[] getListenerPaths() {
+		return new IPath[] {
+			new Path(".project"), // nature //$NON-NLS-1$
+			new Path(StructureEdit.MODULE_META_FILE_NAME), // component
+			new Path(".settings/org.eclipse.wst.common.project.facet.core.xml") // facets //$NON-NLS-1$
+		};
 	}
 
 }

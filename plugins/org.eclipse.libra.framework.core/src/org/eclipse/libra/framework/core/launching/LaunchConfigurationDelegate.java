@@ -51,8 +51,9 @@ public class LaunchConfigurationDelegate extends
 					"Launch configuration could not find runtime instance");
 		}
 
-		if (server.shouldPublish() && ServerCore.isAutoPublishing())
-			server.publish(IServer.PUBLISH_INCREMENTAL, monitor);
+//      This should be handled by the action that starts/debugs not here
+//		if (server.shouldPublish() && ServerCore.isAutoPublishing())
+//			server.publish(IServer.PUBLISH_INCREMENTAL, monitor);
 
 		OSGIFrameworkInstanceBehaviorDelegate oribd = (OSGIFrameworkInstanceBehaviorDelegate) server
 				.loadAdapter(OSGIFrameworkInstanceBehaviorDelegate.class, null);
