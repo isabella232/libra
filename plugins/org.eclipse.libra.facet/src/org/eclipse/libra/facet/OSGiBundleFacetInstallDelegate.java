@@ -282,17 +282,26 @@ public class OSGiBundleFacetInstallDelegate implements IDelegate {
 		
 			IJavaProject javaProject = JavaCore.create(project);
 			if (bundleClasspath == null) {
-				IBundleProjectService bundleProjectService = LibraFacetPlugin.getDefault().getBundleProjectService();
+				IPath[] javaSourceFolderPaths = getJavaSourceFolderPaths(javaProject);
 				
-				IPath source = getRelativePath(project, getJavaSourceFolderPaths(javaProject)[0]);
-				IPath binary = getRelativePath(project, javaProject.getOutputLocation());
-				IPath library = (isWebProject(project)) 
-						? new Path(WEB_INF_CLASSES) 	// add WEB-INF/classes for WABs
-						: null; 						// add . for other OSGi bundles
+				if (javaSourceFolderPaths != null && javaSourceFolderPaths.length>0){
+					IBundleProjectService bundleProjectService = LibraFacetPlugin.getDefault().getBundleProjectService();
 					
-				IBundleClasspathEntry classpath = bundleProjectService.newBundleClasspathEntry(
-							source, binary, library);
-				bundleClasspath = new IBundleClasspathEntry[] { classpath };
+					List<IBundleClasspathEntry> bundleClasspathList = new ArrayList<IBundleClasspathEntry>(); 
+					
+					IPath binary = getRelativePath(project, javaProject.getOutputLocation());
+					IPath library = (isWebProject(project)) 
+							? new Path(WEB_INF_CLASSES) 	// add WEB-INF/classes for WABs
+							: null; 						// add . for other OSGi bundles
+							
+					//iterate over source folders and create IBundleClasspathEntry for each one.
+					for (IPath iPath : javaSourceFolderPaths) {
+						bundleClasspathList.add(bundleProjectService.newBundleClasspathEntry(
+								getRelativePath(project, iPath), binary, library));
+					}
+					bundleClasspath = bundleClasspathList.toArray(new IBundleClasspathEntry[] { });;
+				}
+				
 			} else {
 				// TODO
 			}

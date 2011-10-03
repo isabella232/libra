@@ -15,6 +15,8 @@ import static org.eclipse.libra.facet.OSGiBundleFacetUtils.OSGI_BUNDLE_FACET_42;
 import static org.eclipse.libra.facet.OSGiBundleFacetUtils.getBundleProjectDescription;
 import static org.eclipse.wst.common.tests.OperationTestCase.deleteAllProjects;
 import static org.eclipse.wst.common.tests.OperationTestCase.waitOnJobs;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -92,6 +94,13 @@ public class WabConversionTest {
 	private static final String PLUGIN_CONVERTED_PRJ_NAME = "testPluginConverted";
 	private static final String JAVA_PRJ_COPY_LOCATION = "resources/testJavaCopy.zip_";
 	private static final String JAVA_PRJ_COPY_NAME = "testJavaCopy";
+	
+	private static final String JAVA_2_SRC_FOLDERS = "resources/_testJava2SrcFolders.zip";
+	private static final String JAVA_2_SRC_FOLDERS_NAME = "_testJava2SrcFolders";
+	private static final String JAVA_NO_SRC_FOLDERS = "resources/_testJavaNoSrcFolder.zip";
+	private static final String JAVA_NO_SRC_FOLDERS_NAME = "_testJavaNoSrcFolder";
+	
+	
 		
 	@Before
 	public void cleanUpWorkspace() throws Exception {
@@ -136,6 +145,37 @@ public class WabConversionTest {
     	IBundleProjectDescription description = getBundleProjectDescription(javaProject);
 		
     	checkJavaProject(javaProject, "customSymbolicName", "CustomBundleName", "customVendor", "1.0.1.qualifier", new String[] {"javapack", "javapack1"}, description);
+	}
+	
+	
+	@Test
+	public void convertJavaProjectNoSrcFolder() throws Exception {
+		IProject javaProject = importProjectInWorkspace(JAVA_NO_SRC_FOLDERS, JAVA_NO_SRC_FOLDERS_NAME);
+		new ConvertProjectsToBundlesOperation(new IProject[]{javaProject}).run(monitor);
+		IBundleProjectDescription description = getBundleProjectDescription(javaProject);
+		IBundleClasspathEntry[] bundleClasspath = description.getBundleClasspath();
+		assertNotNull(bundleClasspath);
+		//one item with null src and bin attributes expected
+		Assert.assertEquals("one item with null src attribute expected", 1, bundleClasspath.length);
+		Assert.assertNull("item with null source attribute expected", bundleClasspath[0].getSourcePath());
+    	checkSimpleProject(JAVA_NO_SRC_FOLDERS_NAME, JAVA_NO_SRC_FOLDERS_NAME, null, "1.0.0.qualifier", description);
+		Assert.assertTrue(hasPluginDependenciesCP(javaProject));
+	}
+	
+	@Test
+	public void convertJavaProject2SrcFolders() throws Exception {
+		IProject javaProject = importProjectInWorkspace(JAVA_2_SRC_FOLDERS, JAVA_2_SRC_FOLDERS_NAME);
+		new ConvertProjectsToBundlesOperation(new IProject[]{javaProject}).run(monitor);
+		IBundleProjectDescription description = getBundleProjectDescription(javaProject);
+		IBundleClasspathEntry[] bundleClasspath = description.getBundleClasspath();
+		assertNotNull(bundleClasspath);
+		//one item with null src and bin attributes expected
+		Assert.assertEquals("one item with null src attributes expected", 2, bundleClasspath.length);
+		Assert.assertFalse("both items should be different (src and src2)", bundleClasspath[0].getSourcePath().lastSegment().equals(bundleClasspath[1].getSourcePath().lastSegment()));
+		Assert.assertTrue("entry should be either src or src1, but was: "+bundleClasspath[0].getSourcePath().lastSegment(), "src".equals(bundleClasspath[0].getSourcePath().lastSegment()) || "src2".equals(bundleClasspath[0].getSourcePath().lastSegment()));
+		Assert.assertTrue("entry should be either src or src1, but was: "+bundleClasspath[1].getSourcePath().lastSegment(), "src".equals(bundleClasspath[1].getSourcePath().lastSegment()) || "src2".equals(bundleClasspath[1].getSourcePath().lastSegment()));
+    	checkSimpleProject(JAVA_2_SRC_FOLDERS_NAME, JAVA_2_SRC_FOLDERS_NAME, null, "1.0.0.qualifier", description);
+		Assert.assertTrue(hasPluginDependenciesCP(javaProject));
 	}
 	
 	@Test
