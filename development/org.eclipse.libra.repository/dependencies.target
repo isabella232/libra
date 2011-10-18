@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.6"?>
 
-<target name="Libra" sequenceNumber="20">
+<target name="Libra" sequenceNumber="22">
 <locations>
 <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.sdk.ide" version="3.7.1.M20110909-1335"/>
@@ -35,6 +35,10 @@
 <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.wst.common_tests.feature.feature.group" version="3.3.0.v201102150115-7B7BFR7F7RZHPRHz0S_N0XV"/>
 <repository location="http://download.eclipse.org/webtools/downloads/drops/R3.3.1/R-3.3.1-20110915193224/repositoryunittests/"/>
+</location>
+<location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="osgi.enterprise" version="4.2.0.v201108120515"/>
+<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/S20110907174232/repository/"/>
 </location>
 </locations>
 </target>
