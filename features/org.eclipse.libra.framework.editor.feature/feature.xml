@@ -14,7 +14,7 @@
    </copyright>
 
    <license url="%licenseURL">
-      %copyright
+      %license
    </license>
 
    <plugin
