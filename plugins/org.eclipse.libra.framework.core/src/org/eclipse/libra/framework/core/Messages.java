@@ -1,5 +1,5 @@
 /*******************************************************************************
- *    Copyright (c) 2010 Eteration A.S. and others.
+ *    Copyright (c) 2010, 2011 Eteration A.S. and others.
  *    All rights reserved. This program and the accompanying materials
  *    are made available under the terms of the Eclipse Public License v1.0
  *    which accompanies this distribution, and is available at
@@ -11,7 +11,8 @@
  *           org.eclipse.jst.server.core
  *           org.eclipse.jst.server.ui
  *           
- *       Naci Dai and Murat Yener, Eteration A.S. 
+ *        Naci Dai and Murat Yener, Eteration A.S. 
+ *        Kaloyan Raev, SAP AG - integration with OSGi Framework Editor parts
  *******************************************************************************/
 package org.eclipse.libra.framework.core;
 
@@ -31,6 +32,12 @@ public class Messages extends NLS {
 	public static String configurationEditorActionAddOsgiModule;
 	public static String errorConfigurationProjectClosed;
 	public static String errorNoConfiguration;
+	
+	public static String OSGIFrameworkInstanceBehaviorDelegate_CannotGetCmdLineArguments;
+	public static String OSGIFrameworkInstanceBehaviorDelegate_CannotGetInOutStreams;
+	public static String OSGIFrameworkInstanceBehaviorDelegate_RemoteJmxNotConfigured;
+	public static String OSGIFrameworkInstanceBehaviorDelegate_ServerNotInitialized;
+	public static String OSGIFrameworkInstanceBehaviorDelegate_ServerNotStarted;
 
 	static {
 		NLS.initializeMessages(FrameworkCorePlugin.PLUGIN_ID + ".Messages", Messages.class);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *    Copyright (c) 2010 Eteration A.S. and others.
+ *    Copyright (c) 2010, 2011 Eteration A.S. and others.
  *    All rights reserved. This program and the accompanying materials
  *    are made available under the terms of the Eclipse Public License v1.0
  *    which accompanies this distribution, and is available at
@@ -11,7 +11,8 @@
  *           org.eclipse.jst.server.core
  *           org.eclipse.jst.server.ui
  *           
- *       Naci Dai and Murat Yener, Eteration A.S. 
+ *        Naci Dai and Murat Yener, Eteration A.S.
+ *        Kaloyan Raev, SAP AG - integration with OSGi Framework Editor parts
  *******************************************************************************/
 package org.eclipse.libra.framework.core;
 
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.eclipse.core.runtime.CoreException;
@@ -35,10 +37,16 @@ import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.model.IProcess;
+import org.eclipse.debug.core.model.IStreamsProxy;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.JavaRuntime;
+import org.eclipse.libra.framework.editor.core.IOSGiFrameworkAdmin;
+import org.eclipse.libra.framework.editor.core.IOSGiFrameworkConsole;
+import org.eclipse.libra.framework.editor.core.model.IBundle;
+import org.eclipse.libra.framework.editor.integration.admin.osgijmx.OSGiJMXFrameworkAdmin;
+import org.eclipse.libra.framework.editor.integration.console.basic.BasicOSGiFrameworkConsole;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.internal.IModulePublishHelper;
@@ -49,13 +57,15 @@ import org.eclipse.wst.server.core.model.ServerBehaviourDelegate;
 
 
 @SuppressWarnings("restriction")
-public abstract class OSGIFrameworkInstanceBehaviorDelegate extends ServerBehaviourDelegate implements IModulePublishHelper {
+public abstract class OSGIFrameworkInstanceBehaviorDelegate extends ServerBehaviourDelegate implements IModulePublishHelper, IOSGiFrameworkAdmin, IOSGiFrameworkConsole {
 
 	private static final String ATTR_STOP = "stop-server";
 	// the thread used to ping the server to check for startup
 	protected transient PingThread ping = null;
 	protected transient IDebugEventSetListener processListener;
 	
+	private IOSGiFrameworkAdmin admin = null;
+	private IOSGiFrameworkConsole console = null;
 	
 	public abstract  String[] getFrameworkProgramArguments(boolean starting) ;
 	public abstract  String[] getExcludedFrameworkProgramArguments(boolean starting);
@@ -222,6 +232,8 @@ public abstract class OSGIFrameworkInstanceBehaviorDelegate extends ServerBehavi
 			DebugPlugin.getDefault().removeDebugEventListener(processListener);
 			processListener = null;
 		}
+		admin = null;
+		console = null;
 		setServerState(IServer.STATE_STOPPED);
 	}
 
@@ -648,6 +660,88 @@ public abstract class OSGIFrameworkInstanceBehaviorDelegate extends ServerBehavi
 			}
 		}
 	}
+	
+	public Map<Long, IBundle> getBundles() throws CoreException {
+		return getAdmin().getBundles();
+	}
+	
+	public void startBundle(long bundleId) throws CoreException {
+		getAdmin().startBundle(bundleId);
+	}
+	
+	public void stopBundle(long bundleId) throws CoreException {
+		getAdmin().stopBundle(bundleId);
+	}
+	
+	public void refreshBundle(long bundleId) throws CoreException {
+		getAdmin().refreshBundle(bundleId);
+	}
+	
+	public void updateBundle(long bundleId) throws CoreException {
+		getAdmin().updateBundle(bundleId);
+	}
+	
+	public String executeCommand(String command) throws CoreException {
+		return getConsole().executeCommand(command);
+	}
+	
+	private IOSGiFrameworkAdmin getAdmin() throws CoreException {
+		if (admin == null) {
+			String rawVMArgs = getProcess().getAttribute(IProcess.ATTR_CMDLINE);
+			if (rawVMArgs == null) {
+				throw newCoreException(Messages.OSGIFrameworkInstanceBehaviorDelegate_CannotGetCmdLineArguments);
+			}
 
+			String port = null;
+			String[] vmArgs = DebugPlugin.parseArguments(rawVMArgs);
+			for (String arg : vmArgs) {
+				if (arg.startsWith("-Dcom.sun.management.jmxremote.port=")) { //$NON-NLS-1$
+					int index = arg.indexOf('=');
+					port = arg.substring(index + 1).trim();	
+				}
+			}
+			
+			if (port == null) {
+				throw newCoreException(Messages.OSGIFrameworkInstanceBehaviorDelegate_RemoteJmxNotConfigured); 
+			}
+			
+			admin = new OSGiJMXFrameworkAdmin("localhost", port); //$NON-NLS-1$
+		}
+		return admin;
+	}
+	
+	private IOSGiFrameworkConsole getConsole() throws CoreException {
+		if (console == null) {
+			IStreamsProxy proxy = getProcess().getStreamsProxy();
+			if (proxy == null) {
+				throw newCoreException(Messages.OSGIFrameworkInstanceBehaviorDelegate_CannotGetInOutStreams);
+			}
+			console = new BasicOSGiFrameworkConsole(proxy);
+		}
+		return console;
+	}
+	
+	private IProcess getProcess() throws CoreException {
+		IServer server = getServer();
+		if (server == null) {
+			throw newCoreException(Messages.OSGIFrameworkInstanceBehaviorDelegate_ServerNotInitialized);
+		}
+		
+		ILaunch launch = server.getLaunch();
+		if (launch == null) {
+			throw newCoreException(Messages.OSGIFrameworkInstanceBehaviorDelegate_ServerNotStarted);
+		}
+		
+		IProcess[] processes = launch.getProcesses();
+		if (processes.length == 0) {
+			throw newCoreException(Messages.OSGIFrameworkInstanceBehaviorDelegate_ServerNotStarted);
+		}
+		
+		return processes[0];
+	}
+	
+	private CoreException newCoreException(String errorMessage) {
+		return new CoreException(new Status(IStatus.ERROR, FrameworkCorePlugin.PLUGIN_ID, errorMessage));
+	}
 
 }
