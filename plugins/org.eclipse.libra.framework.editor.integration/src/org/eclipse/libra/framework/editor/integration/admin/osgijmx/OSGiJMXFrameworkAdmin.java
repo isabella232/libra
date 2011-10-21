@@ -27,6 +27,9 @@ import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.libra.framework.editor.core.IOSGiFrameworkAdmin;
 import org.eclipse.libra.framework.editor.core.model.IBundle;
 import org.eclipse.libra.framework.editor.integration.internal.IntegrationPlugin;
@@ -36,7 +39,6 @@ import org.eclipse.libra.framework.editor.integration.internal.admin.osgijmx.Pac
 import org.eclipse.libra.framework.editor.integration.internal.admin.osgijmx.PackagesData;
 import org.eclipse.libra.framework.editor.integration.internal.admin.osgijmx.ServiceReference;
 import org.eclipse.libra.framework.editor.integration.internal.admin.osgijmx.ServicesData;
-import org.eclipse.libra.framework.editor.integration.internal.admin.osgijmx.ServicesData.ServiceInfo;
 import org.osgi.framework.Constants;
 import org.osgi.jmx.framework.BundleStateMBean;
 import org.osgi.jmx.framework.FrameworkMBean;
@@ -54,6 +56,32 @@ public class OSGiJMXFrameworkAdmin implements IOSGiFrameworkAdmin {
 	public OSGiJMXFrameworkAdmin(String host, String port) {
 		this.host = host;
 		this.port = port;
+	}
+	
+	public OSGiJMXFrameworkAdmin(ILaunch launch) throws CoreException {
+		this("localhost", getJmxPort(launch)); //$NON-NLS-1$
+	}
+	
+	public static String getJmxPort(ILaunch launch) throws CoreException {
+		String rawVMArgs = IntegrationPlugin.getProcess(launch).getAttribute(IProcess.ATTR_CMDLINE);
+		if (rawVMArgs == null) {
+			throw IntegrationPlugin.newCoreException(Messages.OSGiJMXFrameworkAdmin_CannotGetCmdLineArgs);
+		}
+
+		String port = null;
+		String[] vmArgs = DebugPlugin.parseArguments(rawVMArgs);
+		for (String arg : vmArgs) {
+			if (arg.startsWith("-Dcom.sun.management.jmxremote.port=")) { //$NON-NLS-1$
+				int index = arg.indexOf('=');
+				port = arg.substring(index + 1).trim();	
+			}
+		}
+		
+		if (port == null) {
+			throw IntegrationPlugin.newCoreException(Messages.OSGiJMXFrameworkAdmin_JmxRemoteNotConfigured); 
+		}
+		
+		return port;
 	}
 
 	public Map<Long, IBundle> getBundles() throws CoreException {
@@ -177,28 +205,28 @@ public class OSGiJMXFrameworkAdmin implements IOSGiFrameworkAdmin {
 	}
 	
 	private MBeanServerConnection getMBeanServerConnection() throws IOException {
-		JMXServiceURL url = new JMXServiceURL("service:jmx:rmi:///jndi/rmi://" + host + ":" + port + "/jmxrmi");
+		JMXServiceURL url = new JMXServiceURL("service:jmx:rmi:///jndi/rmi://" + host + ":" + port + "/jmxrmi"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		JMXConnector connector = JMXConnectorFactory.connect(url);
 		return connector.getMBeanServerConnection();
 	}
 	
 	private BundleStateMBean getBundleStateMBean(MBeanServerConnection connection) throws MalformedObjectNameException {
-		ObjectName objectName = new ObjectName("osgi.core:type=bundleState,version=1.5");
+		ObjectName objectName = new ObjectName("osgi.core:type=bundleState,version=1.5"); //$NON-NLS-1$
 		return JMX.newMBeanProxy(connection, objectName, BundleStateMBean.class);
 	}
 	
 	private PackageStateMBean getPackageStateMBean(MBeanServerConnection connection) throws MalformedObjectNameException {
-		ObjectName objectName = new ObjectName("osgi.core:type=packageState,version=1.5");
+		ObjectName objectName = new ObjectName("osgi.core:type=packageState,version=1.5"); //$NON-NLS-1$
 		return JMX.newMBeanProxy(connection, objectName, PackageStateMBean.class);
 	}
 	
 	private ServiceStateMBean getServiceStateMBean(MBeanServerConnection connection) throws MalformedObjectNameException {
-		ObjectName objectName = new ObjectName("osgi.core:type=serviceState,version=1.5");
+		ObjectName objectName = new ObjectName("osgi.core:type=serviceState,version=1.5"); //$NON-NLS-1$
 		return JMX.newMBeanProxy(connection, objectName, ServiceStateMBean.class);
 	}
 	
 	private FrameworkMBean getFrameworkMBean(MBeanServerConnection connection) throws MalformedObjectNameException {
-		ObjectName objectName = new ObjectName("osgi.core:type=framework,version=1.5");
+		ObjectName objectName = new ObjectName("osgi.core:type=framework,version=1.5"); //$NON-NLS-1$
 		return JMX.newMBeanProxy(connection, objectName, FrameworkMBean.class);
 	}
 

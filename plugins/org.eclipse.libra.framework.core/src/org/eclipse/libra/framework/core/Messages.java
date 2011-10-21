@@ -33,9 +33,6 @@ public class Messages extends NLS {
 	public static String errorConfigurationProjectClosed;
 	public static String errorNoConfiguration;
 	
-	public static String OSGIFrameworkInstanceBehaviorDelegate_CannotGetCmdLineArguments;
-	public static String OSGIFrameworkInstanceBehaviorDelegate_CannotGetInOutStreams;
-	public static String OSGIFrameworkInstanceBehaviorDelegate_RemoteJmxNotConfigured;
 	public static String OSGIFrameworkInstanceBehaviorDelegate_ServerNotInitialized;
 	public static String OSGIFrameworkInstanceBehaviorDelegate_ServerNotStarted;
 

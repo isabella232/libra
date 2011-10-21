@@ -13,6 +13,7 @@ package org.eclipse.libra.framework.editor.integration.console.basic;
 import java.io.IOException;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.IStreamListener;
 import org.eclipse.debug.core.model.IStreamMonitor;
 import org.eclipse.debug.core.model.IStreamsProxy;
@@ -31,12 +32,24 @@ public class BasicOSGiFrameworkConsole implements IOSGiFrameworkConsole, IStream
 		this.proxy = proxy;
 		proxy.getOutputStreamMonitor().addListener(this);
 	}
+	
+	public BasicOSGiFrameworkConsole(ILaunch launch) throws CoreException {
+		this(getStreamsProxy(launch));
+	}
+
+	public static IStreamsProxy getStreamsProxy(ILaunch launch) throws CoreException {
+		IStreamsProxy proxy = IntegrationPlugin.getProcess(launch).getStreamsProxy();
+		if (proxy == null) {
+			throw IntegrationPlugin.newCoreException(Messages.BasicOSGiFrameworkConsole_CannotGetInOutStreams);
+		}
+		return proxy;
+	}
 
 	public synchronized String executeCommand(String command) throws CoreException {
 		result = new StringBuilder();
 		
 		try {
-			proxy.write(command + "\n");
+			proxy.write(command + "\n"); //$NON-NLS-1$
 		} catch (IOException e) {
 			throw new CoreException(IntegrationPlugin.newErrorStatus(e));
 		}

@@ -37,7 +37,6 @@ import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.model.IProcess;
-import org.eclipse.debug.core.model.IStreamsProxy;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IVMInstall;
@@ -687,61 +686,32 @@ public abstract class OSGIFrameworkInstanceBehaviorDelegate extends ServerBehavi
 	
 	private IOSGiFrameworkAdmin getAdmin() throws CoreException {
 		if (admin == null) {
-			String rawVMArgs = getProcess().getAttribute(IProcess.ATTR_CMDLINE);
-			if (rawVMArgs == null) {
-				throw newCoreException(Messages.OSGIFrameworkInstanceBehaviorDelegate_CannotGetCmdLineArguments);
-			}
-
-			String port = null;
-			String[] vmArgs = DebugPlugin.parseArguments(rawVMArgs);
-			for (String arg : vmArgs) {
-				if (arg.startsWith("-Dcom.sun.management.jmxremote.port=")) { //$NON-NLS-1$
-					int index = arg.indexOf('=');
-					port = arg.substring(index + 1).trim();	
-				}
-			}
-			
-			if (port == null) {
-				throw newCoreException(Messages.OSGIFrameworkInstanceBehaviorDelegate_RemoteJmxNotConfigured); 
-			}
-			
-			admin = new OSGiJMXFrameworkAdmin("localhost", port); //$NON-NLS-1$
+			admin = new OSGiJMXFrameworkAdmin(getLaunch());
 		}
 		return admin;
 	}
 	
 	private IOSGiFrameworkConsole getConsole() throws CoreException {
 		if (console == null) {
-			IStreamsProxy proxy = getProcess().getStreamsProxy();
-			if (proxy == null) {
-				throw newCoreException(Messages.OSGIFrameworkInstanceBehaviorDelegate_CannotGetInOutStreams);
-			}
-			console = new BasicOSGiFrameworkConsole(proxy);
+			console = new BasicOSGiFrameworkConsole(getLaunch());
 		}
 		return console;
 	}
 	
-	private IProcess getProcess() throws CoreException {
+	private ILaunch getLaunch() throws CoreException {
 		IServer server = getServer();
 		if (server == null) {
-			throw newCoreException(Messages.OSGIFrameworkInstanceBehaviorDelegate_ServerNotInitialized);
+			throw new CoreException(new Status(IStatus.ERROR, FrameworkCorePlugin.PLUGIN_ID, 
+					Messages.OSGIFrameworkInstanceBehaviorDelegate_ServerNotInitialized));
 		}
 		
 		ILaunch launch = server.getLaunch();
 		if (launch == null) {
-			throw newCoreException(Messages.OSGIFrameworkInstanceBehaviorDelegate_ServerNotStarted);
+			throw new CoreException(new Status(IStatus.ERROR, FrameworkCorePlugin.PLUGIN_ID, 
+					Messages.OSGIFrameworkInstanceBehaviorDelegate_ServerNotStarted));
 		}
 		
-		IProcess[] processes = launch.getProcesses();
-		if (processes.length == 0) {
-			throw newCoreException(Messages.OSGIFrameworkInstanceBehaviorDelegate_ServerNotStarted);
-		}
-		
-		return processes[0];
+		return launch;
 	}
 	
-	private CoreException newCoreException(String errorMessage) {
-		return new CoreException(new Status(IStatus.ERROR, FrameworkCorePlugin.PLUGIN_ID, errorMessage));
-	}
-
 }

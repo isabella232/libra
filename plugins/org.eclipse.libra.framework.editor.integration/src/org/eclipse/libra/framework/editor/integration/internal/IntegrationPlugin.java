@@ -10,19 +10,34 @@
  *******************************************************************************/
 package org.eclipse.libra.framework.editor.integration.internal;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.model.IProcess;
 
 /**
  * @author Kaloyan Raev
  */
 public class IntegrationPlugin extends Plugin {
 	
-	public static final String PLUGIN_ID = "org.eclipse.libra.framework.editor.integration";
+	public static final String PLUGIN_ID = "org.eclipse.libra.framework.editor.integration"; //$NON-NLS-1$
 	
 	public static IStatus newErrorStatus(Throwable t) {
 		return new Status(IStatus.ERROR, PLUGIN_ID, t.getMessage(), t);
+	}
+	
+	public static CoreException newCoreException(String errorMessage) {
+		return new CoreException(new Status(IStatus.ERROR, PLUGIN_ID, errorMessage));
+	}
+	
+	public static IProcess getProcess(ILaunch launch) throws CoreException {
+		IProcess[] processes = launch.getProcesses();
+		if (processes.length == 0) {
+			throw newCoreException(Messages.IntegrationPlugin_FrameworkNotStarted);
+		}
+		return processes[0];
 	}
 
 }
