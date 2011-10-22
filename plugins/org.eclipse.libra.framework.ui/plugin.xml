@@ -30,7 +30,7 @@
       </page>
       <page
             class="org.eclipse.libra.framework.editor.ui.dependencies.BundleDependencyEditorPage"
-            id="org.eclipse.libra.framework.editor.integration..bundleDependency"
+            id="org.eclipse.libra.framework.editor.integration.bundleDependency"
             name="Bundle Dependency Graph"
             order="40"
             typeIds="org.eclipse.libra.framework.*">
