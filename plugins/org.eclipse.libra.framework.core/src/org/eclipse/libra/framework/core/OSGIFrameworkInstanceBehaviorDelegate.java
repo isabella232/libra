@@ -660,8 +660,8 @@ public abstract class OSGIFrameworkInstanceBehaviorDelegate extends ServerBehavi
 		}
 	}
 	
-	public Map<Long, IBundle> getBundles() throws CoreException {
-		return getAdmin().getBundles();
+	public Map<Long, IBundle> getBundles(IProgressMonitor monitor) throws CoreException {
+		return getAdmin().getBundles(monitor);
 	}
 	
 	public void startBundle(long bundleId) throws CoreException {

@@ -13,6 +13,7 @@ package org.eclipse.libra.framework.editor.core;
 import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.libra.framework.editor.core.model.IBundle;
 
 /**
@@ -44,6 +45,9 @@ public interface IOSGiFrameworkAdmin {
 	/**
 	 * Retrieves the bundle state of the OSGi framework.
 	 * 
+	 * @param monitor
+	 *            for tracking the progress of retrieving bundle information.
+	 * 
 	 * @return a map of the bundle state: the key is the bundle id and the value
 	 *         is an {@code IBundle} object that provides information about the
 	 *         bundle state.
@@ -54,7 +58,7 @@ public interface IOSGiFrameworkAdmin {
 	 * 
 	 * @see IBundle
 	 */
-	public Map<Long, IBundle> getBundles() throws CoreException;
+	public Map<Long, IBundle> getBundles(IProgressMonitor monitor) throws CoreException;
 
 	/**
 	 * Starts a bundle in the OSGi framework.

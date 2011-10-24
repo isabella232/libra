@@ -86,14 +86,14 @@ public class BundleInformationEditorPage extends AbstractBundleEditorPage {
 	public void showOverviewForBundle(final IBundle bundle) {
 		IRunnableWithProgress runnable = new IRunnableWithProgress() {
 
-			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+			public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 				monitor.beginTask("Updating bundle status from server", 1);
 				Display.getDefault().asyncExec(new Runnable() {
 					public void run() {
 						IOSGiFrameworkAdmin admin = (IOSGiFrameworkAdmin) masterDetailsBlock.getServer()
 								.loadAdapter(IOSGiFrameworkAdmin.class, null);
 						try {
-							masterDetailsBlock.refresh(admin.getBundles());
+							masterDetailsBlock.refresh(admin.getBundles(monitor));
 							masterDetailsBlock.setSelectedBundle(bundle);
 						} catch (CoreException e) {
 							EditorUIPlugin.log(e);

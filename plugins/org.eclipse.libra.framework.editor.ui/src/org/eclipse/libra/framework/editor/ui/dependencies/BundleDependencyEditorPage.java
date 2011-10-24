@@ -305,14 +305,14 @@ public class BundleDependencyEditorPage extends AbstractBundleEditorPage impleme
 			public void run() {
 				IRunnableWithProgress runnable = new IRunnableWithProgress() {
 
-					public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+					public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 						monitor.beginTask("Updating bundle status from server", 1);
 						Display.getDefault().asyncExec(new Runnable() {
 							public void run() {
 								IOSGiFrameworkAdmin admin = (IOSGiFrameworkAdmin) getServer().getOriginal()
 										.loadAdapter(IOSGiFrameworkAdmin.class, null);
 								try {
-									Map<Long, IBundle> allBundles = admin.getBundles();
+									Map<Long, IBundle> allBundles = admin.getBundles(monitor);
 									contentProvider.setBundles(allBundles);
 									viewer.setInput(allBundles.values());
 								} catch (CoreException e) {

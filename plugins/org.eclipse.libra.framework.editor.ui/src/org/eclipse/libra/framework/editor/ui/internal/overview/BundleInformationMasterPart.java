@@ -264,7 +264,7 @@ public class BundleInformationMasterPart extends SectionPart {
 			Job commandJob = new Job("Execute server command '" + command + "'") {
 
 				@Override
-				protected IStatus run(IProgressMonitor monitor) {
+				protected IStatus run(final IProgressMonitor monitor) {
 					final IOSGiFrameworkAdmin admin = (IOSGiFrameworkAdmin) masterDetailsBlock.getServer()
 							.loadAdapter(IOSGiFrameworkAdmin.class, null);
 					try {
@@ -281,7 +281,7 @@ public class BundleInformationMasterPart extends SectionPart {
 						Display.getDefault().asyncExec(new Runnable() {
 							public void run() {
 								try {
-									masterDetailsBlock.refresh(admin.getBundles());
+									masterDetailsBlock.refresh(admin.getBundles(monitor));
 								} catch (CoreException e) {
 									EditorUIPlugin.log(e);
 								}
@@ -320,14 +320,14 @@ public class BundleInformationMasterPart extends SectionPart {
 
 				IRunnableWithProgress runnable = new IRunnableWithProgress() {
 
-					public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+					public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 						monitor.beginTask("Updating bundle status from server", 1);
 						Display.getDefault().asyncExec(new Runnable() {
 							public void run() {
 								IOSGiFrameworkAdmin admin = (IOSGiFrameworkAdmin) masterDetailsBlock.getServer()
 										.loadAdapter(IOSGiFrameworkAdmin.class, null);
 								try {
-									masterDetailsBlock.refresh(admin.getBundles());
+									masterDetailsBlock.refresh(admin.getBundles(monitor));
 								} catch (CoreException e) {
 									EditorUIPlugin.log(e);
 								}
