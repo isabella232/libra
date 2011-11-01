@@ -70,7 +70,7 @@ public class Felix2Handler implements IFelixVersionHandler {
 
 	public String[] getFrameworkProgramArguments(IPath configPath, boolean debug,
 			boolean starting) {
-		return new String[]{"file:"+configPath.append("cache").makeAbsolute().toOSString()};
+		return new String[]{configPath.append("cache").makeAbsolute().toPortableString()};
 	}
 
 
@@ -83,8 +83,8 @@ public class Felix2Handler implements IFelixVersionHandler {
 	public String[] getFrameworkVMArguments(IPath installPath, IPath configPath,
 			IPath deployPath, boolean isTestEnv) {
 		
-		String configPathStr = deployPath.makeAbsolute().toOSString();
-		String vmArgs = "-Dfelix.config.properties=file:" + configPathStr + "/config.properties"; //$NON-NLS-1$ //$NON-NLS-2$
+		String configPathStr = deployPath.makeAbsolute().append("config.properties").toPortableString(); //$NON-NLS-1$
+		String vmArgs = "-Dfelix.config.properties=file:" + configPathStr; //$NON-NLS-1$
 		
 		return new String[]{vmArgs};
 	}
