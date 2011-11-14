@@ -689,9 +689,7 @@ public class BundleInformationDetailsPart extends AbstractFormPart implements ID
 		bundleSymbolicNameText.setText(bundle.getSymbolicName());
 		versionText.setText(bundle.getVersion());
 		String vendor = bundle.getHeaders().get("Bundle-Vendor");
-		if (vendor != null) {
-			providerText.setText(vendor);
-		}
+		providerText.setText((vendor == null) ? "" : vendor);
 		locationText.setText(bundle.getLocation());
 
 		importsTableViewer.setInput(bundle);
