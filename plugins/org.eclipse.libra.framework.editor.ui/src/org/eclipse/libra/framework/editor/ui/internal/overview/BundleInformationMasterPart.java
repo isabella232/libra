@@ -324,12 +324,22 @@ public class BundleInformationMasterPart extends SectionPart {
 						monitor.beginTask("Updating bundle status from server", 1);
 						Display.getDefault().asyncExec(new Runnable() {
 							public void run() {
+								masterDetailsBlock.getEditorPage().clearStatus();
+								
 								IOSGiFrameworkAdmin admin = (IOSGiFrameworkAdmin) masterDetailsBlock.getServer()
-										.loadAdapter(IOSGiFrameworkAdmin.class, null);
+										.loadAdapter(IOSGiFrameworkAdmin.class, monitor);
+								
+								if (admin == null) {
+									IStatus status = EditorUIPlugin.newErrorStatus("Bundle Overview editor part is not integrated with the runtime.");
+									EditorUIPlugin.log(status);
+									masterDetailsBlock.getEditorPage().setStatus(status);
+								}
+								
 								try {
 									masterDetailsBlock.refresh(admin.getBundles(monitor));
 								} catch (CoreException e) {
 									EditorUIPlugin.log(e);
+									masterDetailsBlock.getEditorPage().setStatus(e.getStatus());
 								}
 							}
 						});

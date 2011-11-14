@@ -35,7 +35,21 @@ public class EditorUIPlugin extends AbstractUIPlugin {
 		}
 		return plugin;
 	}
+	
+	/**
+	 * Constructs new IStatus object from the given String message. 
+	 * 
+	 * @param message the message to create the IStatus object from. 
+	 */
+	public static IStatus newErrorStatus(String message) {
+		return new Status(IStatus.ERROR, PLUGIN_ID, message);
+	}
 
+	/**
+	 * Constructs new IStatus object from the given Throwable object. 
+	 * 
+	 * @param t the Throwable object to create the IStatus message from. 
+	 */
 	public static IStatus newErrorStatus(Throwable t) {
 		return new Status(IStatus.ERROR, PLUGIN_ID, t.getMessage(), t);
 	}

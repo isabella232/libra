@@ -25,7 +25,11 @@ public class IntegrationPlugin extends Plugin {
 	public static final String PLUGIN_ID = "org.eclipse.libra.framework.editor.integration"; //$NON-NLS-1$
 	
 	public static IStatus newErrorStatus(Throwable t) {
-		return new Status(IStatus.ERROR, PLUGIN_ID, t.getMessage(), t);
+		return newErrorStatus(t.getMessage(), t);
+	}
+	
+	public static IStatus newErrorStatus(String message, Throwable t) {
+		return new Status(IStatus.ERROR, PLUGIN_ID, message, t);
 	}
 	
 	public static CoreException newCoreException(String errorMessage) {

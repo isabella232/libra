@@ -11,11 +11,13 @@
 package org.eclipse.libra.framework.editor.integration.admin.osgijmx;
 
 import java.io.IOException;
+import java.lang.reflect.UndeclaredThrowableException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import javax.management.InstanceNotFoundException;
 import javax.management.JMX;
 import javax.management.MBeanServerConnection;
 import javax.management.MalformedObjectNameException;
@@ -157,6 +159,11 @@ public class OSGiJMXFrameworkAdmin implements IOSGiFrameworkAdmin {
 				
 				map.put(Long.parseLong(id), bundle);
 			}
+		} catch (UndeclaredThrowableException e) {
+			if (e.getCause() instanceof InstanceNotFoundException) {
+				throw new CoreException(IntegrationPlugin.newErrorStatus("MBean not found: " + e.getCause().getMessage(), e.getCause()));
+			}
+			throw new CoreException(IntegrationPlugin.newErrorStatus(e));
 		} catch (Exception e) {
 			throw new CoreException(IntegrationPlugin.newErrorStatus(e));
 		}

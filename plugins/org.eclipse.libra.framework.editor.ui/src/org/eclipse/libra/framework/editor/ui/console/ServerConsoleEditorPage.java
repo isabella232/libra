@@ -12,6 +12,7 @@
 package org.eclipse.libra.framework.editor.ui.console;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.layout.GridDataFactory;
@@ -204,8 +205,17 @@ public class ServerConsoleEditorPage extends AbstractBundleEditorPage {
 	}
 	
 	private void executeCommand(String cmdLine) {
+		clearStatus();
+		
 		IOSGiFrameworkConsole console = (IOSGiFrameworkConsole) getServer().getOriginal()
 				.loadAdapter(IOSGiFrameworkConsole.class, null);
+		
+		if (console == null) {
+			IStatus status = EditorUIPlugin.newErrorStatus("Console editor part is not integrated with the runtime.");
+			EditorUIPlugin.log(status);
+			setStatus(status);
+		}
+		
 		try {
 			String result = console.executeCommand(cmdLine);
 			manifestText.append("osgi> " + cmdLine + "\n");
@@ -216,8 +226,9 @@ public class ServerConsoleEditorPage extends AbstractBundleEditorPage {
 			manifestText.setTopIndex(manifestText.getLineCount() - 1);
 		} catch (CoreException e) {
 			EditorUIPlugin.log(e);
-			manifestText.append("Failed to execute command. See Error Log for details.\n");
+			setStatus(EditorUIPlugin.newErrorStatus("Failed to execute command. See Error Log for details."));
 		}
+		
 		commandText.setText("");
 	}
 

@@ -276,4 +276,8 @@ public class BundleInformationMasterDetailsBlock extends MasterDetailsBlock {
 		masterPart.updateButtonState();
 	}
 	
+	public BundleInformationEditorPage getEditorPage() {
+		return this.editorPage;
+	}
+	
 }

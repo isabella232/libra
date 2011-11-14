@@ -309,14 +309,24 @@ public class BundleDependencyEditorPage extends AbstractBundleEditorPage impleme
 						monitor.beginTask("Updating bundle status from server", 1);
 						Display.getDefault().asyncExec(new Runnable() {
 							public void run() {
+								clearStatus();
+								
 								IOSGiFrameworkAdmin admin = (IOSGiFrameworkAdmin) getServer().getOriginal()
-										.loadAdapter(IOSGiFrameworkAdmin.class, null);
+										.loadAdapter(IOSGiFrameworkAdmin.class, monitor);
+								
+								if (admin == null) {
+									IStatus status = EditorUIPlugin.newErrorStatus("Bundle Dependency Graph editor part is not integrated with the runtime.");
+									EditorUIPlugin.log(status);
+									setStatus(status);
+								}
+								
 								try {
 									Map<Long, IBundle> allBundles = admin.getBundles(monitor);
 									contentProvider.setBundles(allBundles);
 									viewer.setInput(allBundles.values());
 								} catch (CoreException e) {
 									EditorUIPlugin.log(e);
+									setStatus(e.getStatus());
 								}
 							}
 						});

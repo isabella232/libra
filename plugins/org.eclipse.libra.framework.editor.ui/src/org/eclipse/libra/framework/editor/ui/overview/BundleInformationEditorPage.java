@@ -91,7 +91,7 @@ public class BundleInformationEditorPage extends AbstractBundleEditorPage {
 				Display.getDefault().asyncExec(new Runnable() {
 					public void run() {
 						IOSGiFrameworkAdmin admin = (IOSGiFrameworkAdmin) masterDetailsBlock.getServer()
-								.loadAdapter(IOSGiFrameworkAdmin.class, null);
+								.loadAdapter(IOSGiFrameworkAdmin.class, monitor);
 						try {
 							masterDetailsBlock.refresh(admin.getBundles(monitor));
 							masterDetailsBlock.setSelectedBundle(bundle);

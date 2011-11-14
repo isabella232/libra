@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.libra.framework.editor.ui.internal;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
@@ -182,6 +183,38 @@ public abstract class AbstractBundleEditorPage extends ServerEditorPart {
 			for (Control childControl : ((Composite) control).getChildren()) {
 				setEnabled(childControl, enabled);
 			}
+		}
+	}
+	
+	/**
+	 * Sets the status message of the editor. 
+	 * 
+	 * @param status status message to set. 
+	 */
+	public void setStatus(IStatus status) {
+		sform.getForm().setMessage(status.getMessage(), getMessageType(status));
+	}
+	
+	/**
+	 * Clears the status message of the editor.
+	 */
+	public void clearStatus() {
+		sform.getForm().setMessage(null);
+	}
+	
+	/**
+	 * Converts an IStatus message type to Form message type. 
+	 */
+	private int getMessageType(IStatus status) {
+		switch (status.getSeverity()) {
+		case IStatus.ERROR:
+			return IMessageProvider.ERROR;
+		case IStatus.WARNING:
+			return IMessageProvider.WARNING;
+		case IStatus.INFO:
+			return IMessageProvider.INFORMATION;
+		default:
+			return IMessageProvider.NONE;
 		}
 	}
 
