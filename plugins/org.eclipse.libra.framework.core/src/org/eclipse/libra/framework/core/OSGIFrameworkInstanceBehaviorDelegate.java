@@ -44,8 +44,8 @@ import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.libra.framework.editor.core.IOSGiFrameworkAdmin;
 import org.eclipse.libra.framework.editor.core.IOSGiFrameworkConsole;
 import org.eclipse.libra.framework.editor.core.model.IBundle;
-import org.eclipse.libra.framework.editor.integration.admin.osgijmx.OSGiJMXFrameworkAdmin;
-import org.eclipse.libra.framework.editor.integration.console.basic.BasicOSGiFrameworkConsole;
+import org.eclipse.libra.framework.editor.integration.admin.osgijmx.LaunchOSGiJMXFrameworkAdmin;
+import org.eclipse.libra.framework.editor.integration.console.basic.LaunchBasicOSGiFrameworkConsole;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.internal.IModulePublishHelper;
@@ -686,14 +686,14 @@ public abstract class OSGIFrameworkInstanceBehaviorDelegate extends ServerBehavi
 	
 	private IOSGiFrameworkAdmin getAdmin() throws CoreException {
 		if (admin == null) {
-			admin = new OSGiJMXFrameworkAdmin(getLaunch());
+			admin = new LaunchOSGiJMXFrameworkAdmin(getLaunch());
 		}
 		return admin;
 	}
 	
 	private IOSGiFrameworkConsole getConsole() throws CoreException {
 		if (console == null) {
-			console = new BasicOSGiFrameworkConsole(getLaunch());
+			console = new LaunchBasicOSGiFrameworkConsole(getLaunch());
 		}
 		return console;
 	}
