@@ -7,7 +7,7 @@
  *
  * Contributors:
  *     SpringSource, a division of VMware, Inc. - initial API and implementation
- *     Kaloyan Raev, SAP AG - bug 362573
+ *     SAP AG - enhancements and bug fixes
  *******************************************************************************/
 package org.eclipse.libra.framework.editor.ui.internal;
 

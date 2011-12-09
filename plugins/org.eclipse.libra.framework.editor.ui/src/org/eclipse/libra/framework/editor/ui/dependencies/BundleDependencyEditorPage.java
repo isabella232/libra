@@ -438,6 +438,12 @@ public class BundleDependencyEditorPage extends AbstractBundleEditorPage impleme
 		}
 	}
 
+	@Override
+	protected void enablePage() {
+		super.enablePage();
+		setInfoStatus("Click the 'Refresh' button for fetching data from server.");
+	}
+
 	class BundleDependencyUpdateJob extends Job {
 
 		private final boolean deleteSelection;

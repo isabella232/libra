@@ -70,6 +70,7 @@ public class BundleInformationEditorPage extends AbstractBundleEditorPage {
 	@Override
 	protected void enablePage() {
 		super.enablePage();
+		setInfoStatus("Click the 'Refresh' button for fetching data from server.");
 		masterDetailsBlock.refresh();
 	}
 	
