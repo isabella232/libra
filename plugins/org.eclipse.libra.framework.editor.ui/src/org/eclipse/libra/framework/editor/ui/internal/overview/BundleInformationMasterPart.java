@@ -146,7 +146,7 @@ public class BundleInformationMasterPart extends SectionPart {
 		imageColumn.setWidth(23);
 		idColumn = new TableColumn(bundleTable, SWT.RIGHT);
 		idColumn.setText("Id");
-		idColumn.setWidth(30);
+		idColumn.setWidth(50);
 		idColumn.addListener(SWT.Selection, new SortingListener());
 		symbolicNameColumn = new TableColumn(bundleTable, SWT.LEFT);
 		symbolicNameColumn.setText("Symbolic-Name");
