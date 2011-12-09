@@ -196,7 +196,9 @@ public class ServerConsoleEditorPage extends AbstractBundleEditorPage {
 			@Override
 			public void run() {
 				String cmdLine = history.current();
-				executeCommand(cmdLine);
+				if (cmdLine != null) {
+					executeCommand(cmdLine);
+				}
 			}
 
 		};

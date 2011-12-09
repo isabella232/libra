@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 SpringSource, a divison of VMware, Inc.
+ * Copyright (c) 2009, 2011 SpringSource, a divison of VMware, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     SpringSource, a division of VMware, Inc. - initial API and implementation
+ *     Kaloyan Raev, SAP AG - bug 362573
  *******************************************************************************/
 package org.eclipse.libra.framework.editor.ui.internal;
 
@@ -15,6 +16,7 @@ import java.util.List;
 
 /**
  * @author Christian Dupuis
+ * @author Kaloyan Raev
  */
 public class SearchTextHistory {
 
@@ -73,6 +75,6 @@ public class SearchTextHistory {
 	}
 
 	public String current() {
-		return history.get(0);
+		return (history.size() == 0) ? null : history.get(0);
 	}
 }
