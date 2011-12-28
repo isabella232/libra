@@ -11,20 +11,12 @@
  *******************************************************************************/
 package org.eclipse.libra.framework.editor.ui.overview;
 
-import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.jface.operation.IRunnableContext;
-import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.libra.framework.editor.core.IOSGiFrameworkAdmin;
 import org.eclipse.libra.framework.editor.core.model.IBundle;
 import org.eclipse.libra.framework.editor.ui.internal.AbstractBundleEditorPage;
-import org.eclipse.libra.framework.editor.ui.internal.EditorUIPlugin;
 import org.eclipse.libra.framework.editor.ui.internal.overview.BundleInformationMasterDetailsBlock;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.forms.ManagedForm;
@@ -85,34 +77,11 @@ public class BundleInformationEditorPage extends AbstractBundleEditorPage {
 	}
 
 	public void showOverviewForBundle(final IBundle bundle) {
-		IRunnableWithProgress runnable = new IRunnableWithProgress() {
+		masterDetailsBlock.setSelectedBundle(bundle);
+	}
 
-			public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-				monitor.beginTask("Updating bundle status from server", 1);
-				Display.getDefault().asyncExec(new Runnable() {
-					public void run() {
-						IOSGiFrameworkAdmin admin = (IOSGiFrameworkAdmin) masterDetailsBlock.getServer()
-								.loadAdapter(IOSGiFrameworkAdmin.class, monitor);
-						try {
-							masterDetailsBlock.refresh(admin.getBundles(monitor));
-							masterDetailsBlock.setSelectedBundle(bundle);
-						} catch (CoreException e) {
-							EditorUIPlugin.log(e);
-						}
-					}
-				});
-				monitor.worked(1);
-			}
-		};
-
-		try {
-			IRunnableContext context = new ProgressMonitorDialog(Display.getCurrent().getActiveShell());
-			context.run(true, true, runnable);
-		}
-		catch (InvocationTargetException e1) {
-		}
-		catch (InterruptedException e2) {
-		}
+	public void refresh(Map<Long, IBundle> bundles) {
+		masterDetailsBlock.refresh(bundles);
 	}
 
 }

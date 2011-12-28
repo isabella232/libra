@@ -365,9 +365,13 @@ public class BundleInformationMasterPart extends SectionPart {
 		section.setTextClient(toolbar);
 	}
 
-	public void refresh(Map<Long, IBundle> bundles) {
-		super.refresh();
-		bundleTableViewer.setInput(bundles);
+	public boolean refresh(Map<Long, IBundle> bundles) {
+		if (bundles != null && !bundles.equals(bundleTableViewer.getInput())) {
+			super.refresh();
+			bundleTableViewer.setInput(bundles);
+			return true;
+		}
+		return false;
 	}
 
 	public void clear() {
