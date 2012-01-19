@@ -19,11 +19,12 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.libra.framework.core.FrameworkInstanceConfiguration;
 import org.eclipse.libra.framework.core.FrameworkInstanceDelegate;
 import org.eclipse.libra.framework.core.OSGIFrameworkInstanceBehaviorDelegate;
+import org.eclipse.libra.framework.core.TargetDefinitionUtil;
 import org.eclipse.libra.framework.core.Trace;
 import org.eclipse.libra.framework.felix.internal.FelixRuntimeInstanceBehavior;
-import org.eclipse.pde.internal.core.target.TargetPlatformService;
-import org.eclipse.pde.internal.core.target.provisional.IBundleContainer;
-import org.eclipse.pde.internal.core.target.provisional.ITargetDefinition;
+import org.eclipse.pde.core.target.ITargetDefinition;
+import org.eclipse.pde.core.target.ITargetLocation;
+import org.eclipse.pde.core.target.ITargetPlatformService;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IRuntime;
 
@@ -110,34 +111,35 @@ public class FelixFrameworkInstance extends FrameworkInstanceDelegate implements
 
 	}
 
-	@SuppressWarnings("restriction")
-	private IBundleContainer[] getDefaultBundleContainers(IPath installPath) {
-		IBundleContainer[] containers = new IBundleContainer[2];
-		containers[0] = TargetPlatformService.getDefault()
-		.newDirectoryContainer(
+	private ITargetLocation[] getDefaultBundleContainers(IPath installPath) {
+		ITargetLocation[] containers = new ITargetLocation[2];
+		ITargetPlatformService service = TargetDefinitionUtil.getTargetPlatformService();
+
+		containers[0] = service.newDirectoryLocation(
 				installPath.append("bin").makeAbsolute()
 						.toPortableString());
-		containers[1] = TargetPlatformService.getDefault()
-		.newDirectoryContainer(
+		containers[1] = service.newDirectoryLocation(
 				installPath.append("bundle").makeAbsolute()
 						.toPortableString());
 		return containers;
 		
 	}
 
-	@SuppressWarnings("restriction")
+
 	@Override
 	public ITargetDefinition createDefaultTarget() throws CoreException {
 		IPath installPath = getServer().getRuntime().getLocation();
 
-		ITargetDefinition targetDefinition = TargetPlatformService.getDefault().newTarget();
+		ITargetPlatformService service = TargetDefinitionUtil.getTargetPlatformService();
+
+		ITargetDefinition targetDefinition = service.newTarget();
 		targetDefinition.setName(getServer().getName());
-		IBundleContainer[] containers = getDefaultBundleContainers(installPath);
+		ITargetLocation[] containers = getDefaultBundleContainers(installPath);
 		
-		targetDefinition.setBundleContainers(containers);
-		TargetPlatformService.getDefault().saveTargetDefinition(
-				targetDefinition);
+		targetDefinition.setTargetLocations(containers);
+		service.saveTargetDefinition(targetDefinition);
 		return targetDefinition;
 	}
+
 
 }

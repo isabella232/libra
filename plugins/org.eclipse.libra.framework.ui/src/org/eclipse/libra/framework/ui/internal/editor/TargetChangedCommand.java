@@ -23,12 +23,10 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.libra.framework.core.Messages;
 import org.eclipse.pde.core.plugin.IPluginModelBase;
-import org.eclipse.pde.internal.core.target.provisional.ITargetDefinition;
+import org.eclipse.pde.core.target.ITargetDefinition;
 
 
 
-
-@SuppressWarnings("restriction")
 
 /**
  * This command does nothing but execute sets the dirty for the editor 

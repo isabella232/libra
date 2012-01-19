@@ -19,12 +19,14 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.libra.framework.core.IOSGIExecutionEnvironment;
 import org.eclipse.libra.framework.core.IOSGIFrameworkInstance;
+import org.eclipse.libra.framework.core.TargetDefinitionUtil;
 import org.eclipse.libra.framework.equinox.IEquinoxFrameworkInstance;
 import org.eclipse.libra.framework.ui.ContextIds;
 import org.eclipse.libra.framework.ui.Messages;
 import org.eclipse.libra.framework.ui.Trace;
-import org.eclipse.pde.internal.core.target.TargetPlatformService;
-import org.eclipse.pde.internal.core.target.provisional.ITargetDefinition;
+import org.eclipse.pde.core.target.ITargetDefinition;
+import org.eclipse.pde.core.target.ITargetPlatformService;
+
 import org.eclipse.pde.internal.ui.SWTFactory;
 import org.eclipse.pde.internal.ui.wizards.target.EditTargetDefinitionWizard;
 import org.eclipse.swt.SWT;
@@ -216,8 +218,8 @@ public class JavaProfileEditorSection extends ServerEditorSection {
 					ITargetDefinition newTarget = wizard.getTargetDefinition();
 					frameworkInstance.getFrameworkInstanceConfiguration()
 							.setTargetDefinition(newTarget);
-					TargetPlatformService.getDefault().saveTargetDefinition(
-							newTarget);
+					ITargetPlatformService service = TargetDefinitionUtil.getTargetPlatformService();
+					service.saveTargetDefinition(newTarget);
 				}
 			}
 		} catch (CoreException e) {

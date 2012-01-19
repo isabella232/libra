@@ -12,6 +12,7 @@ package org.eclipse.libra.framework.jonas;
 
 import java.io.File;
 
+import org.apache.tools.ant.DirectoryScanner;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -22,14 +23,14 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.libra.framework.core.FrameworkInstanceConfiguration;
 import org.eclipse.libra.framework.core.FrameworkInstanceDelegate;
 import org.eclipse.libra.framework.core.OSGIFrameworkInstanceBehaviorDelegate;
+import org.eclipse.libra.framework.core.TargetDefinitionUtil;
 import org.eclipse.libra.framework.core.Trace;
 import org.eclipse.libra.framework.jonas.internal.JonasFrameworkInstanceBehavior;
-import org.eclipse.pde.internal.core.target.TargetPlatformService;
-import org.eclipse.pde.internal.core.target.provisional.IBundleContainer;
-import org.eclipse.pde.internal.core.target.provisional.ITargetDefinition;
+import org.eclipse.pde.core.target.ITargetDefinition;
+import org.eclipse.pde.core.target.ITargetLocation;
+import org.eclipse.pde.core.target.ITargetPlatformService;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IRuntime;
-import org.apache.tools.ant.DirectoryScanner;
 
 public class JonasFrameworkInstance extends FrameworkInstanceDelegate implements
 		IJonasFrameworkInstance {
@@ -117,7 +118,7 @@ public class JonasFrameworkInstance extends FrameworkInstanceDelegate implements
 	}
 
 	@SuppressWarnings("restriction")
-	private IBundleContainer[] getDefaultBundleContainers(IPath installPath) {
+	private ITargetLocation[] getDefaultBundleContainers(IPath installPath) {
 		try {
 			DirectoryScanner scanner = new DirectoryScanner();
 			String baseDir = installPath.append("repositories/maven2-internal").toOSString();
@@ -125,13 +126,17 @@ public class JonasFrameworkInstance extends FrameworkInstanceDelegate implements
 			scanner.setIncludes(new String[]{"**/*.jar"});
 			scanner.scan();
 			String[] bundles = scanner.getIncludedFiles();
+			ITargetPlatformService service = TargetDefinitionUtil.getTargetPlatformService();
+
 			if(bundles != null && bundles.length>0){
-				IBundleContainer[] containers = new IBundleContainer[bundles.length];
+				
+				ITargetLocation[] containers = new ITargetLocation[bundles.length];
 				int i=0;	
 				for(String b: bundles){
 					File bundle = new File(b);
 					IPath baseDirFile = new Path(baseDir);
-					containers[i] = TargetPlatformService.getDefault().newDirectoryContainer(baseDirFile.append(bundle.getParent()).toOSString());
+					
+					containers[i] = service.newDirectoryLocation(baseDirFile.append(bundle.getParent()).toOSString());
 					i++;
 				}
 				return containers;
@@ -140,22 +145,20 @@ public class JonasFrameworkInstance extends FrameworkInstanceDelegate implements
 			// TODO Auto-generated catch block
 			t.printStackTrace();
 		}
-		return new IBundleContainer[0];
+		return new ITargetLocation[0];
 	}
 
-	@SuppressWarnings("restriction")
 	@Override
 	public ITargetDefinition createDefaultTarget() throws CoreException {
 		IPath installPath = getServer().getRuntime().getLocation();
+		ITargetPlatformService service = TargetDefinitionUtil.getTargetPlatformService();
 
-		ITargetDefinition targetDefinition = TargetPlatformService.getDefault()
-				.newTarget();
+		ITargetDefinition targetDefinition = service.newTarget();
 		targetDefinition.setName(getServer().getName());
-		IBundleContainer[] containers = getDefaultBundleContainers(installPath);
+		ITargetLocation[] containers = getDefaultBundleContainers(installPath);
 
-		targetDefinition.setBundleContainers(containers);
-		TargetPlatformService.getDefault().saveTargetDefinition(
-				targetDefinition);
+		targetDefinition.setTargetLocations(containers);
+		service.saveTargetDefinition(targetDefinition);
 
 		return targetDefinition;
 	}

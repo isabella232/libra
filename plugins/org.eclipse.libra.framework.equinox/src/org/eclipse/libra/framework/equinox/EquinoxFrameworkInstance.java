@@ -22,16 +22,15 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.libra.framework.core.FrameworkInstanceConfiguration;
 import org.eclipse.libra.framework.core.FrameworkInstanceDelegate;
 import org.eclipse.libra.framework.core.OSGIFrameworkInstanceBehaviorDelegate;
+import org.eclipse.libra.framework.core.TargetDefinitionUtil;
 import org.eclipse.libra.framework.core.Trace;
 import org.eclipse.libra.framework.equinox.internal.EquinoxFrameworkInstanceBehavior;
-import org.eclipse.pde.internal.core.target.TargetPlatformService;
-import org.eclipse.pde.internal.core.target.provisional.IBundleContainer;
-import org.eclipse.pde.internal.core.target.provisional.ITargetDefinition;
+import org.eclipse.pde.core.target.ITargetDefinition;
+import org.eclipse.pde.core.target.ITargetPlatformService;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IRuntime;
 
 
-@SuppressWarnings("restriction")
 public class EquinoxFrameworkInstance extends FrameworkInstanceDelegate implements
 		IEquinoxFrameworkInstance {
 
@@ -122,33 +121,22 @@ public class EquinoxFrameworkInstance extends FrameworkInstanceDelegate implemen
 
 	
 	
-	@SuppressWarnings("restriction")
 	@Override
 	public ITargetDefinition createDefaultTarget() throws CoreException {
 		
 
 		
-		IPath installPath = getServer().getRuntime().getLocation();
+		//IPath installPath = getServer().getRuntime().getLocation();
+		ITargetPlatformService service = TargetDefinitionUtil.getTargetPlatformService();
 
-		ITargetDefinition targetDefinition = TargetPlatformService.getDefault()
-				.newTarget();
+		ITargetDefinition targetDefinition = service.newTarget();
 		targetDefinition.setName(getServer().getName());
-		IBundleContainer[] containers = getDefaultBundleContainers(installPath);
-
-		targetDefinition.setBundleContainers(containers);
 		targetDefinition.resolve(new NullProgressMonitor());
 
-		TargetPlatformService.getDefault().saveTargetDefinition(
-				targetDefinition);
+		service.saveTargetDefinition(targetDefinition);
 		return targetDefinition;
 	}
 
-
-	@SuppressWarnings("restriction")
-	private IBundleContainer[] getDefaultBundleContainers(IPath installPath) {
-		return  new IBundleContainer[0];
-
-	}
 
 	
 	public String getFrameworkJarPath(){

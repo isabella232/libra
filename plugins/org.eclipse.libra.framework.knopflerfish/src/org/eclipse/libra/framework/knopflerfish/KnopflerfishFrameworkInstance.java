@@ -24,13 +24,14 @@ import org.eclipse.equinox.frameworkadmin.BundleInfo;
 import org.eclipse.libra.framework.core.FrameworkInstanceConfiguration;
 import org.eclipse.libra.framework.core.FrameworkInstanceDelegate;
 import org.eclipse.libra.framework.core.OSGIFrameworkInstanceBehaviorDelegate;
+import org.eclipse.libra.framework.core.TargetDefinitionUtil;
 import org.eclipse.libra.framework.core.Trace;
 import org.eclipse.libra.framework.knopflerfish.internal.KnopflerfishFrameworkInstanceBehavior;
-import org.eclipse.pde.internal.core.target.TargetPlatformService;
-import org.eclipse.pde.internal.core.target.provisional.IBundleContainer;
-import org.eclipse.pde.internal.core.target.provisional.IResolvedBundle;
-import org.eclipse.pde.internal.core.target.provisional.ITargetDefinition;
-import org.eclipse.pde.internal.core.target.provisional.NameVersionDescriptor;
+import org.eclipse.pde.core.target.ITargetDefinition;
+import org.eclipse.pde.core.target.ITargetLocation;
+import org.eclipse.pde.core.target.ITargetPlatformService;
+import org.eclipse.pde.core.target.NameVersionDescriptor;
+import org.eclipse.pde.core.target.TargetBundle;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IRuntime;
 
@@ -128,22 +129,22 @@ public class KnopflerfishFrameworkInstance extends FrameworkInstanceDelegate
 		
 
 		IPath installPath = getServer().getRuntime().getLocation();
+		ITargetPlatformService service = TargetDefinitionUtil.getTargetPlatformService();
 
-		ITargetDefinition targetDefinition = TargetPlatformService.getDefault()
-				.newTarget();
+		ITargetDefinition targetDefinition = service.newTarget();
 		targetDefinition.setName(getServer().getName());
-		IBundleContainer[] containers = getDefaultBundleContainers(installPath);
+		ITargetLocation[] containers = getDefaultBundleContainers(installPath);
 
-		targetDefinition.setBundleContainers(containers);
+		targetDefinition.setTargetLocations(containers);
 		targetDefinition.resolve(new NullProgressMonitor());
 
-		IResolvedBundle[] targetBundles = targetDefinition.getAllBundles();
+		TargetBundle[] targetBundles = targetDefinition.getAllBundles();
 		List<NameVersionDescriptor> includedB = new ArrayList<NameVersionDescriptor>();
-		for (IResolvedBundle b : targetBundles) {
+		for (TargetBundle b : targetBundles) {
 			if (b.getStatus().getSeverity() == IStatus.OK) {
 
 				if (shouldInclude(b.getBundleInfo())) {
-					if (b.getStatus().getCode() == IResolvedBundle.STATUS_PLUGIN_DOES_NOT_EXIST) {
+					if (b.getStatus().getCode() == TargetBundle.STATUS_PLUGIN_DOES_NOT_EXIST) {
 						includedB.add(new NameVersionDescriptor(b
 								.getBundleInfo().getSymbolicName(), null,
 								NameVersionDescriptor.TYPE_PLUGIN));
@@ -159,8 +160,7 @@ public class KnopflerfishFrameworkInstance extends FrameworkInstanceDelegate
 		targetDefinition.setIncluded(includedB
 				.toArray(new NameVersionDescriptor[includedB.size()]));
 
-		TargetPlatformService.getDefault().saveTargetDefinition(
-				targetDefinition);
+		service.saveTargetDefinition(targetDefinition);
 		return targetDefinition;
 	}
 
@@ -182,44 +182,36 @@ public class KnopflerfishFrameworkInstance extends FrameworkInstanceDelegate
 		return false;
 	}
 
-	@SuppressWarnings("restriction")
-	private IBundleContainer[] getDefaultBundleContainers(IPath installPath) {
-		IBundleContainer[] containers = new IBundleContainer[8];
-		containers[0] = TargetPlatformService.getDefault()
-				.newDirectoryContainer(
+	private ITargetLocation[] getDefaultBundleContainers(IPath installPath) {
+		ITargetLocation[] containers = new ITargetLocation[8];
+		ITargetPlatformService service = TargetDefinitionUtil.getTargetPlatformService();
+		containers[0] =  service.newDirectoryLocation(
 						installPath.append("osgi").makeAbsolute()
 								.toPortableString());
-		containers[1] = TargetPlatformService.getDefault()
-				.newDirectoryContainer(
+		containers[1] = service.newDirectoryLocation(
 						installPath.append("osgi").append("jars").append("log")
 								.makeAbsolute().toPortableString());
 
-		containers[2] = TargetPlatformService.getDefault()
-				.newDirectoryContainer(
+		containers[2] = service.newDirectoryLocation(
 						installPath.append("osgi").append("jars").append("console").makeAbsolute()
 								.toPortableString());
 
-		containers[3] = TargetPlatformService.getDefault()
-				.newDirectoryContainer(
+		containers[3] = service.newDirectoryLocation(
 						installPath.append("osgi").append("jars").append("cm")
 								.makeAbsolute().toPortableString());
-		containers[4] = TargetPlatformService.getDefault()
-				.newDirectoryContainer(
+		containers[4] = service.newDirectoryLocation(
 						installPath.append("osgi").append("jars")
 								.append("consoletty").makeAbsolute()
 								.toPortableString());
-		containers[5] = TargetPlatformService.getDefault()
-				.newDirectoryContainer(
+		containers[5] = service.newDirectoryLocation(
 						installPath.append("osgi").append("jars")
 								.append("frameworkcommands").makeAbsolute()
 								.toPortableString());
-		containers[6] = TargetPlatformService.getDefault()
-				.newDirectoryContainer(
+		containers[6] = service.newDirectoryLocation(
 						installPath.append("osgi").append("jars")
 								.append("logcommands").makeAbsolute()
 								.toPortableString());
-		containers[7] = TargetPlatformService.getDefault()
-				.newDirectoryContainer(
+		containers[7] = service.newDirectoryLocation(
 						installPath.append("osgi").append("jars")
 								.append("useradmin").makeAbsolute()
 								.toPortableString());

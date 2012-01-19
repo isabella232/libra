@@ -28,12 +28,10 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.pde.internal.core.target.TargetPlatformService;
-import org.eclipse.pde.internal.core.target.provisional.ITargetDefinition;
-import org.eclipse.pde.internal.core.target.provisional.ITargetHandle;
+import org.eclipse.pde.core.target.ITargetDefinition;
+import org.eclipse.pde.core.target.ITargetHandle;
+import org.eclipse.pde.core.target.ITargetPlatformService;
 
-
-@SuppressWarnings("restriction")
 public class FrameworkInstanceConfiguration {
 
 	public static final String ADD_BUNDLE = "ADD_BUNDLE";
@@ -87,8 +85,9 @@ public class FrameworkInstanceConfiguration {
 	private ITargetDefinition loadTarget() throws CoreException {
 
 		targetDefinition = null;
-		ITargetHandle[] targets = TargetPlatformService.getDefault()
-				.getTargets(new NullProgressMonitor());
+		ITargetPlatformService service = TargetDefinitionUtil.getTargetPlatformService();
+		
+		ITargetHandle[] targets = service.getTargets(new NullProgressMonitor());
 		String name = runtimeInstance.getServer().getName();
 		for (ITargetHandle handle : targets) {
 			if (name.equals(handle.getTargetDefinition().getName())) {

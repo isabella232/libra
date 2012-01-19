@@ -64,7 +64,7 @@ import org.eclipse.wst.server.ui.editor.ServerEditorPart;
 /**
  * felix configuration  module editor page.
  */
-@SuppressWarnings("restriction")
+
 public class ConfigurationOSGiModuleEditorPart extends ServerEditorPart implements ISelectionProvider {
 	protected IOSGIFrameworkWorkingCopy framework2;
 	protected FrameworkInstanceConfiguration configuration;

@@ -38,11 +38,12 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.libra.framework.core.FrameworkInstanceConfiguration;
 import org.eclipse.libra.framework.core.IOSGIFrameworkInstance;
 import org.eclipse.libra.framework.core.IOSGIFrameworkWorkingCopy;
+import org.eclipse.libra.framework.core.TargetDefinitionUtil;
 import org.eclipse.libra.framework.core.Trace;
 import org.eclipse.pde.internal.core.ICoreConstants;
 import org.eclipse.pde.internal.core.PDECore;
-import org.eclipse.pde.internal.core.target.TargetPlatformService;
-import org.eclipse.pde.internal.core.target.provisional.ITargetDefinition;
+import org.eclipse.pde.core.target.ITargetDefinition;
+import org.eclipse.pde.core.target.ITargetPlatformService;
 import org.eclipse.pde.internal.core.util.VMUtil;
 import org.eclipse.pde.internal.ui.IHelpContextIds;
 import org.eclipse.pde.internal.ui.PDEUIMessages;
@@ -148,7 +149,7 @@ public class TargetDefinitionEditorPart extends ServerEditorPart {
 		fContentTree.setInput(definition);
 		fLocationTree.setInput(definition);
 		if (definition.isResolved()
-				&& definition.getBundleStatus().getSeverity() == IStatus.ERROR) {
+				&& definition.getStatus().getSeverity() == IStatus.ERROR) {
 			fLocationTab.setImage(PlatformUI.getWorkbench().getSharedImages()
 					.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
 		} else {
@@ -217,7 +218,7 @@ public class TargetDefinitionEditorPart extends ServerEditorPart {
 			fLocationTree.setInput(definition);
 		}
 		if (definition.isResolved()
-				&& definition.getBundleStatus().getSeverity() == IStatus.ERROR) {
+				&& definition.getStatus().getSeverity() == IStatus.ERROR) {
 			fLocationTab.setImage(PlatformUI.getWorkbench().getSharedImages()
 					.getImage(ISharedImages.IMG_OBJS_ERROR_TSK));
 		} else {
@@ -706,8 +707,8 @@ public class TargetDefinitionEditorPart extends ServerEditorPart {
 		try {
 			runtimeInstance.getFrameworkInstanceConfiguration()
 					.setTargetDefinition(getTargetDefinition());
-			TargetPlatformService.getDefault().saveTargetDefinition(
-					getTargetDefinition());
+			ITargetPlatformService service = TargetDefinitionUtil.getTargetPlatformService();
+			service.saveTargetDefinition(getTargetDefinition());
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}

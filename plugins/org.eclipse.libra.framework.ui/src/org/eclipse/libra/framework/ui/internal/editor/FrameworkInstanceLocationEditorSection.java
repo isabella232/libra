@@ -30,13 +30,14 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.libra.framework.core.FrameworkInstanceDelegate;
 import org.eclipse.libra.framework.core.IOSGIFrameworkInstance;
+import org.eclipse.libra.framework.core.TargetDefinitionUtil;
 import org.eclipse.libra.framework.ui.ContextIds;
 import org.eclipse.libra.framework.ui.FrameworkUIPlugin;
 import org.eclipse.libra.framework.ui.Messages;
 import org.eclipse.libra.framework.ui.Trace;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.pde.internal.core.target.TargetPlatformService;
-import org.eclipse.pde.internal.core.target.provisional.ITargetDefinition;
+import org.eclipse.pde.core.target.ITargetDefinition;
+import org.eclipse.pde.core.target.ITargetPlatformService;
 import org.eclipse.pde.internal.ui.wizards.target.EditTargetDefinitionWizard;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -67,7 +68,7 @@ import org.eclipse.wst.server.ui.editor.ServerEditorSection;
 
 
 
-@SuppressWarnings("restriction")
+
 public class FrameworkInstanceLocationEditorSection extends ServerEditorSection {
 	protected Section section;
 	protected IOSGIFrameworkInstance frameworkInstance;
@@ -483,7 +484,8 @@ public class FrameworkInstanceLocationEditorSection extends ServerEditorSection 
 					// Replace all references to the original with the new target
 					ITargetDefinition newTarget = wizard.getTargetDefinition();
 					frameworkInstance.getFrameworkInstanceConfiguration().setTargetDefinition(newTarget);
-					TargetPlatformService.getDefault().saveTargetDefinition(newTarget);
+					ITargetPlatformService service = TargetDefinitionUtil.getTargetPlatformService();
+					service.saveTargetDefinition(newTarget);
 				}
 			}
 		} catch (CoreException e) {

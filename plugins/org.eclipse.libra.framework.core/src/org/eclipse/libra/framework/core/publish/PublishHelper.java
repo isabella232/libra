@@ -37,11 +37,11 @@ import org.eclipse.pde.core.IModel;
 import org.eclipse.pde.core.plugin.IPluginModelBase;
 import org.eclipse.pde.core.plugin.ModelEntry;
 import org.eclipse.pde.core.plugin.PluginRegistry;
+import org.eclipse.pde.core.target.ITargetDefinition;
+import org.eclipse.pde.core.target.TargetBundle;
 import org.eclipse.pde.internal.core.WorkspaceModelManager;
 import org.eclipse.pde.internal.core.exports.FeatureExportInfo;
 import org.eclipse.pde.internal.core.exports.PluginExportOperation;
-import org.eclipse.pde.internal.core.target.provisional.IResolvedBundle;
-import org.eclipse.pde.internal.core.target.provisional.ITargetDefinition;
 import org.eclipse.pde.internal.ui.PDEPluginImages;
 import org.eclipse.pde.internal.ui.PDEUIMessages;
 import org.eclipse.ui.progress.IProgressConstants;
@@ -107,8 +107,8 @@ public abstract class PublishHelper {
 		List<String> all = new ArrayList<String>();
 		ITargetDefinition targetDefinition = config.getTargetDefinition();
 		targetDefinition.resolve(new NullProgressMonitor());
-		IResolvedBundle[] targetBundles = targetDefinition.getBundles();
-		for (IResolvedBundle b : targetBundles) {
+		TargetBundle[] targetBundles = targetDefinition.getBundles();
+		for (TargetBundle b : targetBundles) {
 			if (b.getStatus().getSeverity() == IStatus.OK) {
 				all.add(b.getBundleInfo().getLocation().getRawPath());
 			}
@@ -117,11 +117,11 @@ public abstract class PublishHelper {
 		return all.toArray(new String[all.size()]);
 	}
 	
-	public IResolvedBundle[] getTargetBundles(FrameworkInstanceConfiguration config) {
+	public TargetBundle[] getTargetBundles(FrameworkInstanceConfiguration config) {
 		List<String> all = new ArrayList<String>();
 		ITargetDefinition targetDefinition = config.getTargetDefinition();
 		targetDefinition.resolve(new NullProgressMonitor());
-		IResolvedBundle[] targetBundles = targetDefinition.getBundles();
+		TargetBundle[] targetBundles = targetDefinition.getBundles();
 		return targetBundles;
 	}
 
@@ -130,8 +130,8 @@ public abstract class PublishHelper {
 		List<String> all = new ArrayList<String>();
 		ITargetDefinition targetDefinition = config.getTargetDefinition();
 		targetDefinition.resolve(new NullProgressMonitor());
-		IResolvedBundle[] targetBundles = targetDefinition.getBundles();
-		for (IResolvedBundle b : targetBundles) {
+		TargetBundle[] targetBundles = targetDefinition.getBundles();
+		for (TargetBundle b : targetBundles) {
 			if (b.getStatus().getSeverity() == IStatus.OK) {
 				all.add(b.getBundleInfo().getSymbolicName());
 			}

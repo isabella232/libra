@@ -37,7 +37,7 @@ import org.eclipse.pde.core.plugin.PluginRegistry;
 import org.eclipse.pde.core.plugin.TargetPlatform;
 import org.eclipse.pde.core.project.IBundleClasspathEntry;
 import org.eclipse.pde.core.project.IBundleProjectDescription;
-import org.eclipse.pde.internal.core.target.provisional.IResolvedBundle;
+import org.eclipse.pde.core.target.TargetBundle;
 import org.eclipse.wst.server.core.IModule;
 
 public class EquinoxHandler implements IEquinoxVersionHandler {
@@ -185,7 +185,7 @@ public class EquinoxHandler implements IEquinoxVersionHandler {
 	}
 
 	public void prepareFrameworkConfigurationFile(IPath configPath,
-			String workspaceBundles, String frameworkJar, IResolvedBundle[] kernelBundles) {
+			String workspaceBundles, String frameworkJar, TargetBundle[] kernelBundles) {
 		String[] wsBundleIds =  workspaceBundles.split(" ");
 
 		prepareDevProperties(configPath, wsBundleIds);
@@ -193,7 +193,7 @@ public class EquinoxHandler implements IEquinoxVersionHandler {
 	}
 
 	private void prepareConfigIni(IPath configPath, String[] wsBundleIds, String frameworkJar,
-			IResolvedBundle[] krBundles) {
+			TargetBundle[] krBundles) {
 		String propertyInstall = "";
 		for (String bundle : wsBundleIds) {
 			if (bundle.indexOf("@") != -1)

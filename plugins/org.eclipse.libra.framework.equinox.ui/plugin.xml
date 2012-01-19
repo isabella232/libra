@@ -125,18 +125,6 @@
         id="org.eclipse.libra.framework.equinox.ui.cleanserverworkdir"
         label="%cleanWorkDir">
       </action>
-      <action 
-        class="org.eclipse.libra.framework.ui.internal.actions.SyncStartAction"
-        enablesFor="1"
-        id="org.eclipse.libra.framework.equinox.ui.syncstart"
-        label="OSGi Run">
-      </action>
-      <action 
-        class="org.eclipse.libra.framework.ui.internal.actions.SyncDebugAction"
-        enablesFor="1"
-        id="org.eclipse.libra.framework.equinox.ui.syncdebug"
-        label="OSGi Debug">
-      </action>
     </objectContribution>
     <objectContribution
       adaptable="true"

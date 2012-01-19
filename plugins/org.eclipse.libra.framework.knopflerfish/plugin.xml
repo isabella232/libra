@@ -63,6 +63,7 @@
             stopTimeout="120000"
             initialState="stopped"
             startBeforePublish="false"
+            synchronousStart="true"
             hasConfiguration="true"
             launchConfigId="org.eclipse.libra.framework.knopflerfish.launchConfigurationType"
             runtimeTypeId="org.eclipse.libra.framework.knopflerfish.runtimeType.31"           
