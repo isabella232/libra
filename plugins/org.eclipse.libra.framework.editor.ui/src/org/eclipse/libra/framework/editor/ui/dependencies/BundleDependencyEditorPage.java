@@ -253,14 +253,10 @@ public class BundleDependencyEditorPage extends AbstractBundleEditorPage impleme
 				Object selection = ((IStructuredSelection) event.getSelection()).getFirstElement();
 				if (selection instanceof IBundle) {
 					IBundle bundle = (IBundle) selection;
-					searchControl.getSearchText().setText(bundle.getSymbolicName() + " (" + bundle.getVersion() + ")");
-					history.add(bundle.getSymbolicName() + " (" + bundle.getVersion() + ")");
-					forwardAction.setEnabled(history.canForward());
-					backAction.setEnabled(history.canBack());
-					toolBarManager.update(true);
-					new BundleDependencyUpdateJob(true).schedule();
+					setSelection(bundle);
 				}
 			}
+			
 		});
 
 		toolBarManager = sform.getToolBarManager();
@@ -322,8 +318,7 @@ public class BundleDependencyEditorPage extends AbstractBundleEditorPage impleme
 								
 								try {
 									Map<Long, IBundle> allBundles = admin.getBundles(monitor);
-									contentProvider.setBundles(allBundles);
-									viewer.setInput(allBundles.values());
+									refresh(allBundles);
 								} catch (CoreException e) {
 									EditorUIPlugin.log(e);
 									setStatus(e.getStatus());
@@ -378,6 +373,20 @@ public class BundleDependencyEditorPage extends AbstractBundleEditorPage impleme
 		});
 
 	}
+	
+	private void setSelection(IBundle bundle) {
+		setSelection(bundle.getSymbolicName(), bundle.getVersion());
+	}
+	
+	private void setSelection(String bundle, String version) {
+		String filterText = bundle + " (" + version + ")";
+		searchControl.getSearchText().setText(filterText);
+		history.add(filterText);
+		forwardAction.setEnabled(history.canForward());
+		backAction.setEnabled(history.canBack());
+		toolBarManager.update(true);
+		new BundleDependencyUpdateJob(true).schedule();
+	}
 
 	public AbstractZoomableViewer getZoomableViewer() {
 		return viewer;
@@ -423,19 +432,43 @@ public class BundleDependencyEditorPage extends AbstractBundleEditorPage impleme
 	}
 
 	public void showDependenciesForBundle(String bundle, String version) {
-		this.searchControl.getSearchText().setText(bundle + " (" + version + ")");
-		refreshAction.run();
+		setSelection(bundle, version);
 	}
 
 	public void openDependencyPage(IBundle bundle) {
+		BundleInformationEditorPage infoPage = openInformationPage();
+		if (infoPage != null) {
+			commandManager.getServerEditor().setActiveEditor(infoPage);
+			infoPage.showOverviewForBundle(bundle);
+		}
+	}
+	
+	public void refresh(Map<Long, IBundle> bundles) {
+		if (bundles != null && !bundles.equals(viewer.getInput())) {
+			contentProvider.setBundles(bundles);
+			viewer.setInput(bundles.values());
+			
+			BundleInformationEditorPage infoPage = openInformationPage();
+			if (infoPage != null) {
+				infoPage.refresh(bundles);
+			}
+		}
+	}
+	
+	private BundleInformationEditorPage openInformationPage() {
 		IEditorPart[] parts = commandManager.getServerEditor().findEditors(getEditorInput());
 		for (IEditorPart part : parts) {
 			if (part instanceof BundleInformationEditorPage) {
-				commandManager.getServerEditor().setActiveEditor(part);
-				((BundleInformationEditorPage) part).showOverviewForBundle(bundle);
-				break;
+				return (BundleInformationEditorPage) part;
 			}
 		}
+		return null;
+	}
+
+	@Override
+	protected void enablePage() {
+		super.enablePage();
+		setInfoStatus("Click the 'Refresh' button for fetching data from server.");
 	}
 
 	class BundleDependencyUpdateJob extends Job {

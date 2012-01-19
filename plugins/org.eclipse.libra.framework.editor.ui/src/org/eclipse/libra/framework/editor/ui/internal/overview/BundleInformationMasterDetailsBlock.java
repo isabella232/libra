@@ -139,8 +139,14 @@ public class BundleInformationMasterDetailsBlock extends MasterDetailsBlock {
 	 * @param bundles
 	 */
 	public void refresh(Map<Long, IBundle> bundles) {
-		masterPart.refresh(bundles);
-		detailsPart.refresh(bundles);
+		if (masterPart.refresh(bundles)) {
+			detailsPart.refresh(bundles);
+			
+			BundleDependencyEditorPage depPage = getDependencyPage();
+			if (depPage != null) {
+				depPage.refresh(bundles);
+			}
+		}
 	}
 
 	private void hookResizeListener() {
@@ -249,15 +255,22 @@ public class BundleInformationMasterDetailsBlock extends MasterDetailsBlock {
 	public void clear() {
 		masterPart.clear();
 	}
-
-	public void openDependencyPage(String bundle, String version) {
+	
+	private BundleDependencyEditorPage getDependencyPage() {
 		IEditorPart[] parts = serverEditor.findEditors(editorPage.getEditorInput());
 		for (IEditorPart part : parts) {
 			if (part instanceof BundleDependencyEditorPage) {
-				serverEditor.setActiveEditor(part);
-				((BundleDependencyEditorPage) part).showDependenciesForBundle(bundle, version);
-				break;
+				return (BundleDependencyEditorPage) part;
 			}
+		}
+		return null;
+	}
+
+	public void openDependencyPage(String bundle, String version) {
+		BundleDependencyEditorPage depPage = getDependencyPage();
+		if (depPage != null) {
+			serverEditor.setActiveEditor(depPage);
+			depPage.showDependenciesForBundle(bundle, version);
 		}
 	}
 

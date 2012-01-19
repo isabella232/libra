@@ -146,7 +146,7 @@ public class BundleInformationMasterPart extends SectionPart {
 		imageColumn.setWidth(23);
 		idColumn = new TableColumn(bundleTable, SWT.RIGHT);
 		idColumn.setText("Id");
-		idColumn.setWidth(30);
+		idColumn.setWidth(50);
 		idColumn.addListener(SWT.Selection, new SortingListener());
 		symbolicNameColumn = new TableColumn(bundleTable, SWT.LEFT);
 		symbolicNameColumn.setText("Symbolic-Name");
@@ -365,9 +365,13 @@ public class BundleInformationMasterPart extends SectionPart {
 		section.setTextClient(toolbar);
 	}
 
-	public void refresh(Map<Long, IBundle> bundles) {
-		super.refresh();
-		bundleTableViewer.setInput(bundles);
+	public boolean refresh(Map<Long, IBundle> bundles) {
+		if (bundles != null && !bundles.equals(bundleTableViewer.getInput())) {
+			super.refresh();
+			bundleTableViewer.setInput(bundles);
+			return true;
+		}
+		return false;
 	}
 
 	public void clear() {

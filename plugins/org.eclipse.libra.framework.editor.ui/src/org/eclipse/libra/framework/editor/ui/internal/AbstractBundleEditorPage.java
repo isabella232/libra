@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     SpringSource, a division of VMware, Inc. - initial API and implementation
+ *     SAP AG - enhancements and bug fixes
  *******************************************************************************/
 package org.eclipse.libra.framework.editor.ui.internal;
 
@@ -33,6 +34,7 @@ import org.eclipse.wst.server.ui.internal.view.servers.StopAction;
 
 /**
  * @author Christian Dupuis
+ * @author Kaloyan Raev
  */
 @SuppressWarnings("restriction")
 public abstract class AbstractBundleEditorPage extends ServerEditorPart {
@@ -161,8 +163,7 @@ public abstract class AbstractBundleEditorPage extends ServerEditorPart {
 	protected abstract void createBundleContent(Composite parent);
 
 	protected void disablePage() {
-		sform.getForm().setMessage("Server '" + getServer().getName() + "' is not running.",
-				IMessageProvider.INFORMATION);
+		setInfoStatus("Server '" + getServer().getName() + "' is not running.");
 		setEnabled(sform.getForm().getBody(), false);
 		runAction.setEnabled(true);
 		debugAction.setEnabled(true);
@@ -170,7 +171,7 @@ public abstract class AbstractBundleEditorPage extends ServerEditorPart {
 	}
 
 	protected void enablePage() {
-		sform.getForm().setMessage(null);
+		clearStatus();
 		setEnabled(sform.getForm().getBody(), true);
 		runAction.setEnabled(false);
 		debugAction.setEnabled(false);
@@ -193,6 +194,15 @@ public abstract class AbstractBundleEditorPage extends ServerEditorPart {
 	 */
 	public void setStatus(IStatus status) {
 		sform.getForm().setMessage(status.getMessage(), getMessageType(status));
+	}
+	
+	/**
+	 * Sets the status message of the editor with the provide info message. 
+	 * 
+	 * @param message info message to set. 
+	 */
+	public void setInfoStatus(String message) {
+		sform.getForm().setMessage(message, IMessageProvider.INFORMATION);
 	}
 	
 	/**

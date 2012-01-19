@@ -14,6 +14,7 @@ package org.eclipse.libra.framework.editor.ui.internal.overview;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -737,14 +738,36 @@ public class BundleInformationDetailsPart extends AbstractFormPart implements ID
 	private void openBundleEditor(IBundle bundle) {
 		try {
 			String fileName = "META-INF/MANIFEST.MF";
-			File bundleRoot = new File(new URI(bundle.getLocation()));
-			IEditorInput input = getEditorInput(bundleRoot, fileName);
+			IEditorInput input = getEditorInput(getBundleRoot(bundle), fileName);
 			IEditorDescriptor desc = PlatformUI.getWorkbench().getEditorRegistry().getDefaultEditor(fileName, getContentType());
 			IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage(); 
 			page.openEditor(input, desc.getId());
 		} catch (Exception e) {
 			EditorUIPlugin.log(e);
 		}
+	}
+	
+	private File getBundleRoot(IBundle bundle) throws URISyntaxException {
+		String location = bundle.getLocation();
+		
+		// if location URI starts with "reference:" then remove it
+		if (location.startsWith("reference:")) {
+			location = location.substring("reference:".length());
+		}
+		
+		File bundleRoot;
+		if (location.startsWith("file:/")) {
+			// this is a valid file URI
+			bundleRoot = new File(new URI(location));
+		} else if (location.startsWith("file:")) {
+			// this is an invalid file URI, probably it's a standard file path
+			location = location.substring("file:".length());
+			bundleRoot = new File(location);
+		} else {
+			// not a file URI or a standard file path - very high chance to throw exception
+			bundleRoot = new File(new URI(location));
+		}
+		return bundleRoot;
 	}
 	
 	private IEditorInput getEditorInput(File bundleRoot, String filename) {
