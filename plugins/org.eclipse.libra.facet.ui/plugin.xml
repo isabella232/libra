@@ -84,6 +84,12 @@
          </page>
       </wizard-pages>
    </extension>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="org.eclipse.libra.facet.internal.ui.LibraFacetUIStartup">
+      </startup>
+   </extension>
    
 
 </plugin>
