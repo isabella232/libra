@@ -284,6 +284,7 @@ public class OSGiBundleFacetInstallDelegate implements IDelegate {
 		IProject project = bundleProjectDescription.getProject();
 		IBundleClasspathEntry[] bundleClasspath = bundleProjectDescription.getBundleClasspath(); 
 		
+		if (OSGiBundleFacetUtils.isJavaProject(project)) {
 			IJavaProject javaProject = JavaCore.create(project);
 			if (bundleClasspath == null) {
 				IPath[] javaSourceFolderPaths = getJavaSourceFolderPaths(javaProject);
@@ -309,6 +310,7 @@ public class OSGiBundleFacetInstallDelegate implements IDelegate {
 			} else {
 				// TODO
 			}
+		}
 		
 		// don't modify bin.includes by default
 		return bundleClasspath;
