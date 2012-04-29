@@ -112,8 +112,7 @@ public class EquinoxHandler implements IEquinoxVersionHandler {
 		return null;
 	}
 
-	public String[] getFrameworkVMArguments(IPath installPath,String javaProfileID,
-			IPath configPath, IPath deployPath, boolean isTestEnv) {
+	public String[] getFrameworkVMArguments(IPath installPath, int jmxPort, String javaProfileID, IPath configPath, IPath deployPath, boolean isTestEnv) {
 		
 		//String configPathStr = deployPath.makeAbsolute().toOSString();
 		String profilePath =  deployPath.append("java.profile").toOSString();
@@ -143,7 +142,8 @@ public class EquinoxHandler implements IEquinoxVersionHandler {
 		if(javaProfileID != null && !javaProfileID.equals(IOSGIExecutionEnvironment.Default.toString()))
 			vmArgs += "-Dosgi.java.profile=file:"+profilePath; //$NON-NLS-1$ //$NON-NLS-2$
 
-		return new String[] {"-Declipse.ignoreApp=true", "-Dosgi.noShutdown=true", vmArgs };
+		 
+		return new String[] {"-Dcom.sun.management.jmxremote.port="+jmxPort, "-Dcom.sun.management.jmxremote.authenticate=false", "-Dcom.sun.management.jmxremote.ssl=false", "-Declipse.ignoreApp=true", "-Dosgi.noShutdown=true", vmArgs };
 	}
 
 	public IStatus canAddModule(IModule module) {
@@ -298,13 +298,18 @@ public class EquinoxHandler implements IEquinoxVersionHandler {
 						IProject pluginProject = iPluginModelBase.getUnderlyingResource().getProject();
 						IJavaProject javaProject = JavaCore.create(pluginProject);
 						IBundleProjectDescription bundleProjectDescription = FrameworkCorePlugin.getDescription(pluginProject);
-
+						IPath bpath = new Path(iPluginModelBase.getInstallLocation());
+						IPath ploc  = pluginProject.getLocation();
+						if(bpath.equals(ploc))
+							bpath = pluginProject.getFullPath();
+						else
+							bpath = bpath.makeRelativeTo(ploc.removeLastSegments(1));
 						IBundleClasspathEntry[] allCPEntry = bundleProjectDescription.getBundleClasspath();
 						modelId = iPluginModelBase.getPluginBase().getId();
 						out.write("\n"+modelId + "=");
 						for(IBundleClasspathEntry bcpe: allCPEntry){
 							if(bcpe.getSourcePath() != null && bcpe.getBinaryPath() == null)
-								out.write(" "+javaProject.getOutputLocation().makeRelativeTo(pluginProject.getFullPath()) +",");
+								out.write(" "+ ploc.removeLastSegments(1).append(javaProject.getOutputLocation()) +",");
 							else if(bcpe.getSourcePath() != null && bcpe.getBinaryPath() != null)
 								out.write(" "+bcpe.getBinaryPath().toOSString() +",");
 							else if(bcpe.getLibrary() != null && bcpe.getLibrary().toOSString().endsWith(".jar") )

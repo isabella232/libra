@@ -96,8 +96,9 @@ public class EquinoxFrameworkInstanceBehavior extends
 			}
 		}
 		String javaProfileID = ((IEquinoxFrameworkInstance)this.getFrameworkInstance()).getJavaPofile();
+		int jmxPort = ((IEquinoxFrameworkInstance)this.getFrameworkInstance()).getJMXPort();
 
-		return getEquinoxVersionHandler().getFrameworkVMArguments(installPath, javaProfileID, null, deployPath, false);
+		return getEquinoxVersionHandler().getFrameworkVMArguments(installPath, jmxPort,javaProfileID, null, deployPath, false);
 	}
 	
 	protected void publishServer(int kind, IProgressMonitor monitor)
