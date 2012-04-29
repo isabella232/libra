@@ -26,6 +26,7 @@ import org.eclipse.libra.framework.core.OSGIFrameworkInstanceBehaviorDelegate;
 import org.eclipse.libra.framework.core.ProgressUtil;
 import org.eclipse.libra.framework.core.Trace;
 import org.eclipse.libra.framework.felix.FelixFrameworkInstance;
+import org.eclipse.libra.framework.felix.IFelixFrameworkInstance;
 import org.eclipse.libra.framework.felix.IFelixVersionHandler;
 import org.eclipse.libra.framework.felix.Messages;
 import org.eclipse.wst.server.core.IModule;
@@ -94,8 +95,10 @@ public class FelixRuntimeInstanceBehavior extends
 				// Ignore if there is a problem
 			}
 		}
+		
+		int jmxPort = ((IFelixFrameworkInstance)this.getFrameworkInstance()).getJMXPort();
 
-		return getFelixVersionHandler().getFrameworkVMArguments(installPath, null, deployPath, false);
+		return getFelixVersionHandler().getFrameworkVMArguments(installPath, null, deployPath, false, jmxPort);
 	}
 	
 	protected void publishServer(int kind, IProgressMonitor monitor)

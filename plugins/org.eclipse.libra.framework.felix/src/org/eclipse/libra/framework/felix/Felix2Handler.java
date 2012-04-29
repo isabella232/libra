@@ -13,6 +13,7 @@ package org.eclipse.libra.framework.felix;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -81,15 +82,47 @@ public class Felix2Handler implements IFelixVersionHandler {
 
 
 	public String[] getFrameworkVMArguments(IPath installPath, IPath configPath,
-			IPath deployPath, boolean isTestEnv) {
+			IPath deployPath, boolean isTestEnv, int jmxPort) {
 		
 		String configPathStr = deployPath.makeAbsolute().append("config.properties").toPortableString(); //$NON-NLS-1$
 		String vmArgs = "-Dfelix.config.properties=file:" + configPathStr; //$NON-NLS-1$
-		
-		return new String[]{vmArgs};
+	
+		//String configPathStr = deployPath.makeAbsolute().toOSString();
+		String profilePath =  deployPath.append("java.profile").toOSString();
+	
+
+		String vmArgs2 =""  ;
+		try {
+			copyFile(this.getClass().getResourceAsStream("java6-server.profile"), new File(profilePath));
+				vmArgs2 += "-Dosgi.java.profile=file:"+profilePath; //$NON-NLS-1$ //$NON-NLS-2$
+		} catch (IOException e) {
+			Trace.trace(Trace.SEVERE, "Could not set equinox VM arguments:"+e.getMessage(), e);
+		}
+	
+
+		return new String[]{"-Dcom.sun.management.jmxremote.port="+jmxPort, "-Dcom.sun.management.jmxremote.authenticate=false", "-Dcom.sun.management.jmxremote.ssl=false", vmArgs, vmArgs2};
 	}
 
+	private  void copyFile(InputStream source, File destFile) throws IOException {
 
+
+		FileOutputStream destination = null;
+		 try {
+		  destination = new FileOutputStream(destFile);
+		  int c;
+		  while((c = source.read()) != -1){
+			  destination.write(c);
+		  }
+		 }
+		 finally {
+		  if(source != null) {
+		   source.close();
+		  }
+		  if(destination != null) {
+		   destination.close();
+		  }
+		}
+	}
 	
 	public IStatus canAddModule(IModule module) {
 		String id =  module.getModuleType().getId();
