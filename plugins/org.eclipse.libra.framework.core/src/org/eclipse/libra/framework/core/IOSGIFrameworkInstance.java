@@ -24,6 +24,7 @@ public interface IOSGIFrameworkInstance {
 	public static final String PROPERTY_INSTANCE_DIR = "instanceDir";
 	public static final String PROPERTY_DEPLOY_DIR = "deployDir";
 	public static final String PROPERTY_JAVA_PROFILE = "JAVA_PROFILE";
+	public static final String PROPERTY_JMX_PORT = "jmxPort";
 	
 	/**
 	 * Gets the java profile for the  framework instance.  If not set,
@@ -34,6 +35,16 @@ public interface IOSGIFrameworkInstance {
 	 */
 	public String getJavaPofile();
 	public void setJavaProfile(String id);
+
+	/**
+	 * Gets the jmx management port for the  framework instance.  If not set,
+	 * the instance profile returns the default value (12345).  
+	 * 
+	 * @return javaProfile for the framework instance exists. Returns null
+	 * if not set.
+	 */
+	public int getJMXPort();
+	public void setJMXPort(int port);
 
 	
 	/**

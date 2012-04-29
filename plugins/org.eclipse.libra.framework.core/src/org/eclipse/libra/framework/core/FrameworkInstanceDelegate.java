@@ -275,7 +275,22 @@ public abstract class FrameworkInstanceDelegate extends ServerDelegate implement
 		
 	}
 	
-	@SuppressWarnings("restriction")
+	
+	public void setJMXPort(int port) {
+		setAttribute(IOSGIFrameworkInstance.PROPERTY_JMX_PORT, ""+port);
+	}
+
+	public int getJMXPort() {
+		int port = 12345;
+		String portNo =  getAttribute(PROPERTY_JMX_PORT, "12345");
+		try{
+			port =  Integer.parseInt(portNo);
+		}finally{
+		
+		}
+		return port;
+	}
+
 	public abstract ITargetDefinition createDefaultTarget()
 			throws CoreException;
 
