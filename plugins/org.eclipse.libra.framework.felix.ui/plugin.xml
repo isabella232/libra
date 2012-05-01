@@ -78,6 +78,12 @@
          insertionId="org.eclipse.wst.server.editor.overview.left"
          typeIds="org.eclipse.libra.framework.felix.serverType.*"
          class="org.eclipse.libra.framework.ui.internal.editor.FrameworkInstanceLocationEditorSection"/>
+      <section
+         id="org.eclipse.libra.framework.equinox.editor.instance"
+         order="0"
+         insertionId="org.eclipse.wst.server.editor.overview.right"
+         typeIds="org.eclipse.libra.framework.felix.serverType.*"
+         class="org.eclipse.libra.framework.ui.JMXPropertiesEditorSection"/>
 
    </extension>
    

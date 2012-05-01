@@ -97,8 +97,8 @@ public class FelixRuntimeInstanceBehavior extends
 		}
 		
 		int jmxPort = ((IFelixFrameworkInstance)this.getFrameworkInstance()).getJMXPort();
-
-		return getFelixVersionHandler().getFrameworkVMArguments(installPath, null, deployPath, false, jmxPort);
+		boolean jmxEnabled =  ((IFelixFrameworkInstance)this.getFrameworkInstance()).getJMXEnabled();
+		return getFelixVersionHandler().getFrameworkVMArguments(installPath, null, deployPath, false, jmxEnabled, jmxPort);
 	}
 	
 	protected void publishServer(int kind, IProgressMonitor monitor)

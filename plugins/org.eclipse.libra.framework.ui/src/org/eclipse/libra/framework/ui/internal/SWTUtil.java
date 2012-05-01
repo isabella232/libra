@@ -26,6 +26,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Text;
 /**
  * SWT Utility class.
  */
@@ -48,6 +49,21 @@ public class SWTUtil {
 		return Math.max(widthHint, button.computeSize(SWT.DEFAULT, SWT.DEFAULT, true).x);
 	}
 
+    /**
+     * Sets width and height hint for the button control.
+     * <b>Note:</b> This is a NOP if the button's layout data is not
+     * an instance of <code>GridData</code>.
+     * 
+     * @param    the button for which to set the dimension hint
+     */
+    public static void setButtonDimensionHint(Button button) {
+        Object gd = button.getLayoutData();
+        if (gd instanceof GridData) {
+            ((GridData) gd).widthHint = getButtonWidthHint(button);
+            ((GridData) gd).horizontalAlignment = GridData.FILL;
+        }
+    }
+	   
 	/**
 	 * Create a new button with the standard size.
 	 * 
@@ -65,4 +81,45 @@ public class SWTUtil {
 		b.setLayoutData(data);
 		return b;
 	}
+	
+    /**
+     * Creates and returns a new radio button with the given
+     * label.
+     * 
+     * @param parent parent control
+     * @param label button label or <code>null</code>
+     * @param hspan number of columns to horizontally span in the parent composite
+     * @return a new radio button
+     */
+    public static Button createCheckButton(Composite parent, String label, int hspan) {
+        Button button = new Button(parent, SWT.CHECK);
+        button.setFont(parent.getFont());
+        if (label != null) {
+            button.setText(label);
+        }
+        GridData gd = new GridData();
+        gd.horizontalSpan = hspan;
+        button.setLayoutData(gd);
+        return button;
+    }	
+	
+    /**
+     * Creates a new text widget 
+     * 
+     * @param parent the parent composite to add this text widget to
+     * @param style the style bits for the text widget
+     * @param hspan the horizontal span to take up on the parent composite
+     * @param fill the fill for the grid layout
+     * @return the new text widget
+     */
+
+   public static Text createText(Composite parent, int style, int hspan) {
+      Text t = new Text(parent, style);
+      t.setFont(parent.getFont());
+      GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+      gd.horizontalSpan = hspan;
+      t.setLayoutData(gd);
+      return t;
+   }
+
 }

@@ -91,9 +91,6 @@ public class FrameworkInstanceLocationEditorSection extends ServerEditorSection 
 	protected IPath tempDirPath;
 	protected IPath installDirPath;
 
-	// Avoid hardcoding this at some point
-	//private final static String METADATADIR = ".metadata";
-
 	protected boolean updating=false;
 
 	public FrameworkInstanceLocationEditorSection() {
@@ -351,12 +348,7 @@ public class FrameworkInstanceLocationEditorSection extends ServerEditorSection 
 			// Adjust if the temp dir is known and has been entered
 			if (tempDirPath != null && tempDirPath.equals(path))
 				dir = null;
-//			// If under the workspace, make relative
-//			else if (workspacePath.isPrefixOf(path)) {
-//				int cnt = path.matchingFirstSegments(workspacePath);
-//				path = path.removeFirstSegments(cnt).setDevice(null);
-//				dir = path.toOSString();
-//			}
+
 		}
 		return dir;
 	}
@@ -383,16 +375,7 @@ public class FrameworkInstanceLocationEditorSection extends ServerEditorSection 
 	
 	protected void updateServerDir() {
 		IPath path = new Path(frameworkInstance.getInstanceDirectory());
-//		if (workspacePath.isPrefixOf(path)) {
-//			int cnt = path.matchingFirstSegments(workspacePath);
-//			path = path.removeFirstSegments(cnt).setDevice(null);
-//			frameworkInstanceDir.setText(path.toOSString());
-//			// cache the relative temp dir path if that is what we have
-//			if (tempDirPath == null) {
-//				if (felixRuntimeInstance.getInstanceDirectory() == null)
-//					tempDirPath = path;
-//			}
-//		} else
+
 			frameworkInstanceDir.setText(path.toOSString());
 	}
 	
@@ -412,15 +395,7 @@ public class FrameworkInstanceLocationEditorSection extends ServerEditorSection 
 					return new IStatus [] {
 							new Status(IStatus.ERROR, FrameworkUIPlugin.PLUGIN_ID, Messages.errorServerDirIsRoot)};
 				}
-//				// User specified value may not be under the ".metadata" folder of the workspace 
-//				else if (workspacePath.isPrefixOf(path)
-//						|| (!path.isAbsolute() && METADATADIR.equals(path.segment(0)))) {
-//					int cnt = path.matchingFirstSegments(workspacePath);
-//					if (METADATADIR.equals(path.segment(cnt))) {
-//						return new IStatus [] {
-//								new Status(IStatus.ERROR, FelixUIPlugin.PLUGIN_ID, NLS.bind(Messages.errorServerDirUnderRoot, METADATADIR))};
-//					}
-//				}
+
 				else if (path.equals(installDirPath))
 					return new IStatus [] {
 						new Status(IStatus.ERROR, FrameworkUIPlugin.PLUGIN_ID,
@@ -445,15 +420,6 @@ public class FrameworkInstanceLocationEditorSection extends ServerEditorSection 
 					setErrorMessage(Messages.errorServerDirIsRoot);
 					return;
 				}
-				// User specified value may not be under the ".metadata" folder of the workspace 
-//				else if (workspacePath.isPrefixOf(path)
-//						|| (!path.isAbsolute() && METADATADIR.equals(path.segment(0)))) {
-//					int cnt = path.matchingFirstSegments(workspacePath);
-//					if (METADATADIR.equals(path.segment(cnt))) {
-//						setErrorMessage(NLS.bind(Messages.errorServerDirUnderRoot, METADATADIR));
-//						return;
-//					}
-//				}
 				else if (path.equals(installDirPath)) {
 					setErrorMessage(NLS.bind(Messages.errorServerDirCustomNotInstall,
 							NLS.bind(Messages.serverEditorServerDirInstall, "").trim()));
