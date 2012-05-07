@@ -27,7 +27,7 @@ public interface IFelixVersionHandler {
 	public abstract IStatus canAddModule(IModule module);
 
 	public abstract String[] getFrameworkVMArguments(IPath installPath, IPath configPath,
-			IPath deployPath, boolean isTestEnv);
+			IPath deployPath, boolean isTestEnv, int jmxPort);
 
 	public abstract String[] getExcludedFrameworkProgramArguments(boolean debug,
 			boolean starting);
