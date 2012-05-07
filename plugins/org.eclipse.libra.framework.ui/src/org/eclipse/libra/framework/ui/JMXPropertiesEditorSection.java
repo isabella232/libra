@@ -6,7 +6,7 @@
  *    http://www.eclipse.org/legal/epl-v10.html
  *    
  *     Contributors:
- *       Naci Dai 
+ *       Naci Dai, Murat Yener 
  *******************************************************************************/
 
 package org.eclipse.libra.framework.ui;
