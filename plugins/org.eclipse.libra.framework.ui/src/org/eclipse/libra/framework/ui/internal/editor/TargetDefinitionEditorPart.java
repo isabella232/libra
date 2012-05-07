@@ -232,7 +232,7 @@ public class TargetDefinitionEditorPart extends ServerEditorPart {
 
 	}
 
-	private void makeDirty(final ITargetDefinition definition) {
+	void makeDirty(final ITargetDefinition definition) {
 		//This command does nothing but execute sets the dirty flag
 		//for the editor because the content of the target definition has
 		//changed
@@ -436,8 +436,11 @@ public class TargetDefinitionEditorPart extends ServerEditorPart {
 		fOSCombo = SWTFactory.createCombo(group, SWT.SINGLE | SWT.BORDER, 1, (String[]) fOSChoices.toArray(new String[fOSChoices.size()]));
 		fOSCombo.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				getTargetDefinition().setOS(getModelValue(fOSCombo.getText()));
-				makeDirty(getTargetDefinition());
+				String val = getModelValue(fOSCombo.getText());
+				if(getTargetDefinition().getOS()  != null && !getTargetDefinition().getOS().equals(val) )
+					makeDirty(getTargetDefinition());
+				getTargetDefinition().setOS(val);
+				
 			}
 		});
 
@@ -446,8 +449,10 @@ public class TargetDefinitionEditorPart extends ServerEditorPart {
 		fWSCombo = SWTFactory.createCombo(group, SWT.SINGLE | SWT.BORDER, 1, (String[]) fWSChoices.toArray(new String[fWSChoices.size()]));
 		fWSCombo.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				getTargetDefinition().setWS(getModelValue(fWSCombo.getText()));
-				makeDirty(getTargetDefinition());
+				String val = getModelValue(fWSCombo.getText());
+				if(getTargetDefinition().getWS()  != null && !getTargetDefinition().getWS().equals(val) )
+					makeDirty(getTargetDefinition());
+				getTargetDefinition().setWS(val);
 			}
 		});
 
@@ -456,8 +461,10 @@ public class TargetDefinitionEditorPart extends ServerEditorPart {
 		fArchCombo = SWTFactory.createCombo(group, SWT.SINGLE | SWT.BORDER, 1, (String[]) fArchChoices.toArray(new String[fArchChoices.size()]));
 		fArchCombo.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				getTargetDefinition().setArch(getModelValue(fArchCombo.getText()));
-				makeDirty(getTargetDefinition());
+				String val = getModelValue(fArchCombo.getText());
+				if(getTargetDefinition().getArch()  != null && !getTargetDefinition().getArch().equals(val) )
+					makeDirty(getTargetDefinition());
+				getTargetDefinition().setArch(val);
 			}
 		});
 
@@ -470,8 +477,10 @@ public class TargetDefinitionEditorPart extends ServerEditorPart {
 				int index = value.indexOf("-"); //$NON-NLS-1$
 				if (index > 0)
 					value = value.substring(0, index);
-				getTargetDefinition().setNL(getModelValue(value));
-				makeDirty(getTargetDefinition());
+				String val = getModelValue(value);
+				if(getTargetDefinition().getNL()  != null && !getTargetDefinition().getNL().equals(val) )
+					makeDirty(getTargetDefinition());
+				getTargetDefinition().setNL(val);
 			}
 		});
 	}
@@ -560,8 +569,11 @@ public class TargetDefinitionEditorPart extends ServerEditorPart {
 		fProgramArgs = SWTFactory.createText(programGroup, SWT.MULTI | SWT.WRAP | SWT.BORDER | SWT.V_SCROLL, 1, 200, 60, GridData.FILL_BOTH);
 		fProgramArgs.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				getTargetDefinition().setProgramArguments(fProgramArgs.getText().trim());
-				makeDirty(getTargetDefinition());
+				String val = fProgramArgs.getText().trim();
+				if(getTargetDefinition().getProgramArguments()  != null && !getTargetDefinition().getProgramArguments().equals(val) )
+					makeDirty(getTargetDefinition());
+				getTargetDefinition().setProgramArguments(val);
+			
 			}
 		});
 
@@ -578,8 +590,10 @@ public class TargetDefinitionEditorPart extends ServerEditorPart {
 		fVMArgs = SWTFactory.createText(vmGroup, SWT.MULTI | SWT.WRAP | SWT.BORDER | SWT.V_SCROLL, 1, 200, 60, GridData.FILL_BOTH);
 		fVMArgs.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				getTargetDefinition().setVMArguments(fVMArgs.getText().trim());
-				makeDirty(getTargetDefinition());
+				String val = fVMArgs.getText().trim();
+				if(getTargetDefinition().getVMArguments()  != null && !getTargetDefinition().getVMArguments().equals(val) )
+					makeDirty(getTargetDefinition());
+				getTargetDefinition().setVMArguments(val);
 			}
 		});
 
