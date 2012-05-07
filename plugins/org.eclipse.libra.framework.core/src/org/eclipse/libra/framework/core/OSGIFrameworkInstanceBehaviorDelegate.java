@@ -131,15 +131,16 @@ public abstract class OSGIFrameworkInstanceBehaviorDelegate extends ServerBehavi
 			return initialArgs;
 		StringBuffer args = new StringBuffer();
 		List<String> initArgsList = Arrays.asList(DebugPlugin.parseArguments(initialArgs));
+		int i= 0;
 		if (initialArgs != null && initialArgs.length() > 0) {
 			int last= (keepLast? initArgsList.size()-1 : initArgsList.size() );
-			for (int i=0; i< last ; i++) {
+			for (i=0; i< last ; i++) {
 				if(i != 0)
 					args.append(' ');
 				args.append(initArgsList.get(i));
 			}
 		}
-		int i=0;
+		
 		for (String anArg: newArgs) {
 			if(!initArgsList.contains(anArg)){
 				if(i++ != 0)

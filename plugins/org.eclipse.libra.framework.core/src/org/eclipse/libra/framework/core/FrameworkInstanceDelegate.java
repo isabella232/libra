@@ -291,6 +291,15 @@ public abstract class FrameworkInstanceDelegate extends ServerDelegate implement
 		return port;
 	}
 
+	public void setJMXEnabled(boolean isEnabled) {
+		setAttribute(IOSGIFrameworkInstance.PROPERTY_JMX_ENABLED, isEnabled);
+	}
+
+	public boolean getJMXEnabled() {
+		return  getAttribute(PROPERTY_JMX_ENABLED, true);
+		
+	}
+
 	public abstract ITargetDefinition createDefaultTarget()
 			throws CoreException;
 

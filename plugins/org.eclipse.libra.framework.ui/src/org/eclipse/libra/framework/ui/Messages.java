@@ -107,6 +107,11 @@ public class Messages extends NLS {
 	public static String javaProfileSection;
 	public static String javaProfileSectionDescription;
 
+	public static String jmxSection;
+	public static String jmxSectionDescription;
+	public static String jmxInvalidPort;
+	public static String jmxEnabled;
+
 	static {
 		NLS.initializeMessages(FrameworkUIPlugin.PLUGIN_ID + ".Messages", Messages.class);
 	}

@@ -73,14 +73,20 @@
    
     <extension point="org.eclipse.wst.server.ui.editorPageSections">
       <section
-         id="org.eclipse.libra.framework.equinox.editor.instance"
+         id="org.eclipse.libra.framework.equinox.editor.instance.javaprofile"
          order="0"
          insertionId="org.eclipse.wst.server.editor.overview.right"
          typeIds="org.eclipse.libra.framework.equinox.serverType.*"
          class="org.eclipse.libra.framework.equinox.ui.internal.JavaProfileEditorSection"/>
+      <section
+         id="org.eclipse.libra.framework.equinox.editor.instance.jmxconsole"
+         order="0"
+         insertionId="org.eclipse.wst.server.editor.overview.right"
+         typeIds="org.eclipse.libra.framework.equinox.serverType.*"
+         class="org.eclipse.libra.framework.ui.JMXPropertiesEditorSection"/>
 
    </extension>
-   
+    
    <extension point="org.eclipse.wst.server.ui.wizardFragments">
       <fragment
          id="org.eclipse.libra.framework.equinox.30x"

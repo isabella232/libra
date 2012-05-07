@@ -112,7 +112,7 @@ public class EquinoxHandler implements IEquinoxVersionHandler {
 		return null;
 	}
 
-	public String[] getFrameworkVMArguments(IPath installPath, int jmxPort, String javaProfileID, IPath configPath, IPath deployPath, boolean isTestEnv) {
+	public String[] getFrameworkVMArguments(IPath installPath, boolean jmxEnabled, int jmxPort, String javaProfileID, IPath configPath, IPath deployPath, boolean isTestEnv) {
 		
 		//String configPathStr = deployPath.makeAbsolute().toOSString();
 		String profilePath =  deployPath.append("java.profile").toOSString();
@@ -142,8 +142,11 @@ public class EquinoxHandler implements IEquinoxVersionHandler {
 		if(javaProfileID != null && !javaProfileID.equals(IOSGIExecutionEnvironment.Default.toString()))
 			vmArgs += "-Dosgi.java.profile=file:"+profilePath; //$NON-NLS-1$ //$NON-NLS-2$
 
-		 
-		return new String[] {"-Dcom.sun.management.jmxremote.port="+jmxPort, "-Dcom.sun.management.jmxremote.authenticate=false", "-Dcom.sun.management.jmxremote.ssl=false", "-Declipse.ignoreApp=true", "-Dosgi.noShutdown=true", vmArgs };
+		if(jmxEnabled)
+			return new String[] {"-Dcom.sun.management.jmxremote.port="+jmxPort, "-Dcom.sun.management.jmxremote.authenticate=false", "-Dcom.sun.management.jmxremote.ssl=false", "-Declipse.ignoreApp=true", "-Dosgi.noShutdown=true", vmArgs };
+		else
+			return new String[] { "-Declipse.ignoreApp=true", "-Dosgi.noShutdown=true", vmArgs };
+			
 	}
 
 	public IStatus canAddModule(IModule module) {

@@ -82,7 +82,7 @@ public class Felix2Handler implements IFelixVersionHandler {
 
 
 	public String[] getFrameworkVMArguments(IPath installPath, IPath configPath,
-			IPath deployPath, boolean isTestEnv, int jmxPort) {
+			IPath deployPath, boolean isTestEnv, boolean jmxEnabled, int jmxPort) {
 		
 		String configPathStr = deployPath.makeAbsolute().append("config.properties").toPortableString(); //$NON-NLS-1$
 		String vmArgs = "-Dfelix.config.properties=file:" + configPathStr; //$NON-NLS-1$
@@ -100,7 +100,11 @@ public class Felix2Handler implements IFelixVersionHandler {
 		}
 	
 
-		return new String[]{"-Dcom.sun.management.jmxremote.port="+jmxPort, "-Dcom.sun.management.jmxremote.authenticate=false", "-Dcom.sun.management.jmxremote.ssl=false", vmArgs, vmArgs2};
+
+		if(jmxEnabled)
+			return new String[]{"-Dcom.sun.management.jmxremote.port="+jmxPort, "-Dcom.sun.management.jmxremote.authenticate=false", "-Dcom.sun.management.jmxremote.ssl=false", vmArgs, vmArgs2};
+		else
+			return new String[]{ vmArgs, vmArgs2};
 	}
 
 	private  void copyFile(InputStream source, File destFile) throws IOException {
