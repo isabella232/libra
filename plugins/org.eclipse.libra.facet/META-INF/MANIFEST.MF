@@ -3,7 +3,7 @@ Eclipse-ExtensibleAPI: true
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: org.eclipse.libra.facet;singleton:=true
-Bundle-Version: 0.1.2.qualifier
+Bundle-Version: 0.2.0.qualifier
 Bundle-Activator: org.eclipse.libra.facet.internal.LibraFacetPlugin
 Bundle-Vendor: %Bundle-Vendor
 Require-Bundle: org.eclipse.core.resources;bundle-version="3.5.0",

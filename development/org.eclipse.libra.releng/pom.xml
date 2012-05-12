@@ -4,18 +4,18 @@
 
 	<groupId>org.eclipse.libra</groupId>
 	<artifactId>org.eclipse.libra_parent</artifactId>
-	<version>0.1.0-SNAPSHOT</version>
+	<version>0.2.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Libra Parent POM</name>
 
 	<properties>
-		<tycho-version>0.12.0</tycho-version>
-		<eclipse-site>http://download.eclipse.org/eclipse/updates/3.7/</eclipse-site>
-		<emf-site>http://download.eclipse.org/modeling/emf/emf/updates/2.7/</emf-site>
-		<dtp-site>http://download.eclipse.org/datatools/updates/</dtp-site>
+		<tycho-version>0.13.0</tycho-version>
+		<eclipse-site>http://download.eclipse.org/eclipse/updates/4.2milestones/</eclipse-site>
+		<emf-site>http://download.eclipse.org/modeling/emf/emf/updates/2.8milestones/</emf-site>
+		<dtp-site>http://download.eclipse.org/datatools/downloads/drops/M_updates_1.9.2/</dtp-site>
 		<wtp-site>http://download.eclipse.org/webtools/repository/juno/</wtp-site>
-		<gef-site>http://download.eclipse.org/tools/gef/updates/releases</gef-site>
-		<wtp-tests-site>http://download.eclipse.org/webtools/downloads/drops/R3.3.0/R-3.3.0-20110607160810/repositoryunittests/</wtp-tests-site>
+		<gef-site>http://download.eclipse.org/tools/gef/updates/milestones</gef-site>
+		<wtp-tests-site>http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0M5-20120130170749/repositoryunittests/</wtp-tests-site>
 		<orbit-site>http://download.eclipse.org/tools/orbit/downloads/drops/S20110907174232/repository/</orbit-site>
 		<debug-options></debug-options> <!-- empty by default -->
 	</properties>
