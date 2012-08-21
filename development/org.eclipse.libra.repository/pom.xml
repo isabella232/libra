@@ -32,23 +32,22 @@
 			<build>
 				<plugins>
 					<plugin>
-						<groupId>org.eclipse.dash.maven</groupId>
+						<groupId>org.eclipse.dash.m4e</groupId>
 						<artifactId>eclipse-signing-maven-plugin</artifactId>
+						<version>1.0.4</version>
 						<executions>
+							<!-- Pack the p2 repository. -->
 							<execution>
 								<id>pack</id>
-								<configuration>
-									<inputFile>${project.build.directory}/${project.artifactId}.zip</inputFile>
-								</configuration>
 								<phase>package</phase>
 								<goals>
 									<goal>pack</goal>
 								</goals>
 							</execution>
+							<!-- Sign the p2 repository -->
 							<execution>
 								<id>sign</id>
 								<configuration>
-									<inputFile>${project.build.directory}/${project.artifactId}.zip</inputFile>
 									<signerInputDirectory>/home/data/httpd/download-staging.priv/webtools/libra</signerInputDirectory>
 								</configuration>
 								<phase>package</phase>
@@ -56,16 +55,18 @@
 									<goal>sign</goal>
 								</goals>
 							</execution>
+							<!-- Repack the p2 repository -->
 							<execution>
 								<id>repack</id>
 								<configuration>
-									<inputFile>${project.build.directory}/signed/site_assembly.zip</inputFile>
+									<inputFile>${project.build.directory}/signed/site_assembly.zip</inputFile> <!-- this is output from signer mojo -->
 								</configuration>
 								<phase>package</phase>
 								<goals>
 									<goal>pack</goal>
 								</goals>
 							</execution>
+							<!-- Signing and packing alters checksums so fix them -->
 							<execution>
 								<id>fixCheckSums</id>
 								<phase>package</phase>
@@ -75,6 +76,8 @@
 							</execution>
 						</executions>
 					</plugin>
+					<!-- This is what I use to deploy a p2 repository someplace to test 
+						from before manually making active. -->
 					<plugin>
 						<artifactId>maven-antrun-plugin</artifactId>
 						<executions>
