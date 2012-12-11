@@ -33,7 +33,6 @@
 		<module>../org.eclipse.libra.repository</module>
 		<module>../../tests/org.eclipse.libra.facet.test</module>
 		<module>../../tests/org.eclipse.libra.warproducts.core.test</module>
-		
 		<module>../../features/org.eclipse.libra.framework.feature</module>
 		<module>../../features/org.eclipse.libra.framework.feature.source</module>
 		<module>../../plugins/org.eclipse.libra.framework.core</module>
@@ -51,7 +50,6 @@
 		<module>../../plugins/org.eclipse.libra.framework.editor.integration</module>
 		<module>../../features/org.eclipse.libra.framework.editor.feature</module>
 		<module>../../features/org.eclipse.libra.framework.editor.feature.source</module>
-
 	</modules>
 
 	<profiles>
@@ -171,6 +169,11 @@
 							</goals>
 						</execution>
 					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.dash.maven</groupId>
+					<artifactId>eclipse-signing-maven-plugin</artifactId>
+					<version>1.0.5</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
