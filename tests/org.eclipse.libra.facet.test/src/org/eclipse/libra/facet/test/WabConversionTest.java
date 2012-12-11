@@ -62,11 +62,11 @@ import org.junit.Test;
 
 public class WabConversionTest {
 	private static final NullProgressMonitor monitor = new NullProgressMonitor();
-	private static final String WEB_PRJ_LOCATION = "resources/testWeb.zip_";
-	private static final String JAVA_PRJ_LOCATION = "resources/testJava.zip_";
-	private static final String JPA_PRJ_LOCATION = "resources/testJPA.zip_";
-	private static final String JPA_UTILITY_PRJ_LOCATION = "resources/testJPAwithUtility.zip_";
-	private static final String SIMPLE_PRJ_LOCATION = "resources/testSimple.zip_";
+	private static final String WEB_PRJ_LOCATION = "resources/testWeb.zip";
+	private static final String JAVA_PRJ_LOCATION = "resources/testJava.zip";
+	private static final String JPA_PRJ_LOCATION = "resources/testJPA.zip";
+	private static final String JPA_UTILITY_PRJ_LOCATION = "resources/testJPAwithUtility.zip";
+	private static final String SIMPLE_PRJ_LOCATION = "resources/testSimple.zip";
 	private static final String WEB_PRJ_NAME = "testWeb";
 	private static final String JAVA_PRJ_NAME = "testJava";
 	private static final String JPA_PRJ_NAME = "testJPA";
@@ -74,30 +74,30 @@ public class WabConversionTest {
 	private static final String JPA_UTILITY_CREATE_PRJ_NAME = "testJPAUtilityCreate";
 	private static final String JPA_UTILITY_PRJ_NAME = "testJPAwithUtility";
 	private static final String SIMPLE_PRJ_NAME = "testSimple";
-	private static final String WEB_REFERRING_JAVA_PRJ_LOCATION = "resources/testWebReferringJava.zip_";
+	private static final String WEB_REFERRING_JAVA_PRJ_LOCATION = "resources/testWebReferringJava.zip";
 	private static final String WEB_REFERRING_JAVA_PRJ_NAME = "testWebReferringJava";
-	private static final String JAVA_REFERRED_PRJ_LOCATION = "resources/testJavaReferred.zip_";
+	private static final String JAVA_REFERRED_PRJ_LOCATION = "resources/testJavaReferred.zip";
 	private static final String JAVA_REFERRED_PRJ_NAME = "testJavaReferred";
 	private static final String PLUGIN_PRJ_NAME = "testPlugin";
-	private static final String PLUGIN_PRJ_LOCATION = "resources/testPlugin.zip_";
+	private static final String PLUGIN_PRJ_LOCATION = "resources/testPlugin.zip";
 	private static final String PLUGIN_PRJ_CUSTOM_HEADERS_PRJ_NAME = "testPluginCustomHeaders";
-	private static final String PLUGIN_PRJ_CUSTOM_HEADERS_LOCATION = "resources/testPluginCustomHeaders.zip_";
+	private static final String PLUGIN_PRJ_CUSTOM_HEADERS_LOCATION = "resources/testPluginCustomHeaders.zip";
 	private static final String WEB_PRJ_COPY_NAME = "testWebCopy";
-	private static final String WEB_PRJ_COPY_LOCATION = "resources/testWebCopy.zip_";
+	private static final String WEB_PRJ_COPY_LOCATION = "resources/testWebCopy.zip";
 	private static final String WEB_CONVERTED_PRJ_NAME = "testWebConverted";
-	private static final String WEB_CONVERTED_PRJ_LOCATION = "resources/testWebConverted.zip_";
-	private static final String JAVA_CONVERTED_PRJ_LOCATION = "resources/testJavaConverted.zip_";
+	private static final String WEB_CONVERTED_PRJ_LOCATION = "resources/testWebConverted.zip";
+	private static final String JAVA_CONVERTED_PRJ_LOCATION = "resources/testJavaConverted.zip";
 	private static final String JAVA_CONVERTED_PRJ_NAME = "testJavaConverted";
-	private static final String SIMPLE_CONVERTED_PRJ_LOCATION = "resources/testSimpleConverted.zip_";
+	private static final String SIMPLE_CONVERTED_PRJ_LOCATION = "resources/testSimpleConverted.zip";
 	private static final String SIMPLE_CONVERTED_PRJ_NAME = "testSimpleConverted";
-	private static final String PLUGIN_CONVERTED_PRJ_LOCATION = "resources/testPluginConverted.zip_";
+	private static final String PLUGIN_CONVERTED_PRJ_LOCATION = "resources/testPluginConverted.zip";
 	private static final String PLUGIN_CONVERTED_PRJ_NAME = "testPluginConverted";
-	private static final String JAVA_PRJ_COPY_LOCATION = "resources/testJavaCopy.zip_";
+	private static final String JAVA_PRJ_COPY_LOCATION = "resources/testJavaCopy.zip";
 	private static final String JAVA_PRJ_COPY_NAME = "testJavaCopy";
 	
-	private static final String JAVA_2_SRC_FOLDERS = "resources/_testJava2SrcFolders.zip";
+	private static final String JAVA_2_SRC_FOLDERS = "resources/testJava2SrcFolders.zip";
 	private static final String JAVA_2_SRC_FOLDERS_NAME = "_testJava2SrcFolders";
-	private static final String JAVA_NO_SRC_FOLDERS = "resources/_testJavaNoSrcFolder.zip";
+	private static final String JAVA_NO_SRC_FOLDERS = "resources/testJavaNoSrcFolder.zip";
 	private static final String JAVA_NO_SRC_FOLDERS_NAME = "_testJavaNoSrcFolder";
 	
 	
