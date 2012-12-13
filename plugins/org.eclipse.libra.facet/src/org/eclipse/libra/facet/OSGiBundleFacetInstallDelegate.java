@@ -27,6 +27,7 @@ import static org.eclipse.libra.facet.OSGiBundleFacetUtils.WEB_CONTEXT_PATH_HEAD
 import static org.eclipse.libra.facet.OSGiBundleFacetUtils.WEB_INF_CLASSES;
 import static org.eclipse.libra.facet.OSGiBundleFacetUtils.getBundleProjectDescription;
 import static org.eclipse.libra.facet.OSGiBundleFacetUtils.getContextRootFromWTPModel;
+import static org.eclipse.libra.facet.OSGiBundleFacetUtils.getWebContentPath;
 import static org.eclipse.libra.facet.OSGiBundleFacetUtils.hasPluginNature;
 import static org.eclipse.libra.facet.OSGiBundleFacetUtils.hasRequiredPlugins;
 import static org.eclipse.libra.facet.OSGiBundleFacetUtils.isJavaProject;
@@ -94,8 +95,7 @@ public class OSGiBundleFacetInstallDelegate implements IDelegate {
 	private void setBundleRoot(IProject project) throws CoreException {
 		IPath bundleRoot = null;
 		if (isWebProject(project)) {
-			IVirtualComponent component = ComponentCore.createComponent(project);
-			bundleRoot = component.getRootFolder().getProjectRelativePath();
+			bundleRoot = getWebContentPath(project);
 		}
 		
 		if (bundleRoot != null) {
@@ -126,7 +126,7 @@ public class OSGiBundleFacetInstallDelegate implements IDelegate {
 		bundleProjectDescription.setNatureIds(getNatureIds(bundleProjectDescription));
 		bundleProjectDescription.setLaunchShortcuts(getLaunchShortcuts(project));
 		
-		Map<String, String> headers = getAdditionalHeaders(project);
+		Map<String, String> headers = getAdditionalHeaders(config, project);
 		for (Map.Entry<String, String> entry : headers.entrySet()) {
 			bundleProjectDescription.setHeader(entry.getKey(), entry.getValue());
 		}
@@ -162,11 +162,18 @@ public class OSGiBundleFacetInstallDelegate implements IDelegate {
 		return null;
 	}
 	
-	private Map<String, String> getAdditionalHeaders(IProject project) throws CoreException {
+	private Map<String, String> getAdditionalHeaders(OSGiBundleFacetInstallConfig config, IProject project) throws CoreException {
 		Map<String, String> headers = new HashMap<String, String>();
 		
 		if (isWebProject(project)) {
-			headers.put(WEB_CONTEXT_PATH_HEADER, getContextRootFromWTPModel(project));
+			// check if there is existing Web-ContextPath header in the manifest
+			if (config.getHeaders().containsKey(WEB_CONTEXT_PATH_HEADER)) {
+				// overwrite the context path in the WTP model with the one value from the OSGi header
+				headers.put(WEB_CONTEXT_PATH_HEADER, config.getHeaders().get(WEB_CONTEXT_PATH_HEADER));
+			} else {
+				// use the context path from the WTP model
+				headers.put(WEB_CONTEXT_PATH_HEADER, getContextRootFromWTPModel(project));
+			}
 		}
 		
 		if (isJpaProject(project)) {
@@ -286,10 +293,10 @@ public class OSGiBundleFacetInstallDelegate implements IDelegate {
 		
 		if (OSGiBundleFacetUtils.isJavaProject(project)) {
 			IJavaProject javaProject = JavaCore.create(project);
-			if (bundleClasspath == null) {
+			if (bundleClasspath == null || bundleClasspath.length == 0) {
 				IPath[] javaSourceFolderPaths = getJavaSourceFolderPaths(javaProject);
 				
-				if (javaSourceFolderPaths != null && javaSourceFolderPaths.length>0){
+				if (javaSourceFolderPaths != null && javaSourceFolderPaths.length > 0) {
 					IBundleProjectService bundleProjectService = LibraFacetPlugin.getDefault().getBundleProjectService();
 					
 					List<IBundleClasspathEntry> bundleClasspathList = new ArrayList<IBundleClasspathEntry>(); 
@@ -299,14 +306,13 @@ public class OSGiBundleFacetInstallDelegate implements IDelegate {
 							? new Path(WEB_INF_CLASSES) 	// add WEB-INF/classes for WABs
 							: null; 						// add . for other OSGi bundles
 							
-					//iterate over source folders and create IBundleClasspathEntry for each one.
+					// iterate over source folders and create IBundleClasspathEntry for each one.
 					for (IPath iPath : javaSourceFolderPaths) {
 						bundleClasspathList.add(bundleProjectService.newBundleClasspathEntry(
 								getRelativePath(project, iPath), binary, library));
 					}
 					bundleClasspath = bundleClasspathList.toArray(new IBundleClasspathEntry[] { });;
 				}
-				
 			} else {
 				// TODO
 			}

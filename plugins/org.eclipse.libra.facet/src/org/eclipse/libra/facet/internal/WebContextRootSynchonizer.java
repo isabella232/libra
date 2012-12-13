@@ -11,10 +11,10 @@
  *******************************************************************************/
 package org.eclipse.libra.facet.internal;
 
-import static org.eclipse.libra.facet.OSGiBundleFacetUtils.MANIFEST_PATH;
 import static org.eclipse.libra.facet.OSGiBundleFacetUtils.VIRTUAL_COMPONENT_PATH;
 import static org.eclipse.libra.facet.OSGiBundleFacetUtils.getContextRootFromPDEModel;
 import static org.eclipse.libra.facet.OSGiBundleFacetUtils.getContextRootFromWTPModel;
+import static org.eclipse.libra.facet.OSGiBundleFacetUtils.getManifestPath;
 import static org.eclipse.libra.facet.OSGiBundleFacetUtils.isWebApplicationBundle;
 import static org.eclipse.libra.facet.OSGiBundleFacetUtils.setContextRootInPDEModel;
 import static org.eclipse.libra.facet.OSGiBundleFacetUtils.setContextRootInWTPModel;
@@ -28,14 +28,11 @@ import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.pde.core.project.IBundleProjectDescription;
-import org.eclipse.pde.core.project.IBundleProjectService;
 
 /**
  * This class is a resource change listener that watches for changes in the
@@ -149,25 +146,6 @@ public class WebContextRootSynchonizer implements IResourceChangeListener {
 	private boolean isContentChanged(IResourceDelta delta) {
 		return delta != null && delta.getKind() == IResourceDelta.CHANGED
 				&& (delta.getFlags() & IResourceDelta.CONTENT) != 0;
-	}
-	
-	private IPath getManifestPath(IProject project) {
-		// get the bundle root first
-		IPath bundleRoot = null;
-		try {
-			IBundleProjectService bundleProjectService = LibraFacetPlugin.getDefault().getBundleProjectService();
-			IBundleProjectDescription bundleProjectDescription = bundleProjectService.getDescription(project);
-			bundleRoot = bundleProjectDescription.getBundleRoot();
-		} catch (CoreException e) {
-			LibraFacetPlugin.logError(e);
-			// do nothing - leave null for bundle root, which is equivalent to project root
-		}
-		
-		if (bundleRoot == null) {
-			return MANIFEST_PATH;
-		} else {
-			return bundleRoot.append(MANIFEST_PATH);
-		}
 	}
 
 }
