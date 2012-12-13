@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.libra.facet;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -113,6 +114,41 @@ public class OSGiBundleFacetUtils {
 	public static IBundleProjectDescription getBundleProjectDescription(IProject project) throws CoreException {
     	IBundleProjectService bundleProjectService = LibraFacetPlugin.getDefault().getBundleProjectService();
     	return bundleProjectService.getDescription(project);
+	}
+	
+	public static IPath getWebContentPath(IProject project) {
+		IVirtualComponent component = ComponentCore.createComponent(project);
+		return component.getRootFolder().getProjectRelativePath();
+	}
+	
+	public static IPath getManifestPath(IProject project) {
+		IPath path = MANIFEST_PATH;
+		
+		try {
+			if (hasPluginNature(project)) {
+				IBundleProjectDescription bundleProjectDescription = getBundleProjectDescription(project);
+				if (bundleProjectDescription != null) {
+					// there is a bundle model available - try to look up the bundle root 
+					IPath bundleRoot = bundleProjectDescription.getBundleRoot();
+					if (bundleRoot != null) {
+						path = bundleRoot.append(MANIFEST_PATH);
+					}
+				}
+			} else {
+				if (isWebProject(project)) {
+					path = getWebContentPath(project).append(MANIFEST_PATH);
+				}
+			}
+		} catch (CoreException e) {
+			LibraFacetPlugin.logError(e);
+			// do nothing - assume the manifest is in the default location
+		}
+		
+		return path;
+	}
+	
+	public static IFile getManifestFile(IProject project) {
+		return project.getFile(getManifestPath(project));
 	}
 
 	public static String getContextRootFromWTPModel(IProject project) {

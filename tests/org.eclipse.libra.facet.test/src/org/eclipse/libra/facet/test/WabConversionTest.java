@@ -12,10 +12,10 @@ package org.eclipse.libra.facet.test;
 
 import static org.eclipse.libra.facet.OSGiBundleFacetUtils.BUILD_PROPERTIES;
 import static org.eclipse.libra.facet.OSGiBundleFacetUtils.OSGI_BUNDLE_FACET_42;
+import static org.eclipse.libra.facet.OSGiBundleFacetUtils.WEB_CONTEXT_PATH_HEADER;
 import static org.eclipse.libra.facet.OSGiBundleFacetUtils.getBundleProjectDescription;
 import static org.eclipse.wst.common.tests.OperationTestCase.deleteAllProjects;
 import static org.eclipse.wst.common.tests.OperationTestCase.waitOnJobs;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
@@ -57,11 +57,12 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-
+import org.osgi.framework.Constants;
 
 public class WabConversionTest {
+	
 	private static final NullProgressMonitor monitor = new NullProgressMonitor();
+	
 	private static final String WEB_PRJ_LOCATION = "resources/testWeb.zip";
 	private static final String JAVA_PRJ_LOCATION = "resources/testJava.zip";
 	private static final String JPA_PRJ_LOCATION = "resources/testJPA.zip";
@@ -82,6 +83,10 @@ public class WabConversionTest {
 	private static final String PLUGIN_PRJ_LOCATION = "resources/testPlugin.zip";
 	private static final String PLUGIN_PRJ_CUSTOM_HEADERS_PRJ_NAME = "testPluginCustomHeaders";
 	private static final String PLUGIN_PRJ_CUSTOM_HEADERS_LOCATION = "resources/testPluginCustomHeaders.zip";
+	private static final String SIMPLE_PRJ_COPY_LOCATION = "resources/testSimpleCopy.zip";
+	private static final String SIMPLE_PRJ_COPY_NAME = "testSimpleCopy";
+	private static final String JAVA_PRJ_COPY_LOCATION = "resources/testJavaCopy.zip";
+	private static final String JAVA_PRJ_COPY_NAME = "testJavaCopy";
 	private static final String WEB_PRJ_COPY_NAME = "testWebCopy";
 	private static final String WEB_PRJ_COPY_LOCATION = "resources/testWebCopy.zip";
 	private static final String WEB_CONVERTED_PRJ_NAME = "testWebConverted";
@@ -92,16 +97,17 @@ public class WabConversionTest {
 	private static final String SIMPLE_CONVERTED_PRJ_NAME = "testSimpleConverted";
 	private static final String PLUGIN_CONVERTED_PRJ_LOCATION = "resources/testPluginConverted.zip";
 	private static final String PLUGIN_CONVERTED_PRJ_NAME = "testPluginConverted";
-	private static final String JAVA_PRJ_COPY_LOCATION = "resources/testJavaCopy.zip";
-	private static final String JAVA_PRJ_COPY_NAME = "testJavaCopy";
-	
 	private static final String JAVA_2_SRC_FOLDERS = "resources/testJava2SrcFolders.zip";
 	private static final String JAVA_2_SRC_FOLDERS_NAME = "_testJava2SrcFolders";
 	private static final String JAVA_NO_SRC_FOLDERS = "resources/testJavaNoSrcFolder.zip";
 	private static final String JAVA_NO_SRC_FOLDERS_NAME = "_testJavaNoSrcFolder";
+	private static final String SIMPLE_WITH_OSGI_MANIFEST_PRJ_LOCATION = "resources/testSimpleWithOSGiManifest.zip";
+	private static final String SIMPLE_WITH_OSGI_MANIFEST_PRJ_NAME = "testSimpleWithOSGiManifest";
+	private static final String JAVA_WITH_OSGI_MANIFEST_PRJ_LOCATION = "resources/testJavaWithOSGiManifest.zip";
+	private static final String JAVA_WITH_OSGI_MANIFEST_PRJ_NAME = "testJavaWithOSGiManifest";
+	private static final String WEB_WITH_OSGI_MANIFEST_PRJ_LOCATION = "resources/testWebWithOSGiManifest.zip";
+	private static final String WEB_WITH_OSGI_MANIFEST_PRJ_NAME = "testWebWithOSGiManifest";
 	
-	
-		
 	@Before
 	public void cleanUpWorkspace() throws Exception {
 		deleteAllProjects();
@@ -117,22 +123,44 @@ public class WabConversionTest {
 	@Test
 	public void convertSimpleProject() throws Exception {
 		IProject simpleProject = importProjectInWorkspace(SIMPLE_PRJ_LOCATION, SIMPLE_PRJ_NAME);
-    	new ConvertProjectsToBundlesOperation(new IProject[]{simpleProject}).run(monitor);
+    	new ConvertProjectsToBundlesOperation(new IProject[] { simpleProject }).run(monitor);
     	
     	IBundleProjectDescription description = getBundleProjectDescription(simpleProject);
 		
     	checkSimpleProject(SIMPLE_PRJ_NAME, "TestSimple", null, "1.0.0.qualifier", description);
+	}
+
+	@Test
+	public void convertSimpleProjectCustomHeaders() throws Exception {
+		IProject simpleProject = importProjectInWorkspace(SIMPLE_PRJ_COPY_LOCATION, SIMPLE_PRJ_COPY_NAME);
+    	OSGiBundleFacetInstallConfig osgiBundleFacetInstallConfig = setupOSGiBundleFacetInstallConfig("customSymbolicName", "CustomBundleName", "customVendor", "1.0.1.qualifier");
+		IFacetedProject fproj = ProjectFacetsManager.create(simpleProject, true, monitor);
+		fproj.installProjectFacet(OSGI_BUNDLE_FACET_42, osgiBundleFacetInstallConfig, monitor);
+    	
+    	IBundleProjectDescription description = getBundleProjectDescription(simpleProject);
+		
+    	checkSimpleProject("customSymbolicName", "CustomBundleName", "customVendor", "1.0.1.qualifier", description);
+	}
+
+	@Test
+	public void convertSimpleProjectWithOSGiManifest() throws Exception {
+		IProject simpleProject = importProjectInWorkspace(SIMPLE_WITH_OSGI_MANIFEST_PRJ_LOCATION, SIMPLE_WITH_OSGI_MANIFEST_PRJ_NAME);
+    	new ConvertProjectsToBundlesOperation(new IProject[] { simpleProject }).run(monitor);
+    	
+    	IBundleProjectDescription description = getBundleProjectDescription(simpleProject);
+		
+    	checkSimpleProject("mybundle", "My Bundle", "My Company", "1.2.3", description);
 	}
 	
 	@Test
 	public void convertJavaProject() throws Exception {
 
 		IProject javaProject = importProjectInWorkspace(JAVA_PRJ_LOCATION, JAVA_PRJ_NAME);
-    	new ConvertProjectsToBundlesOperation(new IProject[]{javaProject}).run(monitor);
+    	new ConvertProjectsToBundlesOperation(new IProject[] { javaProject }).run(monitor);
     	
     	IBundleProjectDescription description = getBundleProjectDescription(javaProject);
 		
-    	checkJavaProject(javaProject, JAVA_PRJ_NAME, "TestJava", null, "1.0.0.qualifier", new String[] {"javapack", "javapack1"}, description);
+    	checkJavaProject(javaProject, JAVA_PRJ_NAME, "TestJava", null, "1.0.0.qualifier", new String[] { "javapack", "javapack1" }, description);
 	}
 
 	@Test
@@ -144,14 +172,24 @@ public class WabConversionTest {
     	
     	IBundleProjectDescription description = getBundleProjectDescription(javaProject);
 		
-    	checkJavaProject(javaProject, "customSymbolicName", "CustomBundleName", "customVendor", "1.0.1.qualifier", new String[] {"javapack", "javapack1"}, description);
+    	checkJavaProject(javaProject, "customSymbolicName", "CustomBundleName", "customVendor", "1.0.1.qualifier", new String[] { "javapack", "javapack1" }, description);
+	}
+
+	@Test
+	public void convertJavaProjectWithOSGiManifest() throws Exception {
+		IProject javaProject = importProjectInWorkspace(JAVA_WITH_OSGI_MANIFEST_PRJ_LOCATION, JAVA_WITH_OSGI_MANIFEST_PRJ_NAME);
+    	new ConvertProjectsToBundlesOperation(new IProject[] { javaProject }).run(monitor);
+    	
+    	IBundleProjectDescription description = getBundleProjectDescription(javaProject);
+		
+    	checkJavaProject(javaProject, "mybundle", "My Bundle", "My Company", "1.2.3", new String[] { "javapack", "javapack1" }, description);
 	}
 	
 	
 	@Test
 	public void convertJavaProjectNoSrcFolder() throws Exception {
 		IProject javaProject = importProjectInWorkspace(JAVA_NO_SRC_FOLDERS, JAVA_NO_SRC_FOLDERS_NAME);
-		new ConvertProjectsToBundlesOperation(new IProject[]{javaProject}).run(monitor);
+		new ConvertProjectsToBundlesOperation(new IProject[] { javaProject }).run(monitor);
 		IBundleProjectDescription description = getBundleProjectDescription(javaProject);
 		IBundleClasspathEntry[] bundleClasspath = description.getBundleClasspath();
 		assertNotNull(bundleClasspath);
@@ -172,8 +210,8 @@ public class WabConversionTest {
 		//one item with null src and bin attributes expected
 		Assert.assertEquals("one item with null src attributes expected", 2, bundleClasspath.length);
 		Assert.assertFalse("both items should be different (src and src2)", bundleClasspath[0].getSourcePath().lastSegment().equals(bundleClasspath[1].getSourcePath().lastSegment()));
-		Assert.assertTrue("entry should be either src or src1, but was: "+bundleClasspath[0].getSourcePath().lastSegment(), "src".equals(bundleClasspath[0].getSourcePath().lastSegment()) || "src2".equals(bundleClasspath[0].getSourcePath().lastSegment()));
-		Assert.assertTrue("entry should be either src or src1, but was: "+bundleClasspath[1].getSourcePath().lastSegment(), "src".equals(bundleClasspath[1].getSourcePath().lastSegment()) || "src2".equals(bundleClasspath[1].getSourcePath().lastSegment()));
+		Assert.assertTrue("entry should be either src or src1, but was: " + bundleClasspath[0].getSourcePath().lastSegment(), "src".equals(bundleClasspath[0].getSourcePath().lastSegment()) || "src2".equals(bundleClasspath[0].getSourcePath().lastSegment()));
+		Assert.assertTrue("entry should be either src or src1, but was: " + bundleClasspath[1].getSourcePath().lastSegment(), "src".equals(bundleClasspath[1].getSourcePath().lastSegment()) || "src2".equals(bundleClasspath[1].getSourcePath().lastSegment()));
     	checkSimpleProject(JAVA_2_SRC_FOLDERS_NAME, JAVA_2_SRC_FOLDERS_NAME, null, "1.0.0.qualifier", description);
 		Assert.assertTrue(hasPluginDependenciesCP(javaProject));
 	}
@@ -181,11 +219,11 @@ public class WabConversionTest {
 	@Test
 	public void convertPluginProject() throws Exception {
 		IProject pluginProject = importProjectInWorkspace(PLUGIN_PRJ_LOCATION, PLUGIN_PRJ_NAME);
-    	new ConvertProjectsToBundlesOperation(new IProject[]{pluginProject}).run(monitor);
+    	new ConvertProjectsToBundlesOperation(new IProject[] { pluginProject }).run(monitor);
     	
     	IBundleProjectDescription description = getBundleProjectDescription(pluginProject);
 		
-    	checkJavaProject(pluginProject, PLUGIN_PRJ_NAME, "TestPlugin", null, "1.0.0.qualifier", new String[] {"javapack", "javapack1", "testplugin"}, description);
+    	checkJavaProject(pluginProject, PLUGIN_PRJ_NAME, "TestPlugin", null, "1.0.0.qualifier", new String[] { "javapack", "javapack1", "testplugin" }, description);
 
     	IPackageImportDescription[] packageImports = description.getPackageImports();
     	Assert.assertNotNull(packageImports);
@@ -200,7 +238,7 @@ public class WabConversionTest {
 	@Test
 	public void convertPluginProjectCustomHeaders() throws Exception {
 		IProject pluginProject = importProjectInWorkspace(PLUGIN_PRJ_CUSTOM_HEADERS_LOCATION, PLUGIN_PRJ_CUSTOM_HEADERS_PRJ_NAME);
-    	new ConvertProjectsToBundlesOperation(new IProject[]{pluginProject}).run(monitor);
+    	new ConvertProjectsToBundlesOperation(new IProject[] { pluginProject }).run(monitor);
     	
     	IBundleProjectDescription description = getBundleProjectDescription(pluginProject);
 
@@ -212,43 +250,54 @@ public class WabConversionTest {
 		}
 		Assert.assertTrue(packageImportStrings.contains("org.osgi.framework"));
 
-    	checkJavaProject(pluginProject, "customSymbolicName", "CustomBundleName", "CustomProvider", "1.0.1.qualifier", new String[] {"javapack", "javapack1", "testplugincustomheaders"}, description);
+    	checkJavaProject(pluginProject, "customSymbolicName", "CustomBundleName", "CustomProvider", "1.0.1.qualifier", new String[] { "javapack", "javapack1", "testplugincustomheaders" }, description);
     	
 	}
 	
 	@Test
 	public void convertWebProject() throws Exception {
 		IProject webProject = importProjectInWorkspace(WEB_PRJ_LOCATION, WEB_PRJ_NAME);
-    	new ConvertProjectsToBundlesOperation(new IProject[]{webProject}).run(monitor);
+    	new ConvertProjectsToBundlesOperation(new IProject[] { webProject }).run(monitor);
     	
     	IBundleProjectDescription description = getBundleProjectDescription(webProject);
 		
-    	checkWebProject(webProject, WEB_PRJ_NAME, "TestWeb", null, "1.0.0.qualifier", new String[] {"test", "test1"}, "/" + WEB_PRJ_NAME, description);
+    	checkWebProject(webProject, WEB_PRJ_NAME, "TestWeb", null, "1.0.0.qualifier", new String[] { "test", "test1" }, "/" + WEB_PRJ_NAME, description);
+	}
+	
+	@Test
+	public void convertWebProjectWithOSGiManifest() throws Exception {
+		IProject webProject = importProjectInWorkspace(WEB_WITH_OSGI_MANIFEST_PRJ_LOCATION, WEB_WITH_OSGI_MANIFEST_PRJ_NAME);
+    	new ConvertProjectsToBundlesOperation(new IProject[] { webProject }).run(monitor);
+    	
+    	IBundleProjectDescription description = getBundleProjectDescription(webProject);
+		
+    	// check that the customized headers in the existing OSGi manifest are not modified
+    	checkWebProject(webProject, "mywab", "My WAB", "My Company", "1.2.3", new String[] { "test", "test1" }, "/my-wab", description);
 	}
 	
 	
 	@Test
 	public void convertJPAProject() throws Exception {
 		IProject jpaProject = importProjectInWorkspace(JPA_PRJ_LOCATION, JPA_PRJ_NAME);
-    	new ConvertProjectsToBundlesOperation(new IProject[]{jpaProject}).run(monitor);
+    	new ConvertProjectsToBundlesOperation(new IProject[] { jpaProject }).run(monitor);
     	
     	IBundleProjectDescription description = getBundleProjectDescription(jpaProject);
 		
-    	checkJPAProject(jpaProject, JPA_PRJ_NAME, "TestJPA", null, "1.0.0.qualifier", new String[] {"test"}, description);
+    	checkJPAProject(jpaProject, JPA_PRJ_NAME, "TestJPA", null, "1.0.0.qualifier", new String[] { "test" }, description);
 	}
 	
 	@Test
 	public void convertJPAProjectWithUtilityFacet() throws Exception {
 		IProject jpaProject = importProjectInWorkspace(JPA_UTILITY_PRJ_LOCATION, JPA_UTILITY_PRJ_NAME);
-    	new ConvertProjectsToBundlesOperation(new IProject[]{jpaProject}).run(monitor);
+    	new ConvertProjectsToBundlesOperation(new IProject[] { jpaProject }).run(monitor);
     	
     	IBundleProjectDescription description = getBundleProjectDescription(jpaProject);
 		
-    	checkJPAProject(jpaProject, JPA_UTILITY_PRJ_NAME, "TestJPAwithUtility", null, "1.0.0.qualifier", new String[] {"test"}, description);
+    	checkJPAProject(jpaProject, JPA_UTILITY_PRJ_NAME, "TestJPAwithUtility", null, "1.0.0.qualifier", new String[] { "test" }, description);
 	}
 	
 	@Test
-	public void convertWebProjectCustomHeders() throws Exception {
+	public void convertWebProjectCustomHeaders() throws Exception {
 		IProject webProject = importProjectInWorkspace(WEB_PRJ_COPY_LOCATION, WEB_PRJ_COPY_NAME);
 		
     	OSGiBundleFacetInstallConfig osgiBundleFacetInstallConfig = setupOSGiBundleFacetInstallConfig("customSymbolicName", "CustomBundleName", "customVendor", "1.0.1.qualifier");
@@ -257,20 +306,20 @@ public class WabConversionTest {
     	
     	IBundleProjectDescription description = getBundleProjectDescription(webProject);
 		
-    	checkWebProject(webProject, "customSymbolicName", "CustomBundleName", "customVendor", "1.0.1.qualifier", new String[] {"test", "test1"}, "/customWebContext", description);
+    	checkWebProject(webProject, "customSymbolicName", "CustomBundleName", "customVendor", "1.0.1.qualifier", new String[] { "test", "test1" }, "/customWebContext", description);
 	}
 	
 	@Test
 	public void convertWebReferringJavaProjects() throws Exception {
 		IProject webProject = importProjectInWorkspace(WEB_REFERRING_JAVA_PRJ_LOCATION, WEB_REFERRING_JAVA_PRJ_NAME);
 		IProject javaProject = importProjectInWorkspace(JAVA_REFERRED_PRJ_LOCATION, JAVA_REFERRED_PRJ_NAME);
-    	new ConvertProjectsToBundlesOperation(new IProject[]{webProject, javaProject}).run(monitor);
+    	new ConvertProjectsToBundlesOperation(new IProject[] { webProject, javaProject }).run(monitor);
     	
     	IBundleProjectDescription webPrjDescription = getBundleProjectDescription(webProject);
     	IBundleProjectDescription javaPrjDescription = getBundleProjectDescription(javaProject);
 		
-    	checkWebProject(webProject, WEB_REFERRING_JAVA_PRJ_NAME, "TestWebReferringJava", null, "1.0.0.qualifier", new String[] {"test", "test1"}, "/" + WEB_REFERRING_JAVA_PRJ_NAME, webPrjDescription);
-    	checkJavaProject(javaProject, JAVA_REFERRED_PRJ_NAME, "TestJavaReferred", null, "1.0.0.qualifier", new String[] {"javapack", "javapack1"}, javaPrjDescription);
+    	checkWebProject(webProject, WEB_REFERRING_JAVA_PRJ_NAME, "TestWebReferringJava", null, "1.0.0.qualifier", new String[] { "test", "test1" }, "/" + WEB_REFERRING_JAVA_PRJ_NAME, webPrjDescription);
+    	checkJavaProject(javaProject, JAVA_REFERRED_PRJ_NAME, "TestJavaReferred", null, "1.0.0.qualifier", new String[] { "javapack", "javapack1" }, javaPrjDescription);
     	
     	//the web projects uses a class from the java project. 
     	//Check that the corresponding package from the java project is available as imported package in the web project
@@ -347,7 +396,7 @@ public class WabConversionTest {
 	public void createJPAProject() throws Exception {     
 		IFacetedProjectWorkingCopy fProject = FacetedProjectFramework.createNewProject();
 		fProject.setProjectName(JPA_CREATE_PRJ_NAME);
-		HashSet<IProjectFacetVersion> facets = getFacets(new String[] {"java", "jpt.jpa", "osgi.bundle"});
+		HashSet<IProjectFacetVersion> facets = getFacets(new String[] { "java", "jpt.jpa", "osgi.bundle" });
 		fProject.setProjectFacets(facets);
 		fProject.commitChanges(monitor);
 		checkMetaInf(fProject.getProject());
@@ -357,7 +406,7 @@ public class WabConversionTest {
 	public void createJPAUtilityProject() throws Exception {     
 		IFacetedProjectWorkingCopy fProject = FacetedProjectFramework.createNewProject();
 		fProject.setProjectName(JPA_UTILITY_CREATE_PRJ_NAME);
-		HashSet<IProjectFacetVersion> facets = getFacets(new String[] {"java", "jpt.jpa", "jst.utility", "osgi.bundle"});
+		HashSet<IProjectFacetVersion> facets = getFacets(new String[] { "java", "jpt.jpa", "jst.utility", "osgi.bundle" });
 		fProject.setProjectFacets(facets);
 		fProject.commitChanges(monitor);
 		checkMetaInf(fProject.getProject());
@@ -366,9 +415,9 @@ public class WabConversionTest {
 	private void checkWebProject(IProject project, String expectedSymbolicName, String expectedBundleName, String expectedVendor, String expectedVersion, String[] expectedPackageExports, String expectedWebContextPath, IBundleProjectDescription description) throws JavaModelException {
 		checkJavaProject(project, expectedSymbolicName, expectedBundleName, expectedVendor, expectedVersion, expectedPackageExports, description);
 		checkWebPackageImports(description);
-		Assert.assertEquals("2", description.getHeader("Bundle-ManifestVersion"));
+		Assert.assertEquals("2", description.getHeader(Constants.BUNDLE_MANIFESTVERSION));
 		checkLaunchShortcuts(description);
-		Assert.assertEquals(expectedWebContextPath, description.getHeader("Web-ContextPath"));
+		Assert.assertEquals(expectedWebContextPath, description.getHeader(WEB_CONTEXT_PATH_HEADER));
 		IPath[] binIncludes = description.getBinIncludes();
 		Assert.assertTrue(binIncludes.length == 1);
 		Assert.assertEquals("WEB-INF/", binIncludes[0].toString());
@@ -382,7 +431,7 @@ public class WabConversionTest {
 	private void checkJPAProject(IProject project, String expectedSymbolicName, String expectedBundleName, String expectedVendor, String expectedVersion, String[] expectedPackageExports, IBundleProjectDescription description) throws JavaModelException {
 		checkJavaProject(project, expectedSymbolicName, expectedBundleName, expectedVendor, expectedVersion, expectedPackageExports, description);
 		checkJPAPackageImports(description);
-		Assert.assertEquals("2", description.getHeader("Bundle-ManifestVersion"));
+		Assert.assertEquals("2", description.getHeader(Constants.BUNDLE_MANIFESTVERSION));
 		IBundleClasspathEntry[] bundleClasspath = description.getBundleClasspath();
 		Assert.assertEquals(1, bundleClasspath.length);
 		Assert.assertNull(bundleClasspath[0].getBinaryPath());

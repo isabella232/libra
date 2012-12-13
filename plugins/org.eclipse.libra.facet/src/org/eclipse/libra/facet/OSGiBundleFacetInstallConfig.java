@@ -10,20 +10,27 @@
  *******************************************************************************/
 package org.eclipse.libra.facet;
 
+import static org.eclipse.libra.facet.OSGiBundleFacetUtils.getManifestFile;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.pde.core.project.IBundleProjectDescription;
+import org.eclipse.libra.facet.internal.LibraFacetPlugin;
+import org.eclipse.osgi.util.ManifestElement;
 import org.eclipse.wst.common.project.facet.core.ActionConfig;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IFacetedProjectWorkingCopy;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectEvent;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectListener;
+import org.osgi.framework.Constants;
 import org.osgi.framework.Version;
 
 
@@ -36,8 +43,12 @@ public class OSGiBundleFacetInstallConfig extends ActionConfig implements IFacet
 	private IObservableValue nameValue;
 	private IObservableValue vendorValue;
 	
+	private Map<String, String> headers;
+	
 	public OSGiBundleFacetInstallConfig() {
 		Realm realm = OSGiBundleFacetRealm.getRealm();
+		
+		headers = new HashMap<String, String>();
 		
 		symbolicNameValue = new WritableValue(realm, getDefaultSymbolicName(), String.class);
 		versionValue = new WritableValue(realm, getDefaultVersion(), String.class);
@@ -77,10 +88,19 @@ public class OSGiBundleFacetInstallConfig extends ActionConfig implements IFacet
 		return (String) getVendorValue().getValue();
 	}
 
+	public Map<String, String> getHeaders() {
+		return headers;
+	}
+
 	@Override
 	public void setFacetedProjectWorkingCopy(IFacetedProjectWorkingCopy fpjwc) {
 		super.setFacetedProjectWorkingCopy(fpjwc);
 		fpjwc.addListener(this, IFacetedProjectEvent.Type.PROJECT_NAME_CHANGED);
+		
+		// first read any existing manifest headers
+		updateHeaders();
+		
+		// update the default values for the configurable fields 
 		updateDefaultValues();
 	}
 
@@ -89,7 +109,26 @@ public class OSGiBundleFacetInstallConfig extends ActionConfig implements IFacet
 			updateDefaultNameValues();
 		}
 	}
-
+	
+	private void updateHeaders() {
+		try {
+			IFile manifest = null;
+			IProject project = getProject();
+			if (project != null) {
+				manifest = getManifestFile(project);
+			}
+			
+			if (manifest != null && manifest.exists()) {
+					Map<String, String> manifestHeaders = ManifestElement.parseBundleManifest(manifest.getContents(), null);
+					for (String key : manifestHeaders.keySet()) {
+						headers.put(key, manifestHeaders.get(key));
+					}
+			}
+		} catch (Exception e) {
+			LibraFacetPlugin.logError(e);
+		}
+	}
+	
 	private void updateDefaultNameValues() {
 		symbolicNameValue.setValue(getDefaultSymbolicName());
 		nameValue.setValue(getDefaultName());
@@ -105,17 +144,14 @@ public class OSGiBundleFacetInstallConfig extends ActionConfig implements IFacet
 	private Object getDefaultSymbolicName() {
 		String symbolicName = null;
 		
-		IFacetedProjectWorkingCopy fpjwc = getFacetedProjectWorkingCopy();
-		if (fpjwc != null) {
-			// check if there is a bundle model already available
-			IBundleProjectDescription bundleProjectDescription = getBundleProjectDescription();
-			if (bundleProjectDescription != null) {
-				// there is a bundle model available - return the already available symbolic name
-				symbolicName = bundleProjectDescription.getSymbolicName();
-			}
-			
-			if (symbolicName == null) {
-				// no bundle model available - return the project name as a default symbolic name
+		// check if there any existing manifest headers
+		if (headers.containsKey(Constants.BUNDLE_SYMBOLICNAME)) {
+			// there is existing symbolic name - use it as default value
+			symbolicName = headers.get(Constants.BUNDLE_SYMBOLICNAME);
+		} else {
+			// no existing symbolic name header - use the project name as default value
+			IFacetedProjectWorkingCopy fpjwc = getFacetedProjectWorkingCopy();
+			if (fpjwc != null) {
 				symbolicName = fpjwc.getProjectName();
 			}
 		}
@@ -124,42 +160,37 @@ public class OSGiBundleFacetInstallConfig extends ActionConfig implements IFacet
 	}
 	
 	private String getDefaultVersion() {
-		Version version = new Version(1, 0, 0, QUALIFIER);
+		String version = null;
 		
-		// check if there is a bundle model already available
-		IBundleProjectDescription bundleProjectDescription = getBundleProjectDescription();
-		if (bundleProjectDescription != null) {
-			// there is a bundle model available - return the already available vendor
-			Version v = bundleProjectDescription.getBundleVersion();
-			if (v != null) {
-				version = v;
-			}
+		// check if there any existing manifest headers
+		if (headers.containsKey(Constants.BUNDLE_VERSION)) {
+			// there is existing version - use it as default value
+			version = headers.get(Constants.BUNDLE_VERSION);
+		} else {
+			// no existing version header - use "1.0.0.qualifier" as default name
+			version = new Version(1, 0, 0, QUALIFIER).toString();
 		}
 		
-		return version.toString();
+		return version;
 	}
 
 	private Object getDefaultName() {
 		String bundleName = null;
 		
-		IFacetedProjectWorkingCopy fpjwc = getFacetedProjectWorkingCopy();
-		if (fpjwc != null) {
-			// check if there is a bundle model already available
-			IBundleProjectDescription bundleProjectDescription = getBundleProjectDescription();
-			if (bundleProjectDescription != null) {
-				// there is a bundle model available - return the already available bundle name
-				bundleName = bundleProjectDescription.getBundleName();
-			}
-			
-			if (bundleName == null) {
-				// no bundle model available - return the capitalized project name as a default bundle name
+		// check if there any existing manifest headers
+		if (headers.containsKey(Constants.BUNDLE_NAME)) {
+			bundleName = headers.get(Constants.BUNDLE_NAME);
+		} else {
+			// no existing bundle name header - use the capitalized project name as default value
+			IFacetedProjectWorkingCopy fpjwc = getFacetedProjectWorkingCopy();
+			if (fpjwc != null) {
 				bundleName = fpjwc.getProjectName();
 				// capitalize the first letter
 				if (bundleName != null && bundleName.length() > 0 && !Character.isTitleCase(bundleName.charAt(0))) {
 					StringBuilder builder = new StringBuilder(bundleName);
 					builder.replace(0, 1, String.valueOf(Character.toTitleCase(bundleName.charAt(0))));
 					bundleName = builder.toString();
-				}				
+				}
 			}
 		}
 		
@@ -169,17 +200,16 @@ public class OSGiBundleFacetInstallConfig extends ActionConfig implements IFacet
 	private Object getDefaultVendor() {
 		String vendor = null;
 		
-		// check if there is a bundle model already available
-		IBundleProjectDescription bundleProjectDescription = getBundleProjectDescription();
-		if (bundleProjectDescription != null) {
-			// there is a bundle model available - return the already available vendor
-			vendor = bundleProjectDescription.getBundleVendor();
+		// check if there any existing manifest headers
+		if (headers.containsKey(Constants.BUNDLE_VENDOR)) {
+			// there is existing vendor - use it as default value
+			vendor = headers.get(Constants.BUNDLE_VENDOR);
 		}
 		
 		return vendor;
 	}
 	
-	private IBundleProjectDescription getBundleProjectDescription() {
+	private IProject getProject() {
 		IFacetedProjectWorkingCopy fpjwc = getFacetedProjectWorkingCopy();
 		if (fpjwc == null) 
 			return null;
@@ -188,12 +218,7 @@ public class OSGiBundleFacetInstallConfig extends ActionConfig implements IFacet
 		if (fproj == null)
 			return null;
 		
-		IProject project = fproj.getProject(); 
-		try {
-			return OSGiBundleFacetUtils.getBundleProjectDescription(project);
-		} catch (CoreException e) {
-			return null;
-		}
+		return fproj.getProject();
 	}
 
 	public static class SymbolicNameValidator implements IValidator {
