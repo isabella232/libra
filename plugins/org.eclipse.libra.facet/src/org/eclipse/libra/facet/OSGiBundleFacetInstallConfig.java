@@ -120,8 +120,8 @@ public class OSGiBundleFacetInstallConfig extends ActionConfig implements IFacet
 			
 			if (manifest != null && manifest.exists()) {
 					Map<String, String> manifestHeaders = ManifestElement.parseBundleManifest(manifest.getContents(), null);
-					for (String key : manifestHeaders.keySet()) {
-						headers.put(key, manifestHeaders.get(key));
+					for (Map.Entry<String, String> entry : manifestHeaders.entrySet()) {
+						headers.put(entry.getKey(), entry.getValue());
 					}
 			}
 		} catch (Exception e) {
