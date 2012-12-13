@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/org.eclipse.libra.facet.feature_0.2.0.qualifier.jar" id="org.eclipse.libra.facet.feature" version="0.2.0.qualifier">
+   <feature url="features/org.eclipse.libra.facet.feature_0.0.0.jar" id="org.eclipse.libra.facet.feature" version="0.0.0">
       <category name="libra"/>
    </feature>
-   <feature url="features/org.eclipse.libra.framework.editor.feature_0.2.0.qualifier.jar" id="org.eclipse.libra.framework.editor.feature" version="0.2.0.qualifier">
+   <feature url="features/org.eclipse.libra.framework.editor.feature_0.0.0.jar" id="org.eclipse.libra.framework.editor.feature" version="0.0.0">
       <category name="libra"/>
    </feature>
-   <feature url="features/org.eclipse.libra.framework.feature_0.2.0.qualifier.jar" id="org.eclipse.libra.framework.feature" version="0.2.0.qualifier">
+   <feature url="features/org.eclipse.libra.framework.feature_0.0.0.jar" id="org.eclipse.libra.framework.feature" version="0.0.0">
       <category name="libra"/>
    </feature>
-   <feature url="features/org.eclipse.libra.warproducts.feature_0.2.0.qualifier.jar" id="org.eclipse.libra.warproducts.feature" version="0.2.0.qualifier">
+   <feature url="features/org.eclipse.libra.warproducts.feature_0.0.0.jar" id="org.eclipse.libra.warproducts.feature" version="0.0.0">
       <category name="libra"/>
    </feature>
-   <feature url="features/org.eclipse.libra.facet.feature.source_0.2.0.qualifier.jar" id="org.eclipse.libra.facet.feature.source" version="0.2.0.qualifier">
+   <feature url="features/org.eclipse.libra.facet.feature.source_0.0.0.jar" id="org.eclipse.libra.facet.feature.source" version="0.0.0">
       <category name="libra-sdk"/>
    </feature>
-   <feature url="features/org.eclipse.libra.framework.editor.feature.source_0.2.0.qualifier.jar" id="org.eclipse.libra.framework.editor.feature.source" version="0.2.0.qualifier">
+   <feature url="features/org.eclipse.libra.framework.editor.feature.source_0.0.0.jar" id="org.eclipse.libra.framework.editor.feature.source" version="0.0.0">
       <category name="libra-sdk"/>
    </feature>
-   <feature url="features/org.eclipse.libra.framework.feature.source_0.2.0.qualifier.jar" id="org.eclipse.libra.framework.feature.source" version="0.2.0.qualifier">
+   <feature url="features/org.eclipse.libra.framework.feature.source_0.0.0.jar" id="org.eclipse.libra.framework.feature.source" version="0.0.0">
       <category name="libra-sdk"/>
    </feature>
-   <feature url="features/org.eclipse.libra.warproducts.feature.source_0.2.0.qualifier.jar" id="org.eclipse.libra.warproducts.feature.source" version="0.2.0.qualifier">
+   <feature url="features/org.eclipse.libra.warproducts.feature.source_0.0.0.jar" id="org.eclipse.libra.warproducts.feature.source" version="0.0.0">
       <category name="libra-sdk"/>
    </feature>
    <category-def name="libra" label="Enterprise Tools for the OSGi Service Platform"/>
