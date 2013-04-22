@@ -23,6 +23,14 @@ public class Validator {
 
   public static final String[] BANNED_BUNDLES = new String[] { 
     "javax.servlet", //$NON-NLS-1$
+    "org.eclipse.jetty.continuation", //$NON-NLS-1$
+    "org.eclipse.jetty.http", //$NON-NLS-1$
+    "org.eclipse.jetty.io", //$NON-NLS-1$
+    "org.eclipse.jetty.jmx", //$NON-NLS-1$
+    "org.eclipse.jetty.security", //$NON-NLS-1$
+    "org.eclipse.jetty.server", //$NON-NLS-1$
+    "org.eclipse.jetty.servlet", //$NON-NLS-1$
+    "org.eclipse.jetty.util", //$NON-NLS-1$
     "org.eclipse.update.configurator",  //$NON-NLS-1$
     "org.eclipse.equinox.http.jetty",  //$NON-NLS-1$
     "org.mortbay.jetty.server",  //$NON-NLS-1$
@@ -30,7 +38,6 @@ public class Validator {
   };
 
   public static final String[] REQUIRED_BUNDLES = new String[] { 
-    "org.eclipse.equinox.servletbridge.extensionbundle", //$NON-NLS-1$
     "org.eclipse.equinox.http.registry", //$NON-NLS-1$
     "org.eclipse.equinox.registry", //$NON-NLS-1$
     "org.eclipse.equinox.http.servlet", //$NON-NLS-1$
