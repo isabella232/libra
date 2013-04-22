@@ -10,13 +10,13 @@
 
 	<properties>
 		<tycho-version>0.13.0</tycho-version>
-		<eclipse-site>http://download.eclipse.org/eclipse/updates/4.2milestones/</eclipse-site>
-		<emf-site>http://download.eclipse.org/modeling/emf/emf/updates/2.8milestones/</emf-site>
-		<dtp-site>http://download.eclipse.org/datatools/downloads/drops/M_updates_1.9.2/</dtp-site>
-		<wtp-site>http://download.eclipse.org/webtools/repository/juno/</wtp-site>
+		<eclipse-site>http://download.eclipse.org/eclipse/updates/4.3milestones/</eclipse-site>
+		<emf-site>http://download.eclipse.org/modeling/emf/emf/updates/2.9milestones/</emf-site>
+		<dtp-site>http://download.eclipse.org/datatools/downloads/drops/M_updates_1.11.0/</dtp-site>
 		<gef-site>http://download.eclipse.org/tools/gef/updates/milestones</gef-site>
-		<wtp-tests-site>http://download.eclipse.org/webtools/downloads/drops/R3.4.0/S-3.4.0M5-20120130170749/repositoryunittests/</wtp-tests-site>
-		<orbit-site>http://download.eclipse.org/tools/orbit/downloads/drops/S20110907174232/repository/</orbit-site>
+		<wtp-site>http://download.eclipse.org/webtools/downloads/drops/R3.5.0/S-3.5.0M6-20130315194337/repository/</wtp-site>
+		<wtp-tests-site>http://download.eclipse.org/webtools/downloads/drops/R3.5.0/S-3.5.0M6-20130315194337/repositoryunittests/</wtp-tests-site>
+		<orbit-site>http://download.eclipse.org/tools/orbit/downloads/drops/R20130118183705/repository/</orbit-site>
 		<debug-options></debug-options> <!-- empty by default -->
 	</properties>
 
