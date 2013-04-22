@@ -74,6 +74,9 @@ public class WARProductExportOperationTest extends TestCase {
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
     IWorkspaceRoot root = workspace.getRoot();
     IProject project = root.getProject( "testLinkedResources" );
+    if( project.exists() ) {
+      project.delete( true, null );
+    }
     project.create( null );
     project.open( null );
     IFolder folder = project.getFolder( project.getFullPath() );
@@ -129,7 +132,7 @@ public class WARProductExportOperationTest extends TestCase {
     assertTrue( warEntryList.contains( "WEB-INF/launch.ini" ) );
   }
   
-  private void testWebInfFolderContainsPlugins( final List warEntryList ) 
+  public void testWebInfFolderContainsPlugins( final List warEntryList ) 
     throws Exception 
   {
     assertTrue( warEntryList.contains( "WEB-INF/plugins/" ) );
@@ -158,6 +161,7 @@ public class WARProductExportOperationTest extends TestCase {
       Object nextElement = entries.nextElement();
       warEntryList.add( nextElement.toString() );
     }
+    zip.close();
     return warEntryList;
   }
 
