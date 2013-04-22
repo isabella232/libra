@@ -33,8 +33,6 @@ public class ValidatorTest extends TestCase {
     = "org.eclipse.equinox.http.jetty";
   private static final String JETTY_SERVER = "org.mortbay.jetty.server";
   private static final String JETTY_UTIL = "org.mortbay.jetty.util";
-  private static final String SERVLETBRIDGE_EXTENSIONBUNDLE 
-    = "org.eclipse.equinox.servletbridge.extensionbundle";
   private static final String UPDATE_CONFIGURATOR 
     = "org.eclipse.update.configurator";
   private static final String JAVAX_SERVLET = "javax.servlet";
@@ -120,6 +118,46 @@ public class ValidatorTest extends TestCase {
     checkForBannedBundle( id );
   }
   
+  public void testJettyContinuationIsExcluded() throws Exception {
+    String id = "org.eclipse.jetty.continuation";
+    checkForBannedBundle( id );
+  }
+  
+  public void testJettyHttpIsExcluded() throws Exception {
+    String id = "org.eclipse.jetty.http";
+    checkForBannedBundle( id );
+  }
+  
+  public void testJettyIOIsExcluded() throws Exception {
+    String id = "org.eclipse.jetty.io";
+    checkForBannedBundle( id );
+  }
+  
+  public void testJettyJmxIsExcluded() throws Exception {
+    String id = "org.eclipse.jetty.jmx";
+    checkForBannedBundle( id );
+  }
+  
+  public void testJettySecurityIsExcluded() throws Exception {
+    String id = "org.eclipse.jetty.security";
+    checkForBannedBundle( id );
+  }
+  
+  public void testJetty8ServerIsExcluded() throws Exception {
+    String id = "org.eclipse.jetty.server";
+    checkForBannedBundle( id );
+  }
+  
+  public void testJettyServletIsExcluded() throws Exception {
+    String id = "org.eclipse.jetty.servlet";
+    checkForBannedBundle( id );
+  }
+  
+  public void testJetty8UtilIsExcluded() throws Exception {
+    String id = "org.eclipse.jetty.util";
+    checkForBannedBundle( id );
+  }
+  
   public void testEquinoxHTTPJettyIsExcluded() throws Exception {
     String id = EQUINOX_HTTP_JETTY;
     checkForBannedBundle( id );
@@ -164,11 +202,6 @@ public class ValidatorTest extends TestCase {
       }
     }
     assertTrue( foundBannedBundle );
-  }
-  
-  public void testSerlvetExtensionBundleIsIncluded() throws IOException {
-    String id = SERVLETBRIDGE_EXTENSIONBUNDLE;
-    checkForMissingRequiredBundle( id );
   }
   
   public void testEquinoxHTTPRegistryBundleIsIncluded() throws IOException {

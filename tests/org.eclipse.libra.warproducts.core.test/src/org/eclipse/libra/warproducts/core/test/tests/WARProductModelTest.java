@@ -93,16 +93,4 @@ public class WARProductModelTest extends TestCase {
     }
   }
 
-  private String readStream( final InputStream stream ) throws IOException {
-    InputStreamReader streamReader = new InputStreamReader( stream );
-    BufferedReader reader = new BufferedReader( streamReader );
-    StringBuffer webxmlContent = new StringBuffer();
-    int c;
-    while( ( c = reader.read() ) != -1 ) {
-      webxmlContent.append( ( char ) c );
-    }
-    reader.close();
-    return webxmlContent.toString();
-  }
-  
 }
