@@ -417,4 +417,39 @@ public class WARProductExportOperation extends FeatureExportOperation {
     plugin.setAttribute( "unpack", unpack ); //$NON-NLS-1$
   }
   
+  protected String getAssemblyScriptName( String featureID,
+                                          String os,
+                                          String ws,
+                                          String arch,
+                                          String featureLocation )
+  {
+    String configIni = featureLocation + IPath.SEPARATOR + "productRootFiles" + IPath.SEPARATOR + 
+        os + "." + ws + "." + arch + IPath.SEPARATOR + "configuration" + IPath.SEPARATOR + "config.ini";
+    addExtensionbundleToConfigIni( configIni );
+    return super.getAssemblyScriptName( featureID, os, ws, arch, featureLocation );
+  }
+  
+  private void addExtensionbundleToConfigIni( String configIni ) {
+    try {
+      File file = new File( configIni );
+      if( file.exists() ) {
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        String line = "";
+        String oldtext = "";
+        while( ( line = reader.readLine() ) != null ) {
+          oldtext += line + "\n";
+        }
+        reader.close();
+        String newtext = oldtext.replaceAll( "org.eclipse.equinox.http.servlet@start", 
+                                             "org.eclipse.equinox.servletbridge.extensionbundle,\\\\\n  " +
+                                             "org.eclipse.equinox.http.servlet@start");
+        FileWriter writer = new FileWriter( configIni );
+        writer.write(newtext);
+        writer.close();
+      }
+    } catch( IOException e ) {
+      throw new IllegalStateException( e );
+    }
+  }
+  
 }
