@@ -9,7 +9,7 @@
 	<name>Libra Parent POM</name>
 
 	<properties>
-		<tycho-version>0.13.0</tycho-version>
+		<tycho-version>0.18.0</tycho-version>
 		<eclipse-site>http://download.eclipse.org/eclipse/updates/4.3milestones/</eclipse-site>
 		<emf-site>http://download.eclipse.org/modeling/emf/emf/updates/2.9milestones/</emf-site>
 		<dtp-site>http://download.eclipse.org/datatools/downloads/drops/M_updates_1.11.0/</dtp-site>
@@ -170,11 +170,6 @@
 						</execution>
 					</executions>
 				</plugin>
-				<plugin>
-					<groupId>org.eclipse.dash.maven</groupId>
-					<artifactId>eclipse-signing-maven-plugin</artifactId>
-					<version>1.0.5</version>
-				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
@@ -219,12 +214,8 @@
 
 	<pluginRepositories>
 		<pluginRepository>
-			<id>maven-eclipse-central</id>
-			<url>http://maven.eclipse.org/nexus/content/groups/central/</url>
-		</pluginRepository>
-		<pluginRepository>
-			<id>maven-eclipse-public</id>
-			<url>http://maven.eclipse.org/nexus/content/groups/public/</url>
+			<id>cbi-releases</id>
+			<url>https://repo.eclipse.org/content/repositories/cbi-releases/</url>
 		</pluginRepository>
 	</pluginRepositories>
 
