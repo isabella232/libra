@@ -52,17 +52,6 @@
 		<module>../../features/org.eclipse.libra.framework.editor.feature.source</module>
 	</modules>
 
-	<profiles>
-		<profile>
-			<id>debug-tests</id>
-			<properties>
-				<debug-port>5589</debug-port>
-				<debug-suspend>n</debug-suspend>
-				<debug-options>-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=${debug-suspend},address=${debug-port}</debug-options>
-			</properties>
-		</profile>
-	</profiles>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -173,6 +162,91 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+	
+	<profiles>
+		<profile>
+			<id>debug-tests</id>
+			<properties>
+				<debug-port>5589</debug-port>
+				<debug-suspend>n</debug-suspend>
+				<debug-options>-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=${debug-suspend},address=${debug-port}</debug-options>
+			</properties>
+		</profile>
+		<profile>
+			<id>eclipse-sign</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>target-platform-configuration</artifactId>
+						<version>${tycho-version}</version>
+						<configuration>
+							<includePackedArtifacts>false</includePackedArtifacts>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.eclipse.tycho.extras</groupId>
+						<artifactId>tycho-pack200a-plugin</artifactId>
+						<version>${tycho-version}</version>
+						<executions>
+							<execution>
+								<id>pack200-normalize</id>
+								<goals>
+									<goal>normalize</goal>
+								</goals>
+								<phase>verify</phase>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.eclipse.cbi.maven.plugins</groupId>
+						<artifactId>eclipse-jarsigner-plugin</artifactId>
+						<version>1.0.4</version>
+						<executions>
+							<execution>
+								<id>sign</id>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+								<phase>verify</phase>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.eclipse.tycho.extras</groupId>
+						<artifactId>tycho-pack200b-plugin</artifactId>
+						<version>${tycho-version}</version>
+						<executions>
+							<execution>
+								<id>pack200-pack</id>
+								<goals>
+									<goal>pack</goal>
+								</goals>
+								<phase>verify</phase>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>tycho-p2-plugin</artifactId>
+						<version>${tycho-version}</version>
+						<executions>
+							<execution>
+								<id>p2-metadata</id>
+								<goals>
+									<goal>p2-metadata</goal>
+								</goals>
+								<phase>verify</phase>
+							</execution>
+						</executions>
+						<configuration>
+							<defaultP2Metadata>false</defaultP2Metadata>
+						</configuration>
+					</plugin>
+	       		</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 	<repositories>
 		<repository>
