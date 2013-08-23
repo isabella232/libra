@@ -17,13 +17,12 @@
 		<plugins>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-p2-publisher-plugin</artifactId>
+				<artifactId>target-platform-configuration</artifactId>
 				<version>${tycho-version}</version>
 				<configuration>
-					<publishArtifacts>true</publishArtifacts>
+					<includePackedArtifacts>true</includePackedArtifacts>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
