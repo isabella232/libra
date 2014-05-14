@@ -17,6 +17,7 @@
 		<wtp-site>http://download.eclipse.org/webtools/downloads/drops/R3.6.0/S-3.6.0M7-20140505163128/repository/</wtp-site>
 		<wtp-tests-site>http://download.eclipse.org/webtools/downloads/drops/R3.6.0/S-3.6.0M7-20140505163128/repositoryunittests/</wtp-tests-site>
 		<orbit-site>http://download.eclipse.org/tools/orbit/downloads/drops/R20130118183705/repository/</orbit-site>
+		<license-site>http://download.eclipse.org/cbi/updates/license</license-site>
 		<debug-options></debug-options> <!-- empty by default -->
 	</properties>
 
@@ -282,6 +283,11 @@
 		<repository>
 			<id>orbit</id>
 			<url>${orbit-site}</url>
+			<layout>p2</layout>
+		</repository>
+		<repository>
+			<id>license</id>
+			<url>${license-site}</url>
 			<layout>p2</layout>
 		</repository>
 	</repositories>

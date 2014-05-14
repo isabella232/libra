@@ -1,42 +1,46 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="Libra" sequenceNumber="30">
+<?pde version="3.8"?><target name="Libra" sequenceNumber="31">
 <locations>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="osgi.enterprise" version="4.2.0.v201108120515"/>
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20130118183705/repository/"/>
 </location>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.sdk.feature.group" version="4.3.0.v20130314-1730"/>
-<repository location="http://download.eclipse.org/eclipse/updates/4.3milestones"/>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.emf.sdk.feature.group" version="0.0.0"/>
+<repository location="http://download.eclipse.org/modeling/emf/emf/updates/2.10milestones/"/>
 </location>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.emf.sdk.feature.group" version="2.9.0.v20130318-0639"/>
-<repository location="http://download.eclipse.org/modeling/emf/emf/updates/2.9milestones/"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.gef.sdk.feature.group" version="3.9.0.201212170307"/>
-<unit id="org.eclipse.zest.sdk.feature.group" version="1.5.0.201212170307"/>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.gef.sdk.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.zest.sdk.feature.group" version="0.0.0"/>
 <repository location="http://download.eclipse.org/tools/gef/updates/milestones"/>
 </location>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.jpt.jpa_sdk.feature.feature.group" version="3.3.0.v201210121950-7A78-90eCkJmPJJyelIVN8a8XnSRT0cf3UDcRVN4"/>
-<unit id="org.eclipse.jst.common.fproj.enablement.jdt.sdk.feature.group" version="3.4.0.v201108231500-777FF8O9tKENOGLHOGSFW6I7E77"/>
-<unit id="org.eclipse.wst.common.fproj.sdk.feature.group" version="3.4.0.v201202292300-787JFEcApOGSJY_1ME_MS64A4C8C"/>
-<unit id="org.eclipse.jst.web_sdk.feature.feature.group" version="3.5.0.v201303132100-7B7I-99ZLYbjcGkW4QiUqBS9pkR8GkBVG07l6Qkx"/>
-<unit id="org.eclipse.wst.xml_sdk.feature.feature.group" version="3.5.0.v201209252144-7A7E-8DXJZZU6ESEA7hdbp9snTA7jgBxeVjihfAL"/>
-<unit id="org.eclipse.jst.enterprise_sdk.feature.feature.group" version="3.5.0.v201303132100-7779-84gAOOToJYP6ZSEa2LbCdnQ-RZWSiERCFuC"/>
-<unit id="org.eclipse.jst.server_sdk.feature.feature.group" version="3.4.1.v20130412_1040-7777184FABLKz-E0rgGjFHVlLP_iASESuSlDGM_C"/>
-<unit id="org.eclipse.wst.server_adapters.sdk.feature.feature.group" version="3.2.104.v20130123_1813-773DL84Q6JG7GhTnKfGeNk7EfPNDdOCHWD_Mam9P"/>
-<unit id="org.eclipse.wst.web_sdk.feature.feature.group" version="3.5.0.v201209252144-7E7MA98Sxi1RQ-QO49DRBPHdhTz-z-NTG1YOgnj-"/>
-<repository location="http://download.eclipse.org/webtools/downloads/drops/R3.5.0/S-3.5.0M6-20130315194337/repository/"/>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.jpt.jpa_sdk.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.jst.common.fproj.enablement.jdt.sdk.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.wst.common.fproj.sdk.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.jst.web_sdk.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.wst.xml_sdk.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.jst.enterprise_sdk.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.jst.server_sdk.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.wst.server_adapters.sdk.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.wst.web_sdk.feature.feature.group" version="0.0.0"/>
+<repository location="http://download.eclipse.org/webtools/downloads/drops/R3.6.0/S-3.6.0M7-20140505163128/repository/"/>
 </location>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.wst.common_tests.feature.feature.group" version="3.4.0.v201202292245-7B7BFXNF7RZHPYHxPsP3_m"/>
-<repository location="http://download.eclipse.org/webtools/downloads/drops/R3.5.0/S-3.5.0M6-20130315194337/repositoryunittests/"/>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.wst.common_tests.feature.feature.group" version="0.0.0"/>
+<repository location="http://download.eclipse.org/webtools/downloads/drops/R3.6.0/S-3.6.0M7-20140505163128/repositoryunittests/"/>
 </location>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.datatools.enablement.sdk.feature.feature.group" version="1.11.0.v201302211047-7I9v-FE9JgQGiXyV8MwG1XVsb875"/>
-<repository location="http://download.eclipse.org/datatools/downloads/drops/M_updates_1.11.0/"/>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.datatools.enablement.sdk.feature.feature.group" version="0.0.0"/>
+<repository location="http://download.eclipse.org/datatools/downloads/drops/M_updates_1.12.0/"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.license.feature.group" version="0.0.0"/>
+<repository location="http://download.eclipse.org/cbi/updates/license"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.sdk.ide" version="4.4.0.I20140501-0200"/>
+<repository location="http://download.eclipse.org/eclipse/updates/4.4milestones"/>
 </location>
 </locations>
 </target>
