@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: org.eclipse.libra.warproducts.core.test
-Bundle-Version: 0.3.0.qualifier
+Bundle-Version: 0.3.1.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.4
 Bundle-Localization: plugin
 Require-Bundle: org.junit;bundle-version="3.8.2",
@@ -10,6 +10,6 @@ Require-Bundle: org.junit;bundle-version="3.8.2",
  org.eclipse.core.runtime;bundle-version="3.6.0",
  org.eclipse.core.resources;bundle-version="3.6.0",
  org.eclipse.pde.core;bundle-version="3.6.0"
-Export-Package: org.eclipse.libra.warproducts.core.test,
- org.eclipse.libra.warproducts.core.test.tests
+Export-Package: org.eclipse.libra.warproducts.core.test,org.eclipse.li
+ bra.warproducts.core.test.tests
 Bundle-Vendor: %Bundle-Vendor

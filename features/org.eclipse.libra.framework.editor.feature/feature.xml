@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.libra.framework.editor.feature"
       label="%featureName"
-      version="0.3.0.qualifier"
+      version="0.3.1.qualifier"
       provider-name="%providerName"
       license-feature="org.eclipse.license"
       license-feature-version="0.0.0">
