@@ -562,4 +562,14 @@ public class WARProduct implements IWARProduct {
     return delegate.getConfigurationProperties();
   }
 
+  public IRepositoryInfo[] getRepositories() {
+    return null;
+  }
+
+  public void removeRepositories( IRepositoryInfo[] repositories ) {
+  }
+
+  public void addRepositories( IRepositoryInfo[] repositories ) {
+  }
+
 }
