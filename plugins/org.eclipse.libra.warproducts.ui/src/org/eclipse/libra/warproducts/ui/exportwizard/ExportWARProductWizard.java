@@ -15,6 +15,9 @@ import java.util.Map;
 
 import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
@@ -32,6 +35,7 @@ import org.eclipse.pde.internal.core.iproduct.IProductPlugin;
 import org.eclipse.pde.internal.ui.PDEPluginImages;
 import org.eclipse.pde.internal.ui.PDEUIMessages;
 import org.eclipse.pde.internal.ui.wizards.exports.ProductExportWizard;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.progress.IProgressConstants;
 import org.osgi.framework.Version;
 
@@ -158,6 +162,25 @@ public class ExportWARProductWizard extends ProductExportWizard {
     job.schedule();
     job.setProperty( IProgressConstants.ICON_PROPERTY,
                      PDEPluginImages.DESC_FEATURE_OBJ );
+    
+    final Display d = getShell().getDisplay();
+    job.addJobChangeListener( new JobChangeAdapter() {
+      public void done( IJobChangeEvent event ) {
+        final IStatus result = event.getResult();
+        if( result.isOK() )
+          return;
+        d.asyncExec( new Runnable() {
+
+          public void run() {
+            MessageDialog.openError( getShell(),
+                                     PDEUIMessages.ProductExportWizard_error,
+                                     PDEUIMessages.ProductExportWizard_corrupt
+                                         + "\n\n"
+                                         + result.getMessage() );
+          }
+        } );
+      }
+    } );
   }
 
   private BundleDescription[] getPluginModels() {

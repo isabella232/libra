@@ -28,7 +28,7 @@ import org.eclipse.pde.internal.core.iproduct.IProductModel;
 import org.eclipse.pde.internal.ui.*;
 import org.eclipse.pde.internal.ui.editor.*;
 import org.eclipse.pde.internal.ui.editor.build.JARFileFilter;
-import org.eclipse.pde.internal.ui.elements.DefaultTableProvider;
+import org.eclipse.pde.internal.ui.elements.TreeContentProvider;
 import org.eclipse.pde.internal.ui.parts.TablePart;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -51,7 +51,7 @@ public class LibrarySection extends TableSection
   private static final int BUTTON_REMOVE = 1;
   private static final int BUTTON_ADD = 0;
 
-  class LibraryContentProvider extends DefaultTableProvider {
+  class LibraryContentProvider extends TreeContentProvider {
 
     public Object[] getElements( final Object parent ) {
       return getProduct().getLibraries();

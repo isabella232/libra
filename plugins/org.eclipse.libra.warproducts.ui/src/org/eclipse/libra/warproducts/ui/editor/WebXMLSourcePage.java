@@ -15,7 +15,6 @@ import org.eclipse.pde.internal.core.text.plugin.DocumentGenericNode;
 import org.eclipse.pde.internal.ui.*;
 import org.eclipse.pde.internal.ui.editor.PDEFormEditor;
 import org.eclipse.pde.internal.ui.editor.XMLSourcePage;
-import org.eclipse.pde.internal.ui.elements.DefaultContentProvider;
 import org.eclipse.swt.graphics.Image;
 
 public class WebXMLSourcePage extends XMLSourcePage {
@@ -83,8 +82,7 @@ public class WebXMLSourcePage extends XMLSourcePage {
       return result;
     }
   }
-  private class WebXmlContentProvider extends DefaultContentProvider 
-    implements ITreeContentProvider
+  private class WebXmlContentProvider implements ITreeContentProvider
   {
 
     public Object[] getElements( final Object inputElement ) {
