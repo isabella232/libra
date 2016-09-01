@@ -29,6 +29,8 @@ public class WARProduct implements IWARProduct {
   private Map libraries;
   private IPath webXmlPath;
   private IPath launchIniPath;
+  private IPreferencesInfo fPreferencesInfo;
+  private ICSSInfo fCSSInfo;
 
   public WARProduct( final IProduct delegate ) {
     this.delegate = delegate;
@@ -570,6 +572,22 @@ public class WARProduct implements IWARProduct {
   }
 
   public void addRepositories( IRepositoryInfo[] repositories ) {
+  }
+
+  public IPreferencesInfo getPreferencesInfo() {
+    return fPreferencesInfo;
+  }
+
+  public void setPreferencesInfo(IPreferencesInfo info) {
+    fPreferencesInfo = info;
+  }
+
+  public ICSSInfo getCSSInfo() {
+    return fCSSInfo;
+  }
+
+  public void setCSSInfo(ICSSInfo info) {
+    fCSSInfo = info;
   }
 
 }
