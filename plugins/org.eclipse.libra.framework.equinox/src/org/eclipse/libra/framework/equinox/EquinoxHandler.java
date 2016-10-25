@@ -47,7 +47,7 @@ public class EquinoxHandler implements IEquinoxVersionHandler {
 		IPath plugins = location.append("plugins");
 		if (plugins.toFile().exists()) {
 			File[] files = plugins.toFile().listFiles();
-			for (File file : files) {
+			if (files!=null) for (File file : files) {
 				if (file.getName().indexOf("org.eclipse.osgi_") > -1) {
 					isFound = true;
 					break;
@@ -73,7 +73,7 @@ public class EquinoxHandler implements IEquinoxVersionHandler {
 
 		if (plugins.toFile().exists()) {
 			File[] files = plugins.toFile().listFiles();
-			for (File file : files) {
+			if (files!=null) for (File file : files) {
 				if (file.getName().indexOf("org.eclipse.osgi_") > -1) {
 					IPath path = plugins.append(file.getName());
 					cp.add(JavaRuntime.newArchiveRuntimeClasspathEntry(path));
@@ -132,6 +132,7 @@ public class EquinoxHandler implements IEquinoxVersionHandler {
 			}else if(javaProfileProps != null){
 				FileOutputStream os = new FileOutputStream(new File(profilePath));
 				javaProfileProps.store(os, "THIS FILE IS AUTO GENERATED");
+				os.close();
 			}
 		} catch (IOException e) {
 			Trace.trace(Trace.SEVERE, "Could not set equinox VM arguments:"+e.getMessage(), e);
@@ -144,9 +145,8 @@ public class EquinoxHandler implements IEquinoxVersionHandler {
 
 		if(jmxEnabled)
 			return new String[] {"-Dcom.sun.management.jmxremote.port="+jmxPort, "-Dcom.sun.management.jmxremote.authenticate=false", "-Dcom.sun.management.jmxremote.ssl=false", "-Declipse.ignoreApp=true", "-Dosgi.noShutdown=true", vmArgs };
-		else
-			return new String[] { "-Declipse.ignoreApp=true", "-Dosgi.noShutdown=true", vmArgs };
-			
+		
+		return new String[] { "-Declipse.ignoreApp=true", "-Dosgi.noShutdown=true", vmArgs };
 	}
 
 	public IStatus canAddModule(IModule module) {
@@ -170,15 +170,16 @@ public class EquinoxHandler implements IEquinoxVersionHandler {
 					+ deployPath.toOSString());
 
 		// Prepare a  directory structure
-		File temp = deployPath.append("plugins").toFile();
-		if (!temp.exists())
-			temp.mkdirs();
-		temp = deployPath.append("auto").toFile();
-		if (!temp.exists())
-			temp.mkdirs();
-		temp = deployPath.append("cache").toFile();
-		if (!temp.exists())
-			temp.mkdirs();
+		final String[] subdirs = new String[]{"plugins", "auto", "cache"};
+		for(final String subdir: subdirs){
+			File temp = deployPath.append(subdir).toFile();
+			if (temp.exists() && temp.isDirectory()) continue;
+			
+			if (! temp.mkdirs())
+				return new Status(IStatus.ERROR, EquinoxPlugin.PLUGIN_ID, 0,
+						Messages.errorIOerror+temp, null);
+			
+		}
 
 		return Status.OK_STATUS;
 	}
@@ -195,9 +196,9 @@ public class EquinoxHandler implements IEquinoxVersionHandler {
 		prepareConfigIni(configPath, wsBundleIds, frameworkJar, kernelBundles);
 	}
 
-	private void prepareConfigIni(IPath configPath, String[] wsBundleIds, String frameworkJar,
+	private static void prepareConfigIni(IPath configPath, String[] wsBundleIds, String frameworkJar,
 			TargetBundle[] krBundles) {
-		String propertyInstall = "";
+		StringBuilder propertyInstall = new StringBuilder();
 		for (String bundle : wsBundleIds) {
 			if (bundle.indexOf("@") != -1)
 				bundle = bundle.substring(0, bundle.indexOf("@"));
@@ -209,9 +210,9 @@ public class EquinoxHandler implements IEquinoxVersionHandler {
 					if(bpath.endsWith("/"))
 						bpath = bpath.substring(0,bpath.length()-1);
 					if(iPluginModelBase.isFragmentModel())
-						propertyInstall += "reference:file:" + bpath+ ", ";
+						propertyInstall.append("reference:file:" + bpath+ ", ");
 					else
-						propertyInstall += "reference:file:" + bpath+ "@start, ";
+						propertyInstall.append("reference:file:" + bpath+ "@start, ");
 				}
 			}
 		}
@@ -231,28 +232,30 @@ public class EquinoxHandler implements IEquinoxVersionHandler {
 		properties.put(
 				"osgi.bundles.defaultStartLevel", Integer.toString(start)); //$NON-NLS-1$
 		for (int i = 0; i < krBundles.length; i++) {
-			String targetBundlePath = "reference:file:"+krBundles[i].getBundleInfo().getLocation().getRawPath();
-			if (targetBundlePath != null && !(targetBundlePath.trim().equalsIgnoreCase(""))) {
-				if (targetBundlePath.indexOf("org.eclipse.osgi_") > -1) 
+			String targetBundleRawpath = krBundles[i].getBundleInfo().getLocation().getRawPath();
+			if (targetBundleRawpath != null && !(targetBundleRawpath.trim().equalsIgnoreCase(""))) {
+				if (targetBundleRawpath.indexOf("org.eclipse.osgi_") > -1) 
 				  continue;
-				
+
+				String targetBundlePath = "reference:file:"+targetBundleRawpath;
+
 				File file = new File(targetBundlePath.substring(targetBundlePath.indexOf("/")));
 				if (file.isFile()) {
-					propertyInstall += targetBundlePath;
+					propertyInstall.append(targetBundlePath);
 					if(krBundles[i].isFragment())
-						propertyInstall +=  ", ";
+						propertyInstall.append(", ");
 					else
-						propertyInstall += "@start, ";
+						propertyInstall.append("@start, ");
 				} else {
 					for (String string2 : file.list()) {
 						if (string2.indexOf(".jar") > -1) {
-							propertyInstall += targetBundlePath + string2;
+							propertyInstall.append(targetBundlePath + string2);
 							String fbundleId = getBundleId(string2);
-							IPluginModelBase modelBase = PluginRegistry.findModel(fbundleId);
+//							IPluginModelBase modelBase = PluginRegistry.findModel(fbundleId);
 							if(krBundles[i].isFragment())
-								propertyInstall +=  ", ";
+								propertyInstall.append(", ");
 							else
-								propertyInstall += "@start, ";
+								propertyInstall.append("@start, ");
 						}
 					}
 				}
@@ -260,7 +263,7 @@ public class EquinoxHandler implements IEquinoxVersionHandler {
 
 		}
 		
-		properties.setProperty("osgi.bundles", propertyInstall);
+		properties.setProperty("osgi.bundles", propertyInstall.toString());
 		properties.put("eclipse.ignoreApp", "true"); //$NON-NLS-1$ //$NON-NLS-2$
 		properties.put("osgi.noShutdown", "true"); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -273,7 +276,7 @@ public class EquinoxHandler implements IEquinoxVersionHandler {
 		}
 	}
 
-	private String getBundleId(String targetBundlePath) {
+	private static String getBundleId(String targetBundlePath) {
 		IPath kbPath = new Path(targetBundlePath);
 		String bundleId = kbPath.lastSegment();
 		if(bundleId.endsWith(".jar"))
@@ -284,7 +287,7 @@ public class EquinoxHandler implements IEquinoxVersionHandler {
 		return bundleId;
 	}
 
-	private String[] prepareDevProperties(IPath configPath, String[] wsBundleIds) {
+	private static String[] prepareDevProperties(IPath configPath, String[] wsBundleIds) {
 		try {
 			// Create file
 			FileWriter fstream = new FileWriter(configPath.toPortableString()
@@ -332,7 +335,7 @@ public class EquinoxHandler implements IEquinoxVersionHandler {
 	}
 	
 	
-	private  void copyFile(InputStream source, File destFile) throws IOException {
+	private static void copyFile(InputStream source, File destFile) throws IOException {
 
 
 		FileOutputStream destination = null;

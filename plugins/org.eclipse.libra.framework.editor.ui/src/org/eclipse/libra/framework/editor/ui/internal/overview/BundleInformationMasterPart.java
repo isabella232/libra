@@ -333,6 +333,7 @@ public class BundleInformationMasterPart extends SectionPart {
 									IStatus status = EditorUIPlugin.newErrorStatus("Bundle Overview editor part is not integrated with the runtime.");
 									EditorUIPlugin.log(status);
 									masterDetailsBlock.getEditorPage().setStatus(status);
+									return ;
 								}
 								
 								try {
@@ -378,7 +379,7 @@ public class BundleInformationMasterPart extends SectionPart {
 		bundleTableViewer.setInput(null);
 	}
 
-	class BundleStatusContentProvider implements IStructuredContentProvider {
+	static class BundleStatusContentProvider implements IStructuredContentProvider {
 
 		private Map<Long, IBundle> bundles;
 
@@ -404,7 +405,7 @@ public class BundleInformationMasterPart extends SectionPart {
 
 	}
 
-	class BundleStatusLabelProvider extends LabelProvider implements ITableLabelProvider {
+	static class BundleStatusLabelProvider extends LabelProvider implements ITableLabelProvider {
 
 		public Image getColumnImage(Object element, int columnIndex) {
 			switch (columnIndex) {
@@ -430,7 +431,7 @@ public class BundleInformationMasterPart extends SectionPart {
 		}
 	}
 
-	class BundleStatusComparator extends ViewerComparator {
+	static class BundleStatusComparator extends ViewerComparator {
 		@Override
 		public void sort(Viewer viewer, Object[] elements) {
 			Arrays.sort(elements, new Comparator<Object>() {
@@ -473,7 +474,7 @@ public class BundleInformationMasterPart extends SectionPart {
 		}
 	}
 
-	class BundleSorter extends ViewerComparator {
+	static class BundleSorter extends ViewerComparator {
 
 		private final SORT_COLUMN sortColumn;
 

@@ -65,14 +65,14 @@ public abstract class AbstractBundleEditorPage extends ServerEditorPart {
 
 		public StartServerAction(String launchMode) {
 			this.launchMode = launchMode;
-			if (launchMode == ILaunchManager.RUN_MODE) {
+			if (ILaunchManager.RUN_MODE.equals(launchMode)) {
 				setToolTipText(Messages.actionStartToolTip);
 				setText(Messages.actionStart);
 				setImageDescriptor(ImageResource.getImageDescriptor(ImageResource.IMG_ELCL_START));
 				setHoverImageDescriptor(ImageResource.getImageDescriptor(ImageResource.IMG_CLCL_START));
 				setDisabledImageDescriptor(ImageResource.getImageDescriptor(ImageResource.IMG_DLCL_START));
 			}
-			else if (launchMode == ILaunchManager.DEBUG_MODE) {
+			else if (ILaunchManager.DEBUG_MODE.equals(launchMode)) {
 				setToolTipText(Messages.actionDebugToolTip);
 				setText(Messages.actionDebug);
 				setImageDescriptor(ImageResource.getImageDescriptor(ImageResource.IMG_ELCL_START_DEBUG));
@@ -158,6 +158,7 @@ public abstract class AbstractBundleEditorPage extends ServerEditorPart {
 	}
 
 	public void setFocus() {
+		// nothing
 	}
 
 	protected abstract void createBundleContent(Composite parent);
@@ -215,7 +216,7 @@ public abstract class AbstractBundleEditorPage extends ServerEditorPart {
 	/**
 	 * Converts an IStatus message type to Form message type. 
 	 */
-	private int getMessageType(IStatus status) {
+	private static int getMessageType(IStatus status) {
 		switch (status.getSeverity()) {
 		case IStatus.ERROR:
 			return IMessageProvider.ERROR;

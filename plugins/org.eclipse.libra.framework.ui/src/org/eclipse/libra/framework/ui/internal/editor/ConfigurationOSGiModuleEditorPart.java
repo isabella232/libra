@@ -45,7 +45,6 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -66,13 +65,9 @@ import org.eclipse.wst.server.ui.editor.ServerEditorPart;
  */
 
 public class ConfigurationOSGiModuleEditorPart extends ServerEditorPart implements ISelectionProvider {
-	protected IOSGIFrameworkWorkingCopy framework2;
 	protected FrameworkInstanceConfiguration configuration;
 	
 	protected Table osgiBundlesTable;
-	protected int selection = -1;
-	protected Button addBundleProject;
-	protected Button remove;
 
 	protected PropertyChangeListener listener;
 
@@ -213,10 +208,10 @@ public class ConfigurationOSGiModuleEditorPart extends ServerEditorPart implemen
 			Trace.trace(Trace.SEVERE, "cannot access configuration",e);
 		}
 		
-		if (server != null)
-			framework2 = (IOSGIFrameworkWorkingCopy) server.loadAdapter(
-					IOSGIFrameworkWorkingCopy.class, null);
-
+		if (server != null){
+			server.loadAdapter(IOSGIFrameworkWorkingCopy.class, null);
+		}
+		
 		addChangeListener();
 		initialize();
 	}
@@ -239,14 +234,12 @@ public class ConfigurationOSGiModuleEditorPart extends ServerEditorPart implemen
 		if (readOnly)
 			return;
 
-		try {
-			selection = osgiBundlesTable.getSelectionIndex();
-			remove.setEnabled(true);
-			for(ISelectionChangedListener changedListener: selectionChangedListeners)
+		for(ISelectionChangedListener changedListener: selectionChangedListeners){
+			try {
 				changedListener.selectionChanged(new SelectionChangedEvent(this, getSelection()));
-		} catch (Exception e) {
-			selection = -1;
-			remove.setEnabled(false);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -267,16 +260,6 @@ public class ConfigurationOSGiModuleEditorPart extends ServerEditorPart implemen
 	 * @generated
 	 */
 	protected Collection<ISelectionChangedListener> selectionChangedListeners = new ArrayList<ISelectionChangedListener>();
-
-	/**
-	 * This keeps track of the selection of the editor as a whole.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected ISelection editorSelection = StructuredSelection.EMPTY;
-	
-	
 
 
 	public ISelection getSelection() {

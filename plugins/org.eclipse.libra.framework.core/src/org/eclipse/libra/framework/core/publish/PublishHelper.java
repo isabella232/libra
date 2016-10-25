@@ -118,7 +118,6 @@ public abstract class PublishHelper {
 	}
 	
 	public TargetBundle[] getTargetBundles(FrameworkInstanceConfiguration config) {
-		List<String> all = new ArrayList<String>();
 		ITargetDefinition targetDefinition = config.getTargetDefinition();
 		targetDefinition.resolve(new NullProgressMonitor());
 		TargetBundle[] targetBundles = targetDefinition.getBundles();
@@ -250,10 +249,9 @@ public abstract class PublishHelper {
 									}
 								}
 							}
-						} else {
 						}
 					} catch (Exception e) {
-
+						e.printStackTrace();
 					}
 				}
 			}

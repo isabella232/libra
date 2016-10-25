@@ -40,10 +40,10 @@ import org.eclipse.libra.framework.core.IOSGIFrameworkInstance;
 import org.eclipse.libra.framework.core.IOSGIFrameworkWorkingCopy;
 import org.eclipse.libra.framework.core.TargetDefinitionUtil;
 import org.eclipse.libra.framework.core.Trace;
-import org.eclipse.pde.internal.core.ICoreConstants;
-import org.eclipse.pde.internal.core.PDECore;
 import org.eclipse.pde.core.target.ITargetDefinition;
 import org.eclipse.pde.core.target.ITargetPlatformService;
+import org.eclipse.pde.internal.core.ICoreConstants;
+import org.eclipse.pde.internal.core.PDECore;
 import org.eclipse.pde.internal.core.util.VMUtil;
 import org.eclipse.pde.internal.ui.IHelpContextIds;
 import org.eclipse.pde.internal.ui.PDEUIMessages;
@@ -84,7 +84,6 @@ public class TargetDefinitionEditorPart extends ServerEditorPart {
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 
 	protected ITargetDefinition targetDefinition;
-	protected IOSGIFrameworkWorkingCopy server2;
 	protected FrameworkInstanceConfiguration configuration;
 
 	private Text fNameText;
@@ -686,10 +685,9 @@ public class TargetDefinitionEditorPart extends ServerEditorPart {
 			Trace.trace(Trace.SEVERE, "cannot access configuration", e);
 		}
 
-		if (server != null)
-			server2 = (IOSGIFrameworkWorkingCopy) server.loadAdapter(
-					IOSGIFrameworkWorkingCopy.class, null);
-
+		if (server != null){
+			server.loadAdapter(IOSGIFrameworkWorkingCopy.class, null);
+		}
 		addChangeListener();
 		initialize();
 	}

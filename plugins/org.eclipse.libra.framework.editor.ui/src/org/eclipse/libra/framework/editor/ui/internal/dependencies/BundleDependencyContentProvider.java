@@ -80,6 +80,7 @@ public class BundleDependencyContentProvider implements IGraphContentProvider, I
 	}
 
 	public void dispose() {
+		// empty method
 	}
 
 	public BundleDependencyContentResult getContentResult() {
@@ -97,12 +98,12 @@ public class BundleDependencyContentProvider implements IGraphContentProvider, I
 	public Object[] getElements(Object input) {
 		if (input instanceof Collection) {
 			dependenciesByBundle = new HashMap<IBundle, Set<BundleDependency>>();
-			Set<IBundle> bundles = new HashSet<IBundle>((Collection<IBundle>) input);
+			Set<IBundle> bundleset = new HashSet<IBundle>((Collection<IBundle>) input);
 			if (!"type filter text".equals(searchControl.getSearchText().getText())
 					&& searchControl.getSearchText().getText().trim().length() > 0) {
 				String searchText = searchControl.getSearchText().getText().trim() + "*";
 				StringMatcher matcher = new StringMatcher(searchText, true, false);
-				for (IBundle dep : new HashSet<IBundle>(bundles)) {
+				for (IBundle dep : new HashSet<IBundle>(bundleset)) {
 					boolean filter = true;
 					if (matcher.match(dep.getSymbolicName())) {
 						filter = false;
@@ -111,15 +112,15 @@ public class BundleDependencyContentProvider implements IGraphContentProvider, I
 						filter = false;
 					}
 					if (filter) {
-						bundles.remove(dep);
+						bundleset.remove(dep);
 					}
 				}
 			}
-			this.contentResult = new BundleDependencyContentResult(bundles);
+			this.contentResult = new BundleDependencyContentResult(bundleset);
 
 			Set<BundleDependency> dependencies = new HashSet<BundleDependency>();
 			if (showPackage) {
-				Set<IBundle> bundlesToProcess = new HashSet<IBundle>(bundles);
+				Set<IBundle> bundlesToProcess = new HashSet<IBundle>(bundleset);
 				Set<IBundle> alreadyProcessedBundles = new HashSet<IBundle>();
 				int degree = 0;
 
@@ -133,7 +134,7 @@ public class BundleDependencyContentProvider implements IGraphContentProvider, I
 					}
 				} while (bundlesToProcess.size() > 0);
 
-				bundlesToProcess = new HashSet<IBundle>(bundles);
+				bundlesToProcess = new HashSet<IBundle>(bundleset);
 				alreadyProcessedBundles = new HashSet<IBundle>();
 				degree = 0;
 
@@ -148,7 +149,7 @@ public class BundleDependencyContentProvider implements IGraphContentProvider, I
 				} while (bundlesToProcess.size() > 0);
 			}
 			else if (showServices) {
-				Set<IBundle> bundlesToProcess = new HashSet<IBundle>(bundles);
+				Set<IBundle> bundlesToProcess = new HashSet<IBundle>(bundleset);
 				Set<IBundle> alreadyProcessedBundles = new HashSet<IBundle>();
 				int degree = 0;
 
@@ -162,7 +163,7 @@ public class BundleDependencyContentProvider implements IGraphContentProvider, I
 					}
 				} while (bundlesToProcess.size() > 0);
 
-				bundlesToProcess = new HashSet<IBundle>(bundles);
+				bundlesToProcess = new HashSet<IBundle>(bundleset);
 				alreadyProcessedBundles = new HashSet<IBundle>();
 				degree = 0;
 
@@ -194,7 +195,8 @@ public class BundleDependencyContentProvider implements IGraphContentProvider, I
 		return null;
 	}
 
-	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+	public void inputChanged(Viewer theViewer, Object oldInput, Object newInput) {
+		// empty method
 	}
 
 	public boolean isSelected(IBundle bundle) {
@@ -216,24 +218,19 @@ public class BundleDependencyContentProvider implements IGraphContentProvider, I
 			viewer.unReveal(dep);
 		}
 		selectedDependencies = new HashSet<BundleDependency>();
-		Set<Object> newSelection = new HashSet<Object>();
 		Iterator<Object> iterator = ((IStructuredSelection) event.getSelection()).iterator();
 		while (iterator.hasNext()) {
 			Object selectedObject = iterator.next();
 			if (selectedObject instanceof IBundle) {
-				newSelection.add(selectedObject);
 				if (dependenciesByBundle.containsKey(selectedObject)) {
 					for (BundleDependency dep : dependenciesByBundle.get(selectedObject)) {
 						selectedDependencies.add(dep);
-						newSelection.add(dep.getExportingBundle());
 					}
 				}
 			}
 			else if (selectedObject instanceof BundleDependency) {
 				BundleDependency dep = (BundleDependency) selectedObject;
 				selectedDependencies.add(dep);
-				newSelection.add(dep.getExportingBundle());
-				newSelection.add(dep.getImportingBundle());
 			}
 		}
 
@@ -314,7 +311,7 @@ public class BundleDependencyContentProvider implements IGraphContentProvider, I
 							bundleDependencies.add(bundleDependency);
 							dependencies.add(bundleDependency);
 						}
-						contentResult.addIncomingDependency(degree, dependantBundle);
+						contentResult.addIncomingDependency(Integer.valueOf(degree), dependantBundle);
 
 						bundleDependency.addPackageImport(packageImport);
 						dependentBundles.add(dependantBundle);
@@ -366,7 +363,7 @@ public class BundleDependencyContentProvider implements IGraphContentProvider, I
 						bundleDependencies.add(bundleDependency);
 						dependencies.add(bundleDependency);
 					}
-					contentResult.addIncomingDependency(degree, dependantBundle);
+					contentResult.addIncomingDependency(Integer.valueOf(degree), dependantBundle);
 
 					bundleDependency.addServiceReferece(pe);
 					dependentBundles.add(dependantBundle);
@@ -417,7 +414,7 @@ public class BundleDependencyContentProvider implements IGraphContentProvider, I
 					bundleDependencies.add(bundleDependency);
 					dependencies.add(bundleDependency);
 				}
-				contentResult.addOutgoingDependency(degree, dependantBundle);
+				contentResult.addOutgoingDependency(Integer.valueOf(degree), dependantBundle);
 
 				bundleDependency.addPackageImport(pe);
 				dependentBundles.add(dependantBundle);
@@ -466,7 +463,7 @@ public class BundleDependencyContentProvider implements IGraphContentProvider, I
 					bundleDependencies.add(bundleDependency);
 					dependencies.add(bundleDependency);
 				}
-				contentResult.addOutgoingDependency(degree, dependantBundle);
+				contentResult.addOutgoingDependency(Integer.valueOf(degree), dependantBundle);
 
 				bundleDependency.addServiceReferece(pe);
 				dependentBundles.add(dependantBundle);

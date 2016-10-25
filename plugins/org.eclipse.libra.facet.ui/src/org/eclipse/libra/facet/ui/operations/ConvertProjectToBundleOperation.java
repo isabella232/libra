@@ -17,8 +17,6 @@ import java.lang.reflect.InvocationTargetException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.pde.core.project.IBundleProjectDescription;
-import org.eclipse.pde.core.project.IBundleProjectService;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
@@ -27,8 +25,6 @@ import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 public class ConvertProjectToBundleOperation extends WorkspaceModifyOperation {
 	
 	protected IProject fProject;
-	protected IBundleProjectService fBundleProjectService;
-	protected IBundleProjectDescription fBundleProjectDescription;
 	
 	public ConvertProjectToBundleOperation(IProject project) {
 		this.fProject = project;

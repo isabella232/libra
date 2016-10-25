@@ -61,7 +61,7 @@ public class OSGIRuntimeSourcePathComputerDelegate implements
 		return visitor.getSourceContainers();
 	}
 
-	class SourcePathComputerVisitor implements IModuleVisitor {
+	static class SourcePathComputerVisitor implements IModuleVisitor {
 
 		final ILaunchConfiguration configuration;
 

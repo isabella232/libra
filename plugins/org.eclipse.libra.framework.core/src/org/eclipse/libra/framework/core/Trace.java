@@ -34,7 +34,7 @@ public class Trace {
 	
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy HH:mm.ss.SSS");
 	
-	protected static int pluginLength = -1;
+	static int pluginLength = -1;
 
 	/**
 	 * Trace constructor comment.

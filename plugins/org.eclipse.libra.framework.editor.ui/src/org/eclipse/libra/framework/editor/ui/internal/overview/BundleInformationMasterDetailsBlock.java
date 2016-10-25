@@ -207,6 +207,9 @@ public class BundleInformationMasterDetailsBlock extends MasterDetailsBlock {
 				case SWT.Resize:
 					hookSashListeners();
 					break;
+				default:
+					// only above events need to be taken care of
+					break;
 				}
 			}
 		};

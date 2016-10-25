@@ -33,7 +33,6 @@ public class PingThread {
 	private int maxPings;
 
 	private boolean stop = false;
-	private String url;
 	private IServer server;
 	private ILaunch launch;
 	private OSGIFrameworkInstanceBehaviorDelegate behaviour;
@@ -52,7 +51,6 @@ public class PingThread {
 			OSGIFrameworkInstanceBehaviorDelegate behaviour) {
 		super();
 		this.server = server;
-		this.url = url;
 		this.maxPings = maxPings;
 		this.behaviour = behaviour;
 		this.launch = launch;
@@ -95,15 +93,15 @@ public class PingThread {
 					server.stop(true);
 					stop = true;
 					break;
-				} else {
-					Trace.trace(Trace.FINEST, "Ping: pinging " + count);
-					IProcess[] procs = launch.getProcesses();
-					if (procs != null && procs.length > 0) {
-						if (!procs[0].isTerminated()) {
-							behaviour.setServerStarted();
-							stop();
-							break;
-						}
+				} 
+
+				Trace.trace(Trace.FINEST, "Ping: pinging " + count);
+				IProcess[] procs = launch.getProcesses();
+				if (procs != null && procs.length > 0) {
+					if (!procs[0].isTerminated()) {
+						behaviour.setServerStarted();
+						stop();
+						break;
 					}
 				}
 
@@ -114,7 +112,7 @@ public class PingThread {
 					try {
 						Thread.sleep(PING_INTERVAL);
 					} catch (InterruptedException e2) {
-
+						// need not be handled
 					}
 				}
 			}

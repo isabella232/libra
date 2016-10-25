@@ -49,6 +49,7 @@ public class LaunchConfigurationDelegate extends
 		if (server == null) {
 			Trace.trace(Trace.FINEST,
 					"Launch configuration could not find runtime instance");
+			return ;
 		}
 
 //      This should be handled by the action that starts/debugs not here

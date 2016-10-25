@@ -22,7 +22,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.libra.framework.core.Messages;
-import org.eclipse.pde.core.plugin.IPluginModelBase;
 import org.eclipse.pde.core.target.ITargetDefinition;
 
 
@@ -33,17 +32,11 @@ import org.eclipse.pde.core.target.ITargetDefinition;
  * because the content of the target definition has changed.
  */
 public class TargetChangedCommand extends AbstractOperation {
-	protected IPluginModelBase module;
-	protected int modules = -1;
-	
-
 
 	public TargetChangedCommand(ITargetDefinition  definition) {
 		super( Messages.configurationEditorActionAddOsgiModule);
 	
 	}
-
-
 
 	@Override
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info)

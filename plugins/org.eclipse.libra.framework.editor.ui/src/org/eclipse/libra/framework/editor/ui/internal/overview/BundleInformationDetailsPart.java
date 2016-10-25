@@ -184,7 +184,7 @@ public class BundleInformationDetailsPart extends AbstractFormPart implements ID
 		}
 	}
 
-	class PackageLabelProvider extends LabelProvider {
+	static class PackageLabelProvider extends LabelProvider {
 
 		/*
 		 * (non-Javadoc)
@@ -221,7 +221,7 @@ public class BundleInformationDetailsPart extends AbstractFormPart implements ID
 		}
 	}
 
-	class ServicePropertyComparator extends ViewerComparator {
+	static class ServicePropertyComparator extends ViewerComparator {
 
 		@SuppressWarnings("unchecked")
 		@Override
@@ -232,7 +232,7 @@ public class BundleInformationDetailsPart extends AbstractFormPart implements ID
 		}
 	}
 
-	class ServicePropertyContentProvider implements IStructuredContentProvider {
+	static class ServicePropertyContentProvider implements IStructuredContentProvider {
 
 		private IServiceReference ref;
 
@@ -257,7 +257,7 @@ public class BundleInformationDetailsPart extends AbstractFormPart implements ID
 
 	}
 
-	class ServicePropertyLabelProvider extends LabelProvider implements ITableLabelProvider {
+	static class ServicePropertyLabelProvider extends LabelProvider implements ITableLabelProvider {
 
 		public Image getColumnImage(Object element, int columnIndex) {
 			return null;
@@ -354,7 +354,7 @@ public class BundleInformationDetailsPart extends AbstractFormPart implements ID
 		}
 	}
 
-	class ServicesLabelProvider extends LabelProvider {
+	static class ServicesLabelProvider extends LabelProvider {
 
 		@Override
 		public Image getImage(Object element) {

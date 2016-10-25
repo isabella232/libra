@@ -53,10 +53,7 @@ public class OsgiModuleDeployableFactory extends ProjectModuleFactoryDelegate {
 		if (component == null) {
 			component = new VirtualComponent(project, new Path("/")); //$NON-NLS-1$
 		}
-		if (component != null) {
-			return createModuleDelegates(component);
-		}
-		return null;
+		return createModuleDelegates(component);
 	}
 
 	private IModule[] createModuleDelegates(IVirtualComponent component) {

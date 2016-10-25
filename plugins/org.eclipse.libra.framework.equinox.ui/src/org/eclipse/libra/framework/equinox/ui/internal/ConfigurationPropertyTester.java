@@ -26,8 +26,7 @@ public class ConfigurationPropertyTester extends PropertyTester {
 		try {
 			IServerAttributes server = (IServerAttributes) receiver;
 			FrameworkInstanceDelegate equinox = (FrameworkInstanceDelegate) server.loadAdapter(IEquinoxFrameworkInstance.class, null);
-			if (equinox != null)
-				return equinox != null;
+			return equinox != null;
 		} catch (Exception e) {
 			// ignore
 		}

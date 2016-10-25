@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.libra.framework.equinox;
 
+import java.io.File;
+
 import org.eclipse.osgi.util.NLS;
 /**
  * Translated messages.
@@ -23,6 +25,7 @@ public class Messages extends NLS {
 	public static String errorNotBundle;
 	public static String errorOSGiBundlesOnly;
 	public static String errorNoRuntime;
+	public static String errorIOerror;
 	
 	public static String publishServerTask;
 	public static String errorConfigurationProjectClosed;

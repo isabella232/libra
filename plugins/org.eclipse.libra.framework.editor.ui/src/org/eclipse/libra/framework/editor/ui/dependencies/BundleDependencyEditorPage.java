@@ -314,6 +314,7 @@ public class BundleDependencyEditorPage extends AbstractBundleEditorPage impleme
 									IStatus status = EditorUIPlugin.newErrorStatus("Bundle Dependency Graph editor part is not integrated with the runtime.");
 									EditorUIPlugin.log(status);
 									setStatus(status);
+									return ;
 								}
 								
 								try {

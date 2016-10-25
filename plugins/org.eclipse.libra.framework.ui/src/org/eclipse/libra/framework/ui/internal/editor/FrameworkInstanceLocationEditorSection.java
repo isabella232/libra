@@ -73,8 +73,6 @@ public class FrameworkInstanceLocationEditorSection extends ServerEditorSection 
 	protected Section section;
 	protected IOSGIFrameworkInstance frameworkInstance;
 	
-	protected boolean defaultDeployDirIsSet;
-	
 	protected Button frameworkInstanceDirCustom;
 	
 	protected Text frameworkInstanceDir;
@@ -88,7 +86,6 @@ public class FrameworkInstanceLocationEditorSection extends ServerEditorSection 
 	protected IPath workspacePath;
 	
 	protected boolean allowRestrictedEditing;
-	protected IPath tempDirPath;
 	protected IPath installDirPath;
 
 	protected boolean updating=false;
@@ -314,7 +311,7 @@ public class FrameworkInstanceLocationEditorSection extends ServerEditorSection 
 		if (!readOnly) {
 			// If server has not been published, or server is published with no modules, allow editing
 			// TODO Find better way to determine if server hasn't been published
-			if ((basePath != null && !basePath.append("conf").toFile().exists())
+			if ((!basePath.append("conf").toFile().exists())
 					|| (server.getOriginal().getServerPublishState() == IServer.PUBLISH_STATE_NONE
 							&& server.getOriginal().getModules().length == 0)) {
 				allowRestrictedEditing = true;
@@ -344,11 +341,6 @@ public class FrameworkInstanceLocationEditorSection extends ServerEditorSection 
 		String dir = null;
 		if (frameworkInstanceDir != null) {
 			dir = frameworkInstanceDir.getText().trim();
-			IPath path = new Path(dir);
-			// Adjust if the temp dir is known and has been entered
-			if (tempDirPath != null && tempDirPath.equals(path))
-				dir = null;
-
 		}
 		return dir;
 	}
@@ -356,7 +348,7 @@ public class FrameworkInstanceLocationEditorSection extends ServerEditorSection 
 	protected void updateServerDirButtons() {
 		if (frameworkInstance.getInstanceDirectory() == null) {
 			IPath path = new Path(frameworkInstance.getInstanceDirectory());
-			if (path != null && path.equals(installDirPath)) {
+			if (path.equals(installDirPath)) {
 				frameworkInstanceDirCustom.setSelection(false);
 			} else {
 				frameworkInstanceDirCustom.setSelection(false);

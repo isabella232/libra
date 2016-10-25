@@ -41,28 +41,28 @@ public class BundleDependencyLayoutAlgorithm extends AbstractLayoutAlgorithm {
 			double boundsX, double boundsY, double boundsWidth, double boundsHeight) {
 
 		BundleDependencyContentResult contentResult = this.contentProvider.getContentResult();
-		Set<IBundle> rootBundles = contentResult.getBundles();
-
-		Set<IBundle> bundlesProcessed = new HashSet<IBundle>();
 
 		if (contentResult != null) {
+			Set<IBundle> rootBundles = contentResult.getBundles();
+			Set<IBundle> bundlesProcessed = new HashSet<IBundle>();
+
 			Set<ColumnHolder> columnNodes = new HashSet<ColumnHolder>();
 			double columnWith = 0;
 			double currentX = boundsX + 0;
 			double currentY = boundsY + 10;
 			double maxY = boundsHeight;
-			int columns = 0;
 
 			// Start with the incoming dependencies
-			int degree = contentResult.getIncomingDegree();
+			int degree = contentResult.getIncomingDegree().intValue();
 			while (degree > 0) {
 				Set<InternalNode> degreeNodes = new HashSet<InternalNode>();
-				Set<IBundle> deps = contentResult.getIncomingDependencies().get(degree);
+				Set<IBundle> deps = contentResult.getIncomingDependencies().get(Integer.valueOf(degree));
 				for (IBundle bundle : deps) {
 					if (!bundlesProcessed.contains(bundle)
 							&& !rootBundles.contains(bundle)
-							&& lowestRanking(bundle, contentResult.getIncomingDegree(), contentResult
-									.getIncomingDependencies()) == degree) {
+							&& lowestRanking(bundle, degree, 
+									contentResult.getIncomingDependencies()) == degree
+					) {
 						for (InternalNode node : entitiesToLayout) {
 							LayoutEntity obj = node.getLayoutEntity();
 							IBundle graphBundle = (IBundle) ((GraphNode) obj.getGraphData()).getData();
@@ -88,11 +88,10 @@ public class BundleDependencyLayoutAlgorithm extends AbstractLayoutAlgorithm {
 				}
 
 				ColumnHolder holder = new ColumnHolder();
-				holder.index = columns;
 				holder.y = currentY;
 				holder.nodes = degreeNodes;
 				columnNodes.add(holder);
-				columns++;
+
 				currentY = boundsY + 10;
 				if (degreeNodes.size() > 0) {
 					currentX = currentX + columnWith + 30;
@@ -125,7 +124,6 @@ public class BundleDependencyLayoutAlgorithm extends AbstractLayoutAlgorithm {
 			}
 
 			ColumnHolder holder = new ColumnHolder();
-			holder.index = columns;
 			holder.y = currentY;
 			holder.nodes = rootNodes;
 			columnNodes.add(holder);
@@ -166,7 +164,6 @@ public class BundleDependencyLayoutAlgorithm extends AbstractLayoutAlgorithm {
 					}
 				}
 				holder = new ColumnHolder();
-				holder.index = columns;
 				holder.y = currentY;
 				holder.nodes = degreeNodes;
 				columnNodes.add(holder);
@@ -230,10 +227,8 @@ public class BundleDependencyLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	public void setLayoutArea(double x, double y, double width, double height) {
 	}
 
-	class ColumnHolder {
+	static class ColumnHolder {
 		protected double y;
-
-		protected int index;
 
 		protected Set<InternalNode> nodes;
 	}
