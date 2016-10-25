@@ -78,7 +78,7 @@ public class WARProductOutlinePage extends FormOutlinePage {
     return result;
   }
   
-  private class LibraryComparator implements Comparator {
+  private static class LibraryComparator implements Comparator {
 
     public int compare( final Object o1, 
                         final Object o2 ) {

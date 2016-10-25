@@ -53,7 +53,7 @@ public class WARProductInputContext extends UTF8InputContext {
           IFile file = ( ( IFileEditorInput )input ).getFile();
           model = new WARWorkspaceProductModel( file, true );
           model.load();
-        } else if( input instanceof IStorageEditorInput ) {
+        } else {
           IStorageEditorInput storageInput = ( IStorageEditorInput )input;
           InputStream contents = storageInput.getStorage().getContents();
           InputStream is = new BufferedInputStream( contents );

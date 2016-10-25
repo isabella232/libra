@@ -134,7 +134,12 @@ public class ExportWARProductWizard extends ProductExportWizard {
         if( !openQuestion ) {
           result = false;
         } else {
-          zipFile.delete();
+          if (! zipFile.delete()){
+            MessageDialog.openError( getContainer().getShell(),
+                                        Messages.NewWARDeleteFailed_title,
+                                        Messages.NewWARDeleteFailed_desc+"\n"+zipFile);
+            result = false;
+          }
         }
       }
     }

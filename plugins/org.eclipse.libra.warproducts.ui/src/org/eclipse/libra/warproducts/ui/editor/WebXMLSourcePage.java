@@ -82,7 +82,7 @@ public class WebXMLSourcePage extends XMLSourcePage {
       return result;
     }
   }
-  private class WebXmlContentProvider implements ITreeContentProvider
+  private static class WebXmlContentProvider implements ITreeContentProvider
   {
 
     public Object[] getElements( final Object inputElement ) {

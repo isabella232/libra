@@ -73,7 +73,7 @@ public class SelectionPage extends AbstractExportWizardPage {
         if( firstElement != null && firstElement instanceof IFile ) {
           IFile file = ( IFile )firstElement;
           String fileExtension = file.getFileExtension();
-          if( fileExtension.equals( WARProductConstants.FILE_EXTENSION ) ) {
+          if( WARProductConstants.FILE_EXTENSION.equals( fileExtension ) ) {
             warProductFile = file;
             wizard.loadProductFromFile( file );
           }

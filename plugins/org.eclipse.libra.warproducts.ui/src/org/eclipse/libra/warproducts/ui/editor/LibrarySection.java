@@ -59,7 +59,7 @@ public class LibrarySection extends TableSection
     
   }
   
-  class LibraryLabelProvider extends LabelProvider {
+  static class LibraryLabelProvider extends LabelProvider {
     
     public String getText( final Object element ) {
       String result = ""; //$NON-NLS-1$

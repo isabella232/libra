@@ -40,7 +40,7 @@ public class WARProductExportOperation extends FeatureExportOperation {
   private String featureLocation;
   private String root;
   private IProduct product;
-  protected static String errorMessage;
+  private static String errorMessage;
 
   public static void setErrorMessage( final String message ) {
     errorMessage = message;
@@ -204,7 +204,9 @@ public class WARProductExportOperation extends FeatureExportOperation {
   {
     File file = new File( featureLocation );
     if( !file.exists() || !file.isDirectory() ) {
-      file.mkdirs();
+      if (! file.mkdirs()){
+        throw new IOException( Messages.creatorCouldntCopy+"\n"+file );
+      }
     }
     Properties properties = new Properties();
     handleRootFiles( configurations, properties );
@@ -249,10 +251,12 @@ public class WARProductExportOperation extends FeatureExportOperation {
     }
   }
 
-  private String createLibDir() {
+  private String createLibDir() throws IOException {
     String location = featureLocation;
     File dir = new File( location, "lib" ); //$NON-NLS-1$
-    dir.mkdirs();
+    if (! dir.mkdirs()){
+      throw new IOException( Messages.creatorCouldntCopy+": "+dir );
+    }
     return dir.getAbsolutePath();
   }
   
@@ -435,12 +439,13 @@ public class WARProductExportOperation extends FeatureExportOperation {
       if( file.exists() ) {
         BufferedReader reader = new BufferedReader(new FileReader(file));
         String line = "";
-        String oldtext = "";
+        StringBuilder oldtext = new StringBuilder();
         while( ( line = reader.readLine() ) != null ) {
-          oldtext += line + "\n";
+          oldtext.append( line );
+          oldtext.append( "\n" );
         }
         reader.close();
-        String newtext = oldtext.replaceAll( "org.eclipse.equinox.http.servlet@start", 
+        String newtext = oldtext.toString().replaceAll( "org.eclipse.equinox.http.servlet@start", 
                                              "org.eclipse.equinox.servletbridge.extensionbundle,\\\\\n  " +
                                              "org.eclipse.equinox.http.servlet@start");
         FileWriter writer = new FileWriter( configIni );

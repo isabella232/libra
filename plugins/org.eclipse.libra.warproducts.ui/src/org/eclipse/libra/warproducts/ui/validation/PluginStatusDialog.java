@@ -22,7 +22,6 @@ import org.eclipse.ui.help.IWorkbenchHelpSystem;
 
 public class PluginStatusDialog extends TrayDialog {
 
-  public Map input;
   private PluginStatusContentVisualizer viewer;
 
   public PluginStatusDialog( final Shell parentShell ) {
@@ -32,7 +31,6 @@ public class PluginStatusDialog extends TrayDialog {
   }
 
   public void setInput( final Map input ) {
-    this.input = input;
     viewer.setInput( input );
   }
 
@@ -87,7 +85,6 @@ public class PluginStatusDialog extends TrayDialog {
   }
 
   public void refresh( final Map input ) {
-    this.input = input;
     viewer.getViewer().setInput( input );
     viewer.getViewer().refresh();
   }
