@@ -23,6 +23,7 @@ public class EquinoxConfigurationPublishHelper extends PublishHelper{
 		this.behavior = behavior;
 	}
 	
+	@Override
 	protected IPath getPublishFolder() {
 		IPath configPath = behavior.getBaseDirectory();
 

@@ -55,20 +55,24 @@ public class FelixRuntimeInstanceBehavior extends
 		return (FelixFrameworkInstance) getServer().loadAdapter(FelixFrameworkInstance.class, null);
 	}
 
+	@Override
 	public String getFrameworkClass() {
 		return getFelixVersionHandler().getFrameworkClass();
 	}
 
+	@Override
 	public String[] getFrameworkProgramArguments(boolean starting) {
 		return getFelixVersionHandler().getFrameworkProgramArguments(
 				getBaseDirectory(), getFrameworkInstance().isDebug(), starting);
 	}
 
+	@Override
 	public String[] getExcludedFrameworkProgramArguments(boolean starting) {
 		return getFelixVersionHandler().getExcludedFrameworkProgramArguments(
 				getFrameworkInstance().isDebug(), starting);
 	}
 
+	@Override
 	public String[] getFrameworkVMArguments() {
 		IPath installPath = getServer().getRuntime().getLocation();
 		// If installPath is relative, convert to canonical path and hope for
@@ -101,6 +105,7 @@ public class FelixRuntimeInstanceBehavior extends
 		return getFelixVersionHandler().getFrameworkVMArguments(installPath, null, deployPath, false, jmxEnabled, jmxPort);
 	}
 	
+	@Override
 	protected void publishServer(int kind, IProgressMonitor monitor)
 			throws CoreException {
 		if (getServer().getRuntime() == null)
@@ -126,6 +131,7 @@ public class FelixRuntimeInstanceBehavior extends
 		setServerPublishState(IServer.PUBLISH_STATE_NONE);
 	}
 
+	@Override
 	@SuppressWarnings("rawtypes")
 	protected void publishModules(int kind, List modules, List deltaKind2,
 			MultiStatus multi, IProgressMonitor monitor) {
@@ -149,6 +155,7 @@ public class FelixRuntimeInstanceBehavior extends
 		}
 	}
 
+	@Override
 	protected void publishModule(int kind, int deltaKind, IModule[] moduleTree,
 			IProgressMonitor monitor) throws CoreException {
 		if (getServer().getServerState() != IServer.STATE_STOPPED) {

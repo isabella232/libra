@@ -23,6 +23,7 @@ public class FelixConfigurationPublishHelper extends PublishHelper{
 		this.behavior = behavior;
 	}
 	
+	@Override
 	protected IPath getPublishFolder() {
 		IPath configPath = behavior.getBaseDirectory();
 		configPath = configPath.append("plugins").makeAbsolute();

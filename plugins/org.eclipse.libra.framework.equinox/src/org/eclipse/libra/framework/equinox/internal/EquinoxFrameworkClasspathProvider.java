@@ -26,6 +26,7 @@ public class EquinoxFrameworkClasspathProvider extends
 	 * @see RuntimeClasspathProviderDelegate#resolveClasspathContainer(IProject,
 	 *      IRuntime)
 	 */
+	@Override
 	public IClasspathEntry[] resolveClasspathContainer(IProject project,
 			IRuntime runtime) {
 		IPath installPath = runtime.getLocation();

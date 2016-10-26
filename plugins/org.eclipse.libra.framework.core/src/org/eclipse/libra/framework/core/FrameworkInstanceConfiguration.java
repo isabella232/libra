@@ -233,6 +233,7 @@ public class FrameworkInstanceConfiguration {
 	 * 
 	 * @return java.lang.String
 	 */
+	@Override
 	public String toString() {
 		return "FrameworkInstanceConfiguration[" + getFolder() + "]";
 	}

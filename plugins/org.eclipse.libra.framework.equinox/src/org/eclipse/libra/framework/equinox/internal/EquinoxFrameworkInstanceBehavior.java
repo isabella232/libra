@@ -55,20 +55,24 @@ public class EquinoxFrameworkInstanceBehavior extends
 		return (EquinoxFrameworkInstance) getServer().loadAdapter(EquinoxFrameworkInstance.class, null);
 	}
 
+	@Override
 	public String getFrameworkClass() {
 		return getEquinoxVersionHandler().getFrameworkClass();
 	}
 
+	@Override
 	public String[] getFrameworkProgramArguments(boolean starting) {
 		return getEquinoxVersionHandler().getFrameworkProgramArguments(
 				getBaseDirectory(), getFrameworkInstance().isDebug(), starting);
 	}
 
+	@Override
 	public String[] getExcludedFrameworkProgramArguments(boolean starting) {
 		return getEquinoxVersionHandler().getExcludedFrameworkProgramArguments(
 				getFrameworkInstance().isDebug(), starting);
 	}
 
+	@Override
 	public String[] getFrameworkVMArguments() {
 		IPath installPath = getServer().getRuntime().getLocation();
 		// If installPath is relative, convert to canonical path and hope for
@@ -102,6 +106,7 @@ public class EquinoxFrameworkInstanceBehavior extends
 		return getEquinoxVersionHandler().getFrameworkVMArguments(installPath, jmxEnabled,jmxPort,javaProfileID, null, deployPath, false);
 	}
 	
+	@Override
 	protected void publishServer(int kind, IProgressMonitor monitor)
 			throws CoreException {
 		if (getServer().getRuntime() == null)
@@ -127,6 +132,7 @@ public class EquinoxFrameworkInstanceBehavior extends
 		setServerPublishState(IServer.PUBLISH_STATE_NONE);
 	}
 
+	@Override
 	@SuppressWarnings("rawtypes")
 	protected void publishModules(int kind, List modules, List deltaKind2,
 			MultiStatus multi, IProgressMonitor monitor) {
@@ -148,6 +154,7 @@ public class EquinoxFrameworkInstanceBehavior extends
 		}
 	}
 
+	@Override
 	protected void publishModule(int kind, int deltaKind, IModule[] moduleTree,
 			IProgressMonitor monitor) throws CoreException {
 		if (getServer().getServerState() != IServer.STATE_STOPPED) {

@@ -218,11 +218,13 @@ public class BundleInformationMasterDetailsBlock extends MasterDetailsBlock {
 			super(parent, style);
 		}
 
+		@Override
 		public void layout(boolean changed) {
 			super.layout(changed);
 			hookSashListeners();
 		}
 
+		@Override
 		public void layout(Control[] children) {
 			super.layout(children);
 			hookSashListeners();

@@ -57,12 +57,14 @@ public class FelixFramework extends FrameworkDelegate implements
 	 * 
 	 * @return boolean
 	 */
+	@Override
 	public IStatus verifyLocation() {
 		return getVersionHandler()
 				.verifyInstallPath(getRuntime().getLocation());
 	}
 	
 
+	@Override
 	public IStatus validate() {
 		IStatus status = super.validate();
 		if (!status.isOK())

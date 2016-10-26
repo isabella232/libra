@@ -41,6 +41,7 @@ public class ConvertProjectsToBundlesWizard extends Wizard {
 		addPage(mainPage);
 	}
 
+	@Override
 	public boolean performFinish() {
 		IProject[] projects = mainPage.getProjects();
 		

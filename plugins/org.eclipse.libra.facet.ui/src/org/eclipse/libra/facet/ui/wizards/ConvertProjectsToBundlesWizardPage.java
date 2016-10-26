@@ -138,6 +138,7 @@ public class ConvertProjectsToBundlesWizardPage extends WizardPage {
 		Button selectAllButton = new Button(buttonGroup, SWT.PUSH);
 		selectAllButton.setText(Messages.ConvertProjectsToBundlesWizardPage_SelectAll);
 		selectAllButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				fSelected.addAll(fUnconverted);
 			}
@@ -147,6 +148,7 @@ public class ConvertProjectsToBundlesWizardPage extends WizardPage {
 		Button deselectAllButton = new Button(buttonGroup, SWT.PUSH);
 		deselectAllButton.setText(Messages.ConvertProjectsToBundlesWizardPage_DeselectAll);
 		deselectAllButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				for (Object o : fUnconverted) {
 					fSelected.remove(o);
@@ -159,6 +161,7 @@ public class ConvertProjectsToBundlesWizardPage extends WizardPage {
 		Button addReferencesButton = new Button(buttonGroup, SWT.PUSH);
 		addReferencesButton.setText(Messages.ConvertProjectsToBundlesWizardPage_AddReferences);
 		addReferencesButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				selectReferences();
 			}

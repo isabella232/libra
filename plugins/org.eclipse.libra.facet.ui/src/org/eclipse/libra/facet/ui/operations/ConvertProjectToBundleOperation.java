@@ -30,6 +30,7 @@ public class ConvertProjectToBundleOperation extends WorkspaceModifyOperation {
 		this.fProject = project;
 	}
 
+	@Override
 	protected void execute(IProgressMonitor monitor) throws CoreException,
 			InvocationTargetException, InterruptedException {
 		IFacetedProject fproj = ProjectFacetsManager.create(fProject, true, monitor);

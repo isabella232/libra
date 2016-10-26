@@ -38,6 +38,7 @@ public class BundleInformationEditorPage extends AbstractBundleEditorPage {
 
 	private ServerResourceCommandManager commandManager;
 
+	@Override
 	protected void createBundleContent(Composite parent) {
 		if (mform == null) {
 			mform = new ManagedForm(parent);
@@ -66,11 +67,13 @@ public class BundleInformationEditorPage extends AbstractBundleEditorPage {
 		masterDetailsBlock.refresh();
 	}
 	
+	@Override
 	protected void disablePage() {
 		super.disablePage();
 		masterDetailsBlock.clear();
 	}
 
+	@Override
 	public void init(IEditorSite site, IEditorInput input) {
 		super.init(site, input);
 		commandManager = ((ServerEditorPartInput) input).getServerCommandManager();

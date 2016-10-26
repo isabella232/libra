@@ -241,6 +241,7 @@ public abstract class OSGIFrameworkInstanceBehaviorDelegate extends ServerBehavi
 	 * @param force
 	 *            <code>true</code> to kill the server
 	 */
+	@Override
 	public void stop(boolean force) {
 		if (force) {
 			terminate();
@@ -300,6 +301,7 @@ public abstract class OSGIFrameworkInstanceBehaviorDelegate extends ServerBehavi
 		}
 	}
 
+	@Override
 	public IPath getTempDirectory() {
 		return super.getTempDirectory(false);
 	}
@@ -317,6 +319,7 @@ public abstract class OSGIFrameworkInstanceBehaviorDelegate extends ServerBehavi
 		return confDir;
 	}
 
+	@Override
 	public void initialize(IProgressMonitor monitor) {
 		// do nothing
 	}
@@ -399,10 +402,12 @@ public abstract class OSGIFrameworkInstanceBehaviorDelegate extends ServerBehavi
 	 * 
 	 * @return java.lang.String
 	 */
+	@Override
 	public String toString() {
 		return "OSGiFrameworkInstance";
 	}
 
+	@Override
 	public void setupLaunchConfiguration(
 			ILaunchConfigurationWorkingCopy workingCopy,
 			IProgressMonitor monitor) throws CoreException {
@@ -513,10 +518,12 @@ public abstract class OSGIFrameworkInstanceBehaviorDelegate extends ServerBehavi
 						false);
 	}
 
+	@Override
 	protected IModuleResource[] getResources(IModule[] module) {
 		return super.getResources(module);
 	}
 
+	@Override
 	protected IModuleResourceDelta[] getPublishedResourceDelta(IModule[] module) {
 		return super.getPublishedResourceDelta(module);
 	}
@@ -524,6 +531,7 @@ public abstract class OSGIFrameworkInstanceBehaviorDelegate extends ServerBehavi
 	/**
 	 * @see ServerBehaviourDelegate#handleResourceChange()
 	 */
+	@Override
 	public void handleResourceChange() {
 		if (getServer().getServerRestartState())
 			return;

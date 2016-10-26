@@ -27,6 +27,7 @@ import org.eclipse.wst.server.core.internal.provisional.ServerLocatorDelegate;
  */
 @SuppressWarnings("restriction")
 public class OSGIFrameworkInstanceLocatorDelegate extends ServerLocatorDelegate {
+	@Override
 	public void searchForServers(String host, final IServerSearchListener listener, final IProgressMonitor monitor) {
 		OSGIFrameworkLocatorDelegate.IRuntimeSearchListener listener2 = new OSGIFrameworkLocatorDelegate.IRuntimeSearchListener() {
 			public void runtimeFound(IRuntimeWorkingCopy runtime) {

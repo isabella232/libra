@@ -55,20 +55,24 @@ public class KnopflerfishFrameworkInstanceBehavior extends
 		return (KnopflerfishFrameworkInstance) getServer().loadAdapter(KnopflerfishFrameworkInstance.class, null);
 	}
 
+	@Override
 	public String getFrameworkClass() {
 		return getKnopflerfishVersionHandler().getFrameworkClass();
 	}
 
+	@Override
 	public String[] getFrameworkProgramArguments(boolean starting) {
 		return getKnopflerfishVersionHandler().getFrameworkProgramArguments(
 				getBaseDirectory(), getFrameworkInstance().isDebug(), starting);
 	}
 
+	@Override
 	public String[] getExcludedFrameworkProgramArguments(boolean starting) {
 		return getKnopflerfishVersionHandler().getExcludedFrameworkProgramArguments(
 				getFrameworkInstance().isDebug(), starting);
 	}
 
+	@Override
 	public String[] getFrameworkVMArguments() {
 		IPath installPath = getServer().getRuntime().getLocation();
 		// If installPath is relative, convert to canonical path and hope for
@@ -99,6 +103,7 @@ public class KnopflerfishFrameworkInstanceBehavior extends
 		return getKnopflerfishVersionHandler().getFrameworkVMArguments(installPath, null, deployPath, false);
 	}
 	
+	@Override
 	protected void publishServer(int kind, IProgressMonitor monitor)
 			throws CoreException {
 		if (getServer().getRuntime() == null)
@@ -124,6 +129,7 @@ public class KnopflerfishFrameworkInstanceBehavior extends
 		setServerPublishState(IServer.PUBLISH_STATE_NONE);
 	}
 
+	@Override
 	@SuppressWarnings("rawtypes")
 	protected void publishModules(int kind, List modules, List deltaKind2,
 			MultiStatus multi, IProgressMonitor monitor) {
@@ -154,6 +160,7 @@ public class KnopflerfishFrameworkInstanceBehavior extends
 		}
 	}
 
+	@Override
 	protected void publishModule(int kind, int deltaKind, IModule[] moduleTree,
 			IProgressMonitor monitor) throws CoreException {
 		if (getServer().getServerState() != IServer.STATE_STOPPED) {

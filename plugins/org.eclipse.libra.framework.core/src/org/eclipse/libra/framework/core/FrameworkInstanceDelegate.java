@@ -134,6 +134,7 @@ public abstract class FrameworkInstanceDelegate extends ServerDelegate implement
 		// return null;
 	}
 
+	@Override
 	public IStatus canModifyModules(IModule[] add, IModule[] remove) {
 		if (add != null) {
 			int size = add.length;

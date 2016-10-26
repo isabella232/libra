@@ -112,6 +112,7 @@ public class BundleDependencyEditorPage extends AbstractBundleEditorPage impleme
 
 	private ServerResourceCommandManager commandManager;
 
+	@Override
 	protected void createBundleContent(Composite parent) {
 		mform = new ManagedForm(parent);
 		setManagedForm(mform);
@@ -427,6 +428,7 @@ public class BundleDependencyEditorPage extends AbstractBundleEditorPage impleme
 		manager.add(zoomContributionItem);
 	}
 
+	@Override
 	public void init(IEditorSite site, IEditorInput input) {
 		super.init(site, input);
 		commandManager = ((ServerEditorPartInput) input).getServerCommandManager();

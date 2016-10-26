@@ -29,6 +29,7 @@ public class LaunchableAdapterDelegate extends
 	/*
 	 * @see LaunchableAdapterDelegate#getLaunchable(IServer, IModuleArtifact)
 	 */
+	@Override
 	public Object getLaunchable(IServer server, IModuleArtifact moduleObject) {
 		Trace.trace(Trace.FINER, "IOSGIFrameworkInstance Launchable Adapter " + server + "-"
 				+ moduleObject);

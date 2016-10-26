@@ -39,6 +39,7 @@ public class SearchControl extends ControlContribution {
 		return searchText;
 	}
 
+	@Override
 	protected Control createControl(Composite parent) {
 		if (parent instanceof ToolBar) {
 			parent.setCursor(null);

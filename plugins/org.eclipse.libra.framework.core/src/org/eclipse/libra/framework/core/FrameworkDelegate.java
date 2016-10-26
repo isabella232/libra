@@ -71,6 +71,7 @@ public abstract class FrameworkDelegate extends org.eclipse.wst.server.core.mode
 	//public abstract IStatus validate(); 
 
 
+	@Override
 	public void setDefaults(IProgressMonitor monitor) {
 		IRuntimeType type = getRuntimeWorkingCopy().getRuntimeType();
 		getRuntimeWorkingCopy()

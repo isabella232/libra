@@ -55,6 +55,7 @@ public class PingThread {
 		this.behaviour = behaviour;
 		this.launch = launch;
 		Thread t = new Thread("OSGi Framework Launchers Ping Thread") {
+			@Override
 			public void run() {
 				ping();
 			}

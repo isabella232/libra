@@ -107,6 +107,7 @@ public class ServerConsoleEditorPage extends AbstractBundleEditorPage {
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(commandText);
 
 		commandText.addKeyListener(new KeyAdapter() {
+			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.character == SWT.CR || e.character == SWT.LF) {
 					history.add(commandText.getText());
