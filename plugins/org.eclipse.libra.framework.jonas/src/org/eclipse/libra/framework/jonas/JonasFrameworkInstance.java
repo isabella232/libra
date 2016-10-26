@@ -117,8 +117,7 @@ public class JonasFrameworkInstance extends FrameworkInstanceDelegate implements
 
 	}
 
-	@SuppressWarnings("restriction")
-	private ITargetLocation[] getDefaultBundleContainers(IPath installPath) {
+	private static ITargetLocation[] getDefaultBundleContainers(IPath installPath) {
 		try {
 			DirectoryScanner scanner = new DirectoryScanner();
 			String baseDir = installPath.append("repositories/maven2-internal").toOSString();

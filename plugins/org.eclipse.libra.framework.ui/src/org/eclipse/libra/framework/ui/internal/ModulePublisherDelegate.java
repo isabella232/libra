@@ -37,7 +37,7 @@ public class ModulePublisherDelegate extends PublisherDelegate {
 		if (info == null)
 			return Status.OK_STATUS;
 		
-		final Shell shell = (Shell) info.getAdapter(Shell.class);
+		final Shell shell = info.getAdapter(Shell.class);
 		if (shell == null)
 			return Status.OK_STATUS;
 		

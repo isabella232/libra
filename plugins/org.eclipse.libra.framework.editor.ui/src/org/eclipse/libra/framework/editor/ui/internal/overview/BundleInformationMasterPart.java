@@ -81,9 +81,9 @@ public class BundleInformationMasterPart extends SectionPart {
 
 	private final FormToolkit toolkit;
 
-	private StructuredViewer bundleTableViewer;
+	StructuredViewer bundleTableViewer;
 
-	private Table bundleTable;
+	Table bundleTable;
 
 	private Button startButton;
 
@@ -93,15 +93,11 @@ public class BundleInformationMasterPart extends SectionPart {
 
 	private Button updateButton;
 
-	private Text filterText;
+	Text filterText;
 
-	private TableColumn idColumn;
+	TableColumn idColumn, symbolicNameColumn, statusColumn;
 
-	private TableColumn symbolicNameColumn;
-
-	private TableColumn statusColumn;
-
-	private final BundleInformationMasterDetailsBlock masterDetailsBlock;
+	final BundleInformationMasterDetailsBlock masterDetailsBlock;
 
 	public BundleInformationMasterPart(Composite parent, FormToolkit toolkit, int style,
 			BundleInformationMasterDetailsBlock masterDetailsBlock) {
@@ -115,7 +111,7 @@ public class BundleInformationMasterPart extends SectionPart {
 		section.setText("Bundle Status");
 		section.setDescription("Information about installed bundles on server.");
 		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING));
-		createSectionToolbar(section, toolkit);
+		createSectionToolbar(section);
 
 		Composite composite = toolkit.createComposite(section);
 		GridLayout layout = new GridLayout();
@@ -257,7 +253,7 @@ public class BundleInformationMasterPart extends SectionPart {
 		return null;
 	}
 
-	private void executeServerCommand(final String command) {
+	void executeServerCommand(final String command) {
 		IBundle bundle = getSelectedBundle();
 		if (bundle != null) {
 			final long bundleId = Long.parseLong(bundle.getId());
@@ -299,7 +295,7 @@ public class BundleInformationMasterPart extends SectionPart {
 		}
 	}
 
-	private void createSectionToolbar(Section section, FormToolkit toolkit) {
+	private void createSectionToolbar(Section section) {
 		ToolBarManager toolBarManager = new ToolBarManager(SWT.FLAT);
 		ToolBar toolbar = toolBarManager.createControl(section);
 		final Cursor handCursor = new Cursor(Display.getCurrent(), SWT.CURSOR_HAND);
@@ -307,7 +303,7 @@ public class BundleInformationMasterPart extends SectionPart {
 		// Cursor needs to be explicitly disposed
 		toolbar.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
-				if ((handCursor != null) && (handCursor.isDisposed() == false)) {
+				if (! handCursor.isDisposed()) {
 					handCursor.dispose();
 				}
 			}
@@ -353,8 +349,10 @@ public class BundleInformationMasterPart extends SectionPart {
 					context.run(true, true, runnable);
 				}
 				catch (InvocationTargetException e1) {
+					// nothing
 				}
 				catch (InterruptedException e2) {
+					// nothing
 				}
 
 			}
@@ -391,6 +389,7 @@ public class BundleInformationMasterPart extends SectionPart {
 		}
 
 		public void dispose() {
+			// nothing
 		}
 
 		@SuppressWarnings("unchecked")

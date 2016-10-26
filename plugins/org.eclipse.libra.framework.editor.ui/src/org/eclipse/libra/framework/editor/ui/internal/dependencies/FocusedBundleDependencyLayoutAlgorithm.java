@@ -94,13 +94,11 @@ public class FocusedBundleDependencyLayoutAlgorithm implements LayoutAlgorithm {
 		focusedLayoutAlgorithm.removeRelationship(relationship);
 	}
 
-	@SuppressWarnings("unchecked")
 	public void removeRelationships(List relationships) {
 		layoutAlgorithm.removeRelationships(relationships);
 		focusedLayoutAlgorithm.removeRelationships(relationships);
 	}
 
-	@SuppressWarnings("unchecked")
 	public void setComparator(Comparator comparator) {
 		layoutAlgorithm.setComparator(comparator);
 		focusedLayoutAlgorithm.setComparator(comparator);

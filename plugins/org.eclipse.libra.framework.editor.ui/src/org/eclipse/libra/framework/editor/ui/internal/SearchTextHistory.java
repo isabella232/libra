@@ -30,7 +30,7 @@ public class SearchTextHistory {
 		int found = -1;
         int size = history.size();
         for (int i = 0; i < size; i++) {
-            String s = (String) history.get(i);
+            String s = history.get(i);
             if (s.equals(text)) {
                 found = i;
                 break;

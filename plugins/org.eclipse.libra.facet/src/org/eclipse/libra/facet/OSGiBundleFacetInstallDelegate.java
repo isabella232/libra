@@ -92,7 +92,7 @@ public class OSGiBundleFacetInstallDelegate implements IDelegate {
 		}
 	}
 
-	private void setBundleRoot(IProject project) throws CoreException {
+	private static void setBundleRoot(IProject project) throws CoreException {
 		IPath bundleRoot = null;
 		if (isWebProject(project)) {
 			bundleRoot = getWebContentPath(project);
@@ -140,7 +140,7 @@ public class OSGiBundleFacetInstallDelegate implements IDelegate {
 		bundleProjectDescription.apply(monitor);
 	}
 	
-	private String[] getNatureIds(IBundleProjectDescription bundleProjectDescription) throws CoreException {
+	private static String[] getNatureIds(IBundleProjectDescription bundleProjectDescription) {
 		String[] natureIds = bundleProjectDescription.getNatureIds();
 		String[] newNatureIds = new String[natureIds.length + 1];
 		for (int i = 0; i < natureIds.length; i++) {
@@ -151,7 +151,7 @@ public class OSGiBundleFacetInstallDelegate implements IDelegate {
 		return newNatureIds;
 	}
 
-	private String[] getLaunchShortcuts(IProject project) throws CoreException {
+	private static String[] getLaunchShortcuts(IProject project) throws CoreException {
 		if (isWebProject(project)) {
 			return new String[] {
 					"org.eclipse.pde.ui.EquinoxLaunchShortcut",  //$NON-NLS-1$
@@ -162,7 +162,7 @@ public class OSGiBundleFacetInstallDelegate implements IDelegate {
 		return null;
 	}
 	
-	private Map<String, String> getAdditionalHeaders(OSGiBundleFacetInstallConfig config, IProject project) throws CoreException {
+	private static Map<String, String> getAdditionalHeaders(OSGiBundleFacetInstallConfig config, IProject project) throws CoreException {
 		Map<String, String> headers = new HashMap<String, String>();
 		
 		if (isWebProject(project)) {
@@ -183,7 +183,7 @@ public class OSGiBundleFacetInstallDelegate implements IDelegate {
 		return headers;
 	}
 
-	private IPackageExportDescription[] getPackageExports(IProject project) throws CoreException {
+	private static IPackageExportDescription[] getPackageExports(IProject project) throws CoreException {
 		IBundleProjectService bundleProjectService = LibraFacetPlugin.getDefault().getBundleProjectService();
 		List<IPackageExportDescription> list = new ArrayList<IPackageExportDescription>();
 		
@@ -206,7 +206,7 @@ public class OSGiBundleFacetInstallDelegate implements IDelegate {
 		return list.toArray(new IPackageExportDescription[list.size()]);
 	}
 
-	private IPackageImportDescription[] getPackageImports(IBundleProjectDescription bundleProjectDescription) throws CoreException {
+	private static IPackageImportDescription[] getPackageImports(IBundleProjectDescription bundleProjectDescription) throws CoreException {
 		IProject project = bundleProjectDescription.getProject();
 		Map<String, IPackageImportDescription> packages = new TreeMap<String, IPackageImportDescription>();
 		
@@ -252,7 +252,7 @@ public class OSGiBundleFacetInstallDelegate implements IDelegate {
 		return packages.values().toArray(new IPackageImportDescription[packages.size()]);
 	}
 	
-	private void addPackageImport(Map<String, IPackageImportDescription> packages, String importName, VersionRange range, boolean optional) {
+	private static void addPackageImport(Map<String, IPackageImportDescription> packages, String importName, VersionRange range, boolean optional) {
 		IBundleProjectService bundleProjectService = LibraFacetPlugin.getDefault().getBundleProjectService();
 		if (!packages.containsKey(importName)) {
 			IPackageImportDescription imp = bundleProjectService.newPackageImport(importName, range, optional);
@@ -260,7 +260,7 @@ public class OSGiBundleFacetInstallDelegate implements IDelegate {
 		}
 	}
 	
-	private IPath[] getBinIncludes(IBundleProjectDescription bundleProjectDescription) throws CoreException {
+	private static IPath[] getBinIncludes(IBundleProjectDescription bundleProjectDescription) throws CoreException {
 		IProject project = bundleProjectDescription.getProject();
 		IVirtualComponent component = ComponentCore.createComponent(project);
 		
@@ -281,13 +281,13 @@ public class OSGiBundleFacetInstallDelegate implements IDelegate {
 			}
 			
 			return binPaths.toArray(new IPath[binPaths.size()]);
-		} else {
-			// don't modify bin.includes by default
-			return bundleProjectDescription.getBinIncludes();
-		}
+		} 
+
+		// don't modify bin.includes by default
+		return bundleProjectDescription.getBinIncludes();
 	}
 
-	private IBundleClasspathEntry[] getBundleClasspath(IBundleProjectDescription bundleProjectDescription) throws CoreException {
+	private static IBundleClasspathEntry[] getBundleClasspath(IBundleProjectDescription bundleProjectDescription) throws CoreException {
 		IProject project = bundleProjectDescription.getProject();
 		IBundleClasspathEntry[] bundleClasspath = bundleProjectDescription.getBundleClasspath(); 
 		
@@ -311,7 +311,7 @@ public class OSGiBundleFacetInstallDelegate implements IDelegate {
 						bundleClasspathList.add(bundleProjectService.newBundleClasspathEntry(
 								getRelativePath(project, iPath), binary, library));
 					}
-					bundleClasspath = bundleClasspathList.toArray(new IBundleClasspathEntry[] { });;
+					bundleClasspath = bundleClasspathList.toArray(new IBundleClasspathEntry[] { });
 				}
 			} else {
 				// TODO
@@ -322,7 +322,7 @@ public class OSGiBundleFacetInstallDelegate implements IDelegate {
 		return bundleClasspath;
 	}
 	
-	private void addRequiredPluginsClasspathContainer(IProject project, IProgressMonitor monitor) throws CoreException {
+	private static void addRequiredPluginsClasspathContainer(IProject project, IProgressMonitor monitor) throws CoreException {
 		if (isJavaProject(project)) {
 			IJavaProject javaProject = JavaCore.create(project);
 			IClasspathEntry[] entries = javaProject.getRawClasspath();
@@ -335,7 +335,7 @@ public class OSGiBundleFacetInstallDelegate implements IDelegate {
 		}
 	}
 
-	private IPath[] getJavaSourceFolderPaths(IJavaProject javaProject) throws JavaModelException {
+	private static IPath[] getJavaSourceFolderPaths(IJavaProject javaProject) throws JavaModelException {
 		List<IPath> paths = new ArrayList<IPath>();
 		
 		IPackageFragmentRoot[] fragmentRoots = javaProject.getAllPackageFragmentRoots();
@@ -348,11 +348,11 @@ public class OSGiBundleFacetInstallDelegate implements IDelegate {
 		return paths.toArray(new IPath[paths.size()]);
 	}
 	
-	private IPath getRelativePath(IProject project, IPath path) {
+	private static IPath getRelativePath(IProject project, IPath path) {
 		return path.makeRelativeTo(project.getFullPath()).addTrailingSeparator();
 	}
 	
-	private void setExecutionEnvironments(IBundleProjectDescription bundleProjectDescription) {
+	private static void setExecutionEnvironments(IBundleProjectDescription bundleProjectDescription) {
 		IProject project = bundleProjectDescription.getProject();
 		IProjectFacetVersion javaProjectFacetVersion = FacetedProjectUtilities.getProjectFacetVersion(project, JAVA_FACET);
 		if (javaProjectFacetVersion != null) {
@@ -371,7 +371,7 @@ public class OSGiBundleFacetInstallDelegate implements IDelegate {
 		}
 	}
 	
-	private void moveMetaInfToRoot(IProject project, IProgressMonitor monitor) throws CoreException {
+	private static void moveMetaInfToRoot(IProject project, IProgressMonitor monitor) throws CoreException {
 		// find the first META-INF folder as a second-level folder
 		IFolder folder = null;
 		IResource[] resources = project.members();

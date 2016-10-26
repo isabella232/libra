@@ -94,22 +94,22 @@ public class TargetDefinitionEditorPart extends ServerEditorPart {
 	protected PropertyChangeListener listener;
 	private Button fDefaultJREButton;
 	private Button fNamedJREButton;
-	private Combo fNamedJREsCombo;
+	Combo fNamedJREsCombo;
 	private Button fExecEnvButton;
-	private TreeSet fExecEnvChoices;
-	private Combo fExecEnvsCombo;
-	private TreeSet fOSChoices;
-	private Combo fOSCombo;
-	private Combo fWSCombo;
-	private TreeSet fArchChoices;
-	private Combo fArchCombo;
-	private Combo fNLCombo;
-	private Text fProgramArgs;
-	private Text fVMArgs;
+	private TreeSet<String> fExecEnvChoices;
+	Combo fExecEnvsCombo;
+	private TreeSet<String> fOSChoices;
+	Combo fOSCombo;
+	Combo fWSCombo;
+	private TreeSet<String> fArchChoices;
+	Combo fArchCombo;
+	Combo fNLCombo;
+	Text fProgramArgs;
+	Text fVMArgs;
 
-	private TreeSet fWSChoices;
+	private TreeSet<String> fWSChoices;
 
-	private TreeSet fNLChoices;
+	private TreeSet<String> fNLChoices;
 
 	public TargetDefinitionEditorPart() {
 		super();
@@ -397,7 +397,7 @@ public class TargetDefinitionEditorPart extends ServerEditorPart {
 			}
 		});
 
-		fExecEnvsCombo = SWTFactory.createCombo(group, SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY, 1, (String[]) fExecEnvChoices.toArray(new String[fExecEnvChoices.size()]));
+		fExecEnvsCombo = SWTFactory.createCombo(group, SWT.SINGLE | SWT.BORDER | SWT.READ_ONLY, 1, fExecEnvChoices.toArray(new String[fExecEnvChoices.size()]));
 		fExecEnvsCombo.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				getTargetDefinition().setJREContainer(JavaRuntime.newJREContainerPath(VMUtil.getExecutionEnvironment(fExecEnvsCombo.getText())));
@@ -412,7 +412,7 @@ public class TargetDefinitionEditorPart extends ServerEditorPart {
 	 * Initializes the combo with possible execution environments
 	 */
 	protected void initializeJREValues() {
-		fExecEnvChoices = new TreeSet();
+		fExecEnvChoices = new TreeSet<String>();
 		IExecutionEnvironmentsManager manager = JavaRuntime.getExecutionEnvironmentsManager();
 		IExecutionEnvironment[] envs = manager.getExecutionEnvironments();
 		for (int i = 0; i < envs.length; i++)
@@ -432,7 +432,7 @@ public class TargetDefinitionEditorPart extends ServerEditorPart {
 
 		SWTFactory.createLabel(group, PDEUIMessages.Preferences_TargetEnvironmentPage_os, 1);
 
-		fOSCombo = SWTFactory.createCombo(group, SWT.SINGLE | SWT.BORDER, 1, (String[]) fOSChoices.toArray(new String[fOSChoices.size()]));
+		fOSCombo = SWTFactory.createCombo(group, SWT.SINGLE | SWT.BORDER, 1, fOSChoices.toArray(new String[fOSChoices.size()]));
 		fOSCombo.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				String val = getModelValue(fOSCombo.getText());
@@ -445,7 +445,7 @@ public class TargetDefinitionEditorPart extends ServerEditorPart {
 
 		SWTFactory.createLabel(group, PDEUIMessages.Preferences_TargetEnvironmentPage_ws, 1);
 
-		fWSCombo = SWTFactory.createCombo(group, SWT.SINGLE | SWT.BORDER, 1, (String[]) fWSChoices.toArray(new String[fWSChoices.size()]));
+		fWSCombo = SWTFactory.createCombo(group, SWT.SINGLE | SWT.BORDER, 1, fWSChoices.toArray(new String[fWSChoices.size()]));
 		fWSCombo.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				String val = getModelValue(fWSCombo.getText());
@@ -457,7 +457,7 @@ public class TargetDefinitionEditorPart extends ServerEditorPart {
 
 		SWTFactory.createLabel(group, PDEUIMessages.Preferences_TargetEnvironmentPage_arch, 1);
 
-		fArchCombo = SWTFactory.createCombo(group, SWT.SINGLE | SWT.BORDER, 1, (String[]) fArchChoices.toArray(new String[fArchChoices.size()]));
+		fArchCombo = SWTFactory.createCombo(group, SWT.SINGLE | SWT.BORDER, 1, fArchChoices.toArray(new String[fArchChoices.size()]));
 		fArchCombo.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				String val = getModelValue(fArchCombo.getText());
@@ -469,7 +469,7 @@ public class TargetDefinitionEditorPart extends ServerEditorPart {
 
 		SWTFactory.createLabel(group, PDEUIMessages.Preferences_TargetEnvironmentPage_nl, 1);
 
-		fNLCombo = SWTFactory.createCombo(group, SWT.SINGLE | SWT.BORDER, 1, (String[]) fNLChoices.toArray(new String[fNLChoices.size()]));
+		fNLCombo = SWTFactory.createCombo(group, SWT.SINGLE | SWT.BORDER, 1, fNLChoices.toArray(new String[fNLChoices.size()]));
 		fNLCombo.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				String value = fNLCombo.getText();
@@ -491,7 +491,7 @@ public class TargetDefinitionEditorPart extends ServerEditorPart {
 	 * @param value
 	 * @return trimmed value or <code>null</code>
 	 */
-	private String getModelValue(String value) {
+	String getModelValue(String value) {
 		if (value != null) {
 			value = value.trim();
 			if (value.length() == 0) {
@@ -506,7 +506,7 @@ public class TargetDefinitionEditorPart extends ServerEditorPart {
 	* @param set
 	* @param preference
 	*/
-	private void addExtraChoices(Set set, String preference) {
+	private static void addExtraChoices(Set<String> set, String preference) {
 		StringTokenizer tokenizer = new StringTokenizer(preference, ","); //$NON-NLS-1$
 		while (tokenizer.hasMoreTokens()) {
 			set.add(tokenizer.nextToken().trim());
@@ -518,7 +518,7 @@ public class TargetDefinitionEditorPart extends ServerEditorPart {
 	private void initializeChoices() {
 		IEclipsePreferences node = new InstanceScope().getNode(PDECore.PLUGIN_ID);
 
-		fOSChoices = new TreeSet();
+		fOSChoices = new TreeSet<String>();
 		String[] os = Platform.knownOSValues();
 		for (int i = 0; i < os.length; i++) {
 			fOSChoices.add(os[i]);
@@ -528,7 +528,7 @@ public class TargetDefinitionEditorPart extends ServerEditorPart {
 			addExtraChoices(fOSChoices, pref);
 		}
 
-		fWSChoices = new TreeSet();
+		fWSChoices = new TreeSet<String>();
 		String[] ws = Platform.knownWSValues();
 		for (int i = 0; i < ws.length; i++) {
 			fWSChoices.add(ws[i]);
@@ -538,7 +538,7 @@ public class TargetDefinitionEditorPart extends ServerEditorPart {
 			addExtraChoices(fWSChoices, pref);
 		}
 
-		fArchChoices = new TreeSet();
+		fArchChoices = new TreeSet<String>();
 		String[] arch = Platform.knownOSArchValues();
 		for (int i = 0; i < arch.length; i++) {
 			fArchChoices.add(arch[i]);
@@ -548,7 +548,7 @@ public class TargetDefinitionEditorPart extends ServerEditorPart {
 			addExtraChoices(fArchChoices, pref);
 		}
 
-		fNLChoices = new TreeSet();
+		fNLChoices = new TreeSet<String>();
 		String[] nl = LocaleUtil.getLocales();
 		for (int i = 0; i < nl.length; i++) {
 			fNLChoices.add(nl[i]);
@@ -707,7 +707,7 @@ public class TargetDefinitionEditorPart extends ServerEditorPart {
 	 * @see IWorkbenchPart#setFocus()
 	 */
 	public void setFocus() {
-
+		// nothing
 	}
 
 	@Override

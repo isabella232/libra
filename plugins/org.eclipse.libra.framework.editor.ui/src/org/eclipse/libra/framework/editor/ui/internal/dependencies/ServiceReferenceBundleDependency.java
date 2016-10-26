@@ -23,7 +23,7 @@ import org.eclipse.libra.framework.editor.core.model.IServiceReference;
  */
 public class ServiceReferenceBundleDependency extends BundleDependency {
 
-	private final Set<IServiceReference> serviceReference = new HashSet<IServiceReference>();;
+	private final Set<IServiceReference> serviceReference = new HashSet<IServiceReference>();
 
 	public ServiceReferenceBundleDependency(IBundle exportingBundle, IBundle importingBundle) {
 		super(exportingBundle, importingBundle);

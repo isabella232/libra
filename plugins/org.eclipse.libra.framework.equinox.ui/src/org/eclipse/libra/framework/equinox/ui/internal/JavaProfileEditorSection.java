@@ -26,7 +26,6 @@ import org.eclipse.libra.framework.ui.Messages;
 import org.eclipse.libra.framework.ui.Trace;
 import org.eclipse.pde.core.target.ITargetDefinition;
 import org.eclipse.pde.core.target.ITargetPlatformService;
-
 import org.eclipse.pde.internal.ui.SWTFactory;
 import org.eclipse.pde.internal.ui.wizards.target.EditTargetDefinitionWizard;
 import org.eclipse.swt.SWT;
@@ -45,7 +44,6 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.help.IWorkbenchHelpSystem;
-import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.ui.editor.ServerEditorSection;
 
 @SuppressWarnings("restriction")
@@ -54,7 +52,7 @@ public class JavaProfileEditorSection extends ServerEditorSection {
 	protected IEquinoxFrameworkInstance frameworkInstance;
 
 	protected PropertyChangeListener listener;
-	private Combo javaProfileCombo;
+	Combo javaProfileCombo;
 
 	// Avoid hardcoding this at some point
 	// private final static String METADATADIR = ".metadata";
@@ -146,7 +144,7 @@ public class JavaProfileEditorSection extends ServerEditorSection {
 	 * @see ServerEditorSection#dispose()
 	 */
 	public void dispose() {
-
+		super.dispose();
 	}
 
 	/**
@@ -172,7 +170,7 @@ public class JavaProfileEditorSection extends ServerEditorSection {
 			return;
 		updating = true;
 
-		IRuntime runtime = server.getRuntime();
+//		IRuntime runtime = server.getRuntime();
 		String id = frameworkInstance.getJavaPofile();
 
 		if (javaProfileCombo != null) {

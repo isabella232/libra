@@ -29,6 +29,6 @@ public class PublishTask extends PublishTaskDelegate {
 
 		List<PublishOperation> tasks = new ArrayList<PublishOperation>();
 		
-		return (PublishOperation[]) tasks.toArray(new PublishOperation[tasks.size()]);
+		return tasks.toArray(new PublishOperation[tasks.size()]);
 	}
 }

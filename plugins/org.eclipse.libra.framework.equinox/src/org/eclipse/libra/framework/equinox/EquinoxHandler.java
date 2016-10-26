@@ -104,7 +104,7 @@ public class EquinoxHandler implements IEquinoxVersionHandler {
 		programArgs.add("-consoleLog"); //$NON-NLS-1$
 		programArgs.add("-console"); //$NON-NLS-1$
 		 
-		return (String[]) programArgs.toArray(new String[programArgs.size()]);
+		return programArgs.toArray(new String[programArgs.size()]);
 	}
 
 	public String[] getExcludedFrameworkProgramArguments(boolean debug,

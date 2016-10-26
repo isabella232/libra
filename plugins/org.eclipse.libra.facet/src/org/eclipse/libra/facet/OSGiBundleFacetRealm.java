@@ -23,7 +23,7 @@ class OSGiBundleFacetRealm {
 		return realm;
 	}
 	
-	private static class SimpleRealm extends Realm {
+	static class SimpleRealm extends Realm {
 
 		@Override
 		public boolean isCurrent() {

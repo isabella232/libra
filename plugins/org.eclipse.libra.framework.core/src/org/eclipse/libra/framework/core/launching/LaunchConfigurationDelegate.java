@@ -32,7 +32,6 @@ import org.eclipse.jst.server.core.ServerProfilerDelegate;
 import org.eclipse.libra.framework.core.OSGIFrameworkInstanceBehaviorDelegate;
 import org.eclipse.libra.framework.core.Trace;
 import org.eclipse.wst.server.core.IServer;
-import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.ServerUtil;
 
 
@@ -80,7 +79,7 @@ public class LaunchConfigurationDelegate extends
 		ExecutionArguments execArgs = new ExecutionArguments(vmArgs, pgmArgs);
 
 		// VM-specific attributes
-		Map vmAttributesMap = getVMSpecificAttributesMap(configuration);
+		Map<String,Object> vmAttributesMap = getVMSpecificAttributesMap(configuration);
 
 		// Classpath
 		String[] classpath = getClasspath(configuration);

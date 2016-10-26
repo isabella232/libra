@@ -49,7 +49,7 @@ import org.eclipse.wst.common.componentcore.resources.IVirtualReference;
 
 public class ConvertProjectsToBundlesWizardPage extends WizardPage {
 	
-	private class SelectionValidator extends MultiValidator {
+	class SelectionValidator extends MultiValidator {
 		
 		@Override
 		protected IStatus validate() {
@@ -82,14 +82,13 @@ public class ConvertProjectsToBundlesWizardPage extends WizardPage {
 						}
 					}
 				}
-			};
+			}
 			return false;
 		}
-		
-	};
+	}
 
-	private IObservableSet fUnconverted;
-	private IObservableSet fSelected;
+	IObservableSet fUnconverted;
+	IObservableSet fSelected;
 
 	public ConvertProjectsToBundlesWizardPage(IProject[] unconverted, IProject[] selected) {
 		super("converToWAB"); //$NON-NLS-1$
@@ -176,7 +175,7 @@ public class ConvertProjectsToBundlesWizardPage extends WizardPage {
 		});
 	}
 	
-	private void selectReferences() {
+	void selectReferences() {
 		IProject[] selectedProjects = getProjects();
 		for (IProject project : selectedProjects) {
 			IVirtualComponent component = ComponentCore.createComponent(project);

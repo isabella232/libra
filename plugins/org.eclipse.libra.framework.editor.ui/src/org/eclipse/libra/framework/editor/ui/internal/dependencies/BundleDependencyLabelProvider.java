@@ -52,11 +52,15 @@ public class BundleDependencyLabelProvider implements ILabelProvider, IEntitySty
 
 	private final Color grayColor = Display.getCurrent().getSystemColor(SWT.COLOR_GRAY);
 
+	/**
+	 * @param formToolkit  
+	 */
 	public BundleDependencyLabelProvider(BundleDependencyContentProvider contentProvider, FormToolkit formToolkit) {
 		this.contentProvider = contentProvider;
 	}
 
 	public void addListener(ILabelProviderListener listener) {
+		// nothing
 	}
 
 	public void dispose() {
@@ -98,9 +102,7 @@ public class BundleDependencyLabelProvider implements ILabelProvider, IEntitySty
 			if (contentProvider.isSelected((BundleDependency) rel)) {
 				return blackColor;
 			}
-			else {
-				return grayColor;
-			}
+			return grayColor;
 		}
 		return colorRel;
 	}
@@ -151,10 +153,11 @@ public class BundleDependencyLabelProvider implements ILabelProvider, IEntitySty
 	}
 
 	public void removeListener(ILabelProviderListener listener) {
-
+		// nothing
 	}
 
 	public void selectionChanged(SelectionChangedEvent event) {
+		// nothing
 	}
 
 }

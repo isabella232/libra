@@ -90,25 +90,25 @@ import org.eclipse.zest.layouts.algorithms.RadialLayoutAlgorithm;
 @SuppressWarnings("restriction")
 public class BundleDependencyEditorPage extends AbstractBundleEditorPage implements IZoomableWorkbenchPart {
 
-	private GraphViewer viewer;
+	GraphViewer viewer;
 
-	private BundleDependencyContentProvider contentProvider;
+	BundleDependencyContentProvider contentProvider;
 
 	private BundleDependencyLabelProvider labelProvider;
 
 	private ZoomContributionViewItem zoomContributionItem;
 
-	private SearchControl searchControl;
+	SearchControl searchControl;
 
 	private Action refreshAction;
 
-	private IToolBarManager toolBarManager;
+	IToolBarManager toolBarManager;
 
-	private final SearchTextHistory history = new SearchTextHistory();
+	final SearchTextHistory history = new SearchTextHistory();
 
-	private Action forwardAction;
+	Action forwardAction;
 
-	private Action backAction;
+	Action backAction;
 
 	private ServerResourceCommandManager commandManager;
 
@@ -172,7 +172,7 @@ public class BundleDependencyEditorPage extends AbstractBundleEditorPage impleme
 		});
 		packagesButton.setSelection(true);
 
-		new Label(composite, SWT.NONE);
+		toolkit.createLabel(composite, "", SWT.NONE);
 		Label dependenciesLabel = toolkit.createLabel(composite, "Dependencies");
 		dependenciesLabel.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
 
@@ -375,7 +375,7 @@ public class BundleDependencyEditorPage extends AbstractBundleEditorPage impleme
 
 	}
 	
-	private void setSelection(IBundle bundle) {
+	void setSelection(IBundle bundle) {
 		setSelection(bundle.getSymbolicName(), bundle.getVersion());
 	}
 	
@@ -474,7 +474,7 @@ public class BundleDependencyEditorPage extends AbstractBundleEditorPage impleme
 
 	class BundleDependencyUpdateJob extends Job {
 
-		private final boolean deleteSelection;
+		final boolean deleteSelection;
 
 		public BundleDependencyUpdateJob(boolean deleteSelection) {
 			super("Updating Bundle Dependency Graph");

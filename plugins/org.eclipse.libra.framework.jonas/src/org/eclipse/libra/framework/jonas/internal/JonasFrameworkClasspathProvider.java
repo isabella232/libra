@@ -38,7 +38,7 @@ public class JonasFrameworkClasspathProvider extends
 		IPath path = installPath.append("osgi");
 		addLibraryEntries(list, path.toFile(), true);
 
-		return (IClasspathEntry[]) list
+		return list
 				.toArray(new IClasspathEntry[list.size()]);
 	}
 }

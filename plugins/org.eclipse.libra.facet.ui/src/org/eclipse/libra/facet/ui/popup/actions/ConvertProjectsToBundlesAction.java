@@ -100,7 +100,7 @@ public class ConvertProjectsToBundlesAction implements IObjectActionDelegate {
 		return display;
 	}
 	
-	private IProject[] getUnconvertedProjects() {
+	private static IProject[] getUnconvertedProjects() {
 		List<IProject> unconverted = new ArrayList<IProject>();
 		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 		for (IProject project : projects) {
@@ -129,10 +129,10 @@ public class ConvertProjectsToBundlesAction implements IObjectActionDelegate {
 				if (obj instanceof IProject) {
 					project = (IProject) obj;
 				} else if (obj instanceof IAdaptable) {
-					project = (IProject) ((IAdaptable) obj).getAdapter(IProject.class);
+					project = ((IAdaptable) obj).getAdapter(IProject.class);
 				} else {
 					IAdapterManager manager = Platform.getAdapterManager();
-					project = (IProject) manager.getAdapter(obj, IProject.class);
+					project = manager.getAdapter(obj, IProject.class);
 				}
 				
 				if (project != null) {

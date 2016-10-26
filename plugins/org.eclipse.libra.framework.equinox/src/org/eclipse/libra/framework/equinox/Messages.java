@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.libra.framework.equinox;
 
-import java.io.File;
-
 import org.eclipse.osgi.util.NLS;
 /**
  * Translated messages.

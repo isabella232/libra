@@ -123,7 +123,6 @@ public class KnopflerfishFrameworkInstance extends FrameworkInstanceDelegate
 
 	}
 
-	@SuppressWarnings("restriction")
 	@Override
 	public ITargetDefinition createDefaultTarget() throws CoreException {
 		
@@ -164,7 +163,7 @@ public class KnopflerfishFrameworkInstance extends FrameworkInstanceDelegate
 		return targetDefinition;
 	}
 
-	private boolean shouldInclude(BundleInfo bundleInfo) {
+	private static boolean shouldInclude(BundleInfo bundleInfo) {
 		String bundles[] = {"log_api-3.0.5.jar",
 				"console_api-3.0.1.jar",
 				"cm_api-3.0.1.jar",
@@ -182,7 +181,7 @@ public class KnopflerfishFrameworkInstance extends FrameworkInstanceDelegate
 		return false;
 	}
 
-	private ITargetLocation[] getDefaultBundleContainers(IPath installPath) {
+	private static ITargetLocation[] getDefaultBundleContainers(IPath installPath) {
 		ITargetLocation[] containers = new ITargetLocation[8];
 		ITargetPlatformService service = TargetDefinitionUtil.getTargetPlatformService();
 		containers[0] =  service.newDirectoryLocation(

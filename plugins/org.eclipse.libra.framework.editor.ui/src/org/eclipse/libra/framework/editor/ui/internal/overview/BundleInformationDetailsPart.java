@@ -99,35 +99,35 @@ public class BundleInformationDetailsPart extends AbstractFormPart implements ID
 
 	class PackageExportContentProvider implements ITreeContentProvider {
 
-		private IBundle bundle;
+		private IBundle cpBundle;
 
 		public void dispose() {
-
+			// empty
 		}
 
 		public Object[] getChildren(Object parentElement) {
 			if (parentElement instanceof IPackageExport) {
-				Set<IBundle> bundles = new HashSet<IBundle>();
+				Set<IBundle> returnBundles = new HashSet<IBundle>();
 				String name = ((IPackageExport) parentElement).getName();
 				String version = ((IPackageExport) parentElement).getVersion();
-				String id = bundle.getId();
+				String id = cpBundle.getId();
 
-				for (IBundle bundle : BundleInformationDetailsPart.this.bundles.values()) {
-					for (IPackageImport pi : bundle.getPackageImports()) {
+				for (IBundle loopBundle : BundleInformationDetailsPart.this.bundles.values()) {
+					for (IPackageImport pi : loopBundle.getPackageImports()) {
 						if (pi.getSupplierId().equals(id) && pi.getName().equals(name)
 								&& pi.getVersion().equals(version)) {
-							bundles.add(bundle);
+							returnBundles.add(loopBundle);
 						}
 					}
 				}
-				return bundles.toArray(new IBundle[bundles.size()]);
+				return returnBundles.toArray(new IBundle[returnBundles.size()]);
 			}
 			return new Object[0];
 		}
 
 		public Object[] getElements(Object inputElement) {
-			if (bundle.getPackageExports().size() > 0) {
-				return bundle.getPackageExports().toArray();
+			if (cpBundle.getPackageExports().size() > 0) {
+				return cpBundle.getPackageExports().toArray();
 			}
 			return new Object[] { "<no exported packages>" };
 		}
@@ -141,7 +141,7 @@ public class BundleInformationDetailsPart extends AbstractFormPart implements ID
 		}
 
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-			bundle = (IBundle) newInput;
+			cpBundle = (IBundle) newInput;
 		}
 	}
 
@@ -389,37 +389,37 @@ public class BundleInformationDetailsPart extends AbstractFormPart implements ID
 		}
 	}
 
-	private IBundle bundle;
+	IBundle bundle;
 
-	private Map<Long, IBundle> bundles;
+	Map<Long, IBundle> bundles;
 
 	private Text bundleSymbolicNameText;
 
 	private FilteredTree exportsTable;
 
-	private TreeViewer exportsTableViewer;
+	TreeViewer exportsTableViewer;
 
 	private Text idText;
 
 	private FilteredTree importsTable;
 
-	private TreeViewer importsTableViewer;
+	TreeViewer importsTableViewer;
 
 	private Text locationText;
 
 	private Text manifestText;
 
-	private final BundleInformationMasterDetailsBlock masterDetailsBlock;
+	final BundleInformationMasterDetailsBlock masterDetailsBlock;
 
 	private Text providerText;
 
 	private Table servicePropertiesTable;
 
-	private TableViewer servicePropertiesTableViewer;
+	TableViewer servicePropertiesTableViewer;
 
 	private FilteredTree servicesTable;
 
-	private TreeViewer servicesTableViewer;
+	TreeViewer servicesTableViewer;
 
 	private Text stateText;
 
@@ -681,8 +681,8 @@ public class BundleInformationDetailsPart extends AbstractFormPart implements ID
 
 	}
 
-	public void refresh(Map<Long, IBundle> bundles) {
-		this.bundles = bundles;
+	public void refresh(Map<Long, IBundle> newBundles) {
+		this.bundles = newBundles;
 	}
 
 	public void selectionChanged(IFormPart part, ISelection selection) {
@@ -713,7 +713,10 @@ public class BundleInformationDetailsPart extends AbstractFormPart implements ID
 
 	}
 
-	private void createSectionToolbar(Section section, FormToolkit toolkit, Action... actions) {
+	/**
+	 * @param toolkit  
+	 */
+	private static void createSectionToolbar(Section section, FormToolkit toolkit, Action... actions) {
 		ToolBarManager toolBarManager = new ToolBarManager(SWT.FLAT);
 		ToolBar toolbar = toolBarManager.createControl(section);
 		final Cursor handCursor = new Cursor(Display.getCurrent(), SWT.CURSOR_HAND);
@@ -721,7 +724,7 @@ public class BundleInformationDetailsPart extends AbstractFormPart implements ID
 		// Cursor needs to be explicitly disposed
 		toolbar.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
-				if ((handCursor != null) && (handCursor.isDisposed() == false)) {
+				if (! handCursor.isDisposed()) {
 					handCursor.dispose();
 				}
 			}
@@ -738,10 +741,10 @@ public class BundleInformationDetailsPart extends AbstractFormPart implements ID
 	
 
 	
-	private void openBundleEditor(IBundle bundle) {
+	void openBundleEditor(IBundle openBundle) {
 		try {
 			String fileName = "META-INF/MANIFEST.MF";
-			IEditorInput input = getEditorInput(getBundleRoot(bundle), fileName);
+			IEditorInput input = getEditorInput(getBundleRoot(openBundle), fileName);
 			IEditorDescriptor desc = PlatformUI.getWorkbench().getEditorRegistry().getDefaultEditor(fileName, getContentType());
 			IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage(); 
 			page.openEditor(input, desc.getId());
@@ -750,7 +753,7 @@ public class BundleInformationDetailsPart extends AbstractFormPart implements ID
 		}
 	}
 	
-	private File getBundleRoot(IBundle bundle) throws URISyntaxException {
+	private static File getBundleRoot(IBundle bundle) throws URISyntaxException {
 		String location = bundle.getLocation();
 		
 		// if location URI starts with "reference:" then remove it
@@ -773,7 +776,7 @@ public class BundleInformationDetailsPart extends AbstractFormPart implements ID
 		return bundleRoot;
 	}
 	
-	private IEditorInput getEditorInput(File bundleRoot, String filename) {
+	private static IEditorInput getEditorInput(File bundleRoot, String filename) {
 		IEditorInput input = null;
 		if (bundleRoot.isFile()) {
 			try {
@@ -783,6 +786,7 @@ public class BundleInformationDetailsPart extends AbstractFormPart implements ID
 				}
 			}
 			catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 		else {
@@ -794,13 +798,14 @@ public class BundleInformationDetailsPart extends AbstractFormPart implements ID
 					input = new FileStoreEditorInput(store);
 				}
 				catch (CoreException e) {
+					e.printStackTrace();
 				}
 			}
 		}
 		return input;
 	}
 	
-	private IContentType getContentType() {
+	private static IContentType getContentType() {
 		// first check if an add-on (like Virgo Tooling) has registered a specialized content type
 		IContentType type = Platform.getContentTypeManager().findContentTypeFor("META-INF/MANIFEST.MF");
 		if (type == null) {

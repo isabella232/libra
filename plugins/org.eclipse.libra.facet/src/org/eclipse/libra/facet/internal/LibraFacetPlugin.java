@@ -49,7 +49,7 @@ public class LibraFacetPlugin extends Plugin {
 		plugin = this;
 		
 		this.ref = context.getServiceReference(IBundleProjectService.class);
-		this.service = (IBundleProjectService) context.getService(ref);
+		this.service = context.getService(ref);
 		
 		webContextRootListener = new WebContextRootSynchonizer();
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(webContextRootListener, IResourceChangeEvent.POST_CHANGE);

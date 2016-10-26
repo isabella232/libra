@@ -38,7 +38,7 @@ public class KnopflerfishFrameworkClasspathProvider extends
 		IPath path = installPath.append("bundle");
 		addLibraryEntries(list, path.toFile(), true);
 
-		return (IClasspathEntry[]) list
+		return list
 				.toArray(new IClasspathEntry[list.size()]);
 	}
 }

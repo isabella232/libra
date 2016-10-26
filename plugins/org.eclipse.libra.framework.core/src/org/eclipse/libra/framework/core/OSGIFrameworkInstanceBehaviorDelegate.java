@@ -111,18 +111,19 @@ public abstract class OSGIFrameworkInstanceBehaviorDelegate extends ServerBehavi
 	 *            &quot;start&quot;.
 	 * @return merged argument string
 	 */
-	public static String mergeArguments(String originalArg, String[] vmArgs,
+	public static String mergeArguments(final String originalArg, String[] vmArgs,
 			String[] excludeArgs, boolean keepActionLast) {
 		if (vmArgs == null)
 			return originalArg;
 
-		if (originalArg == null)
-			originalArg = "";
+		String arg = originalArg;
+		if (arg == null)
+			arg = "";
 
-		originalArg = concatArgs(originalArg,  vmArgs, keepActionLast) ;
-		originalArg =excludeArgs(originalArg, excludeArgs);
+		arg = concatArgs(originalArg,  vmArgs, keepActionLast) ;
+		arg = excludeArgs(originalArg, excludeArgs);
 	
-		return originalArg;
+		return arg;
 	}
 	
 	
@@ -181,11 +182,10 @@ public abstract class OSGIFrameworkInstanceBehaviorDelegate extends ServerBehavi
 	 * @param cp
 	 * @param entry
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static void replaceJREContainer(List cp, IRuntimeClasspathEntry entry) {
+	public static void replaceJREContainer(List<IRuntimeClasspathEntry> cp, IRuntimeClasspathEntry entry) {
 		int size = cp.size();
 		for (int i = 0; i < size; i++) {
-			IRuntimeClasspathEntry entry2 = (IRuntimeClasspathEntry) cp.get(i);
+			IRuntimeClasspathEntry entry2 = cp.get(i);
 			if (entry2.getPath().uptoSegment(2).isPrefixOf(entry.getPath())) {
 				cp.set(i, entry);
 				return;
@@ -201,12 +201,10 @@ public abstract class OSGIFrameworkInstanceBehaviorDelegate extends ServerBehavi
 	 * @param cp
 	 * @param entry
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static void mergeClasspath(List cp, IRuntimeClasspathEntry entry) {
-		Iterator iterator = cp.iterator();
+	public static void mergeClasspath(List<IRuntimeClasspathEntry> cp, IRuntimeClasspathEntry entry) {
+		Iterator<IRuntimeClasspathEntry> iterator = cp.iterator();
 		while (iterator.hasNext()) {
-			IRuntimeClasspathEntry entry2 = (IRuntimeClasspathEntry) iterator
-					.next();
+			IRuntimeClasspathEntry entry2 = iterator.next();
 
 			if (entry2.getPath().equals(entry.getPath()))
 				return;
@@ -313,8 +311,7 @@ public abstract class OSGIFrameworkInstanceBehaviorDelegate extends ServerBehavi
 		if (instancePathStr != null) {
 			IPath instanceDir = new Path(getFrameworkInstance()
 					.getInstanceDirectory());
-			if (instanceDir != null)
-				confDir = instanceDir;
+			confDir = instanceDir;
 		}
 
 		return confDir;
@@ -346,7 +343,7 @@ public abstract class OSGIFrameworkInstanceBehaviorDelegate extends ServerBehavi
 				if (events != null) {
 					int size = events.length;
 					for (int i = 0; i < size; i++) {
-						if (newProcess != null
+						if (true
 								&& newProcess.equals(events[i].getSource())
 								&& events[i].getKind() == DebugEvent.TERMINATE) {
 							stopImpl();
@@ -443,14 +440,15 @@ public abstract class OSGIFrameworkInstanceBehaviorDelegate extends ServerBehavi
 		IRuntimeClasspathEntry[] originalClasspath = JavaRuntime
 				.computeUnresolvedRuntimeClasspath(workingCopy);
 		int size = originalClasspath.length;
-		List oldCp = new ArrayList(originalClasspath.length + 2);
+		List<IRuntimeClasspathEntry> oldCp = new ArrayList<IRuntimeClasspathEntry>(originalClasspath.length + 2);
 		for (int i = 0; i < size; i++)
 			oldCp.add(originalClasspath[i]);
 
-		List cp2 = runtime.getFrameworkClasspath(null);
-		Iterator iterator = cp2.iterator();
+		@SuppressWarnings("unchecked")
+		List<IRuntimeClasspathEntry> cp2 = runtime.getFrameworkClasspath(null);
+		Iterator<IRuntimeClasspathEntry> iterator = cp2.iterator();
 		while (iterator.hasNext()) {
-			IRuntimeClasspathEntry entry = (IRuntimeClasspathEntry) iterator
+			IRuntimeClasspathEntry entry = iterator
 					.next();
 			mergeClasspath(oldCp, entry);
 		}
@@ -467,9 +465,8 @@ public abstract class OSGIFrameworkInstanceBehaviorDelegate extends ServerBehavi
 				// ignore
 			}
 
-			IPath jrePath = new Path(vmInstall.getInstallLocation()
-					.getAbsolutePath());
-			if (jrePath != null) {
+			IPath jrePath = new Path(vmInstall.getInstallLocation().getAbsolutePath());
+			if (jrePath.toFile().exists()){
 				IPath toolsPath = jrePath.append("lib").append("tools.jar");
 				if (toolsPath.toFile().exists()) {
 					IRuntimeClasspathEntry toolsJar = JavaRuntime
@@ -477,7 +474,7 @@ public abstract class OSGIFrameworkInstanceBehaviorDelegate extends ServerBehavi
 					// Search for index to any existing tools.jar entry
 					int toolsIndex;
 					for (toolsIndex = 0; toolsIndex < oldCp.size(); toolsIndex++) {
-						IRuntimeClasspathEntry entry = (IRuntimeClasspathEntry) oldCp
+						IRuntimeClasspathEntry entry = oldCp
 								.get(toolsIndex);
 						if (entry.getType() == IRuntimeClasspathEntry.ARCHIVE
 								&& entry.getPath().lastSegment()
@@ -496,9 +493,9 @@ public abstract class OSGIFrameworkInstanceBehaviorDelegate extends ServerBehavi
 		}
 
 		iterator = oldCp.iterator();
-		List list = new ArrayList();
+		List<String> list = new ArrayList<String>();
 		while (iterator.hasNext()) {
-			IRuntimeClasspathEntry entry = (IRuntimeClasspathEntry) iterator
+			IRuntimeClasspathEntry entry = iterator
 					.next();
 			try {
 				list.add(entry.getMemento());
@@ -531,9 +528,8 @@ public abstract class OSGIFrameworkInstanceBehaviorDelegate extends ServerBehavi
 		if (getServer().getServerRestartState())
 			return;
 
-		Iterator iterator = getAllModules().iterator();
-		while (iterator.hasNext()) {
-			IModule[] module = (IModule[]) iterator.next();
+		List<IModule[]> modules = getAllModules();
+		for(IModule[] module: modules) {
 			IModuleResourceDelta[] delta = getPublishedResourceDelta(module);
 			if (delta == null || delta.length == 0)
 				continue;
@@ -636,7 +632,7 @@ public abstract class OSGIFrameworkInstanceBehaviorDelegate extends ServerBehavi
 			// ignore
 		} finally {
 			try {
-				fin.close();
+				if (fin!=null) fin.close();
 			} catch (Exception ex) {
 				// ignore
 			}
@@ -654,7 +650,7 @@ public abstract class OSGIFrameworkInstanceBehaviorDelegate extends ServerBehavi
 			// ignore
 		} finally {
 			try {
-				fout.close();
+				if (fout!=null) fout.close();
 			} catch (Exception ex) {
 				// ignore
 			}
