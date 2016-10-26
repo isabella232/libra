@@ -53,10 +53,9 @@ public abstract class PublishHelper {
 	protected abstract IPath getPublishFolder();
 
 
-	public String getServerModules(List modules, String prefix, String spacer) {
+	public String getServerModules(List<IModule[]> modules, String prefix, String spacer) {
 		StringBuilder builder = new StringBuilder();
-		for (Object object : modules) {
-			IModule[] moduleArr = (IModule[]) object;
+		for (IModule[] moduleArr: modules) {
 			for (IModule module : moduleArr) {
 				if (builder.length() > 0)
 					builder.append(spacer); //$NON-NLS-1$
@@ -140,12 +139,18 @@ public abstract class PublishHelper {
 	}
 
 
-	public void exportBundles(List modules,
+	public void exportBundles(List<IModule[]> modules,
 			FrameworkInstanceConfiguration config, IPath location) {
 		exportBundles(modules, config, location, null);
 	}
 
-	public void exportBundles(List modules,
+	/**
+	 * @param modules
+	 * @param config not really used
+	 * @param location
+	 * @param tmpLocation
+	 */
+	public void exportBundles(List<IModule[]> modules,
 			FrameworkInstanceConfiguration config, final IPath location,
 			final IPath tmpLocation) {
 
@@ -164,10 +169,8 @@ public abstract class PublishHelper {
 		List<Object> allWsBundles = new ArrayList<Object>();
 		List<IProject> allBinBundles = new ArrayList<IProject>();
 
-		for (Object module : modules) {
+		for (IModule[] moduleArr: modules) {
 			try {
-				IModule[] moduleArr = (IModule[]) module;
-
 				for (IModule iModule : moduleArr) {
 					IProject project = iModule.getProject();
 
@@ -178,11 +181,11 @@ public abstract class PublishHelper {
 							.getBundleDescription().getSymbolicName());
 					if (!WorkspaceModelManager.isBinaryProject(project)
 							&& WorkspaceModelManager.isPluginProject(project)) {
-						if (entry.getModel() != null
+						if (entry != null
+								&& entry.getModel() != null
 								&& isValidModel(entry.getModel())
-								&& hasBuildProperties((IPluginModelBase) entry
-										.getModel())) {
-
+								&& hasBuildProperties(entry.getModel())
+						) {
 							allWsBundles.add(entry.getModel());
 						} else {
 							allBinBundles.add(project);
@@ -193,13 +196,8 @@ public abstract class PublishHelper {
 					}
 				}
 			} catch (SecurityException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
-				// } catch (NoSuchMethodException e) {
-				// // TODO Auto-generated catch block
-				// e.printStackTrace();
 			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -223,29 +221,40 @@ public abstract class PublishHelper {
 					try {
 						if (tmpLocation != null) {
 							// MOVE ALL
+							// TODO Move this to a separate Job with feedback if errors occur?
 							File sourceFiles = tmpLocation.append("/plugins").toFile();
-							for (File jars : sourceFiles.listFiles()) {
+							File[] fileList = sourceFiles.listFiles();
+							if (fileList != null) for (File jars : fileList) {
 								File destFile = location.append(jars.getName()).toFile();
 								
 								if (!destFile.exists()) {
-									destFile.createNewFile();
+									if (! destFile.createNewFile()){
+										throw new IOException("Could not create destination file: "+destFile);
+									}
 								}
 								
+								FileInputStream fIn = null;
+								FileOutputStream fOut = null;
 								FileChannel source = null;
 								FileChannel destination = null;
 								try {
-									source = new FileInputStream(jars)
-									.getChannel();
-									destination = new FileOutputStream(destFile)
-									.getChannel();
-									destination.transferFrom(source, 0,
-											source.size());
+									source = (fIn=new FileInputStream(jars)).getChannel();
+									destination = (fOut=new FileOutputStream(destFile)).getChannel();
+									destination.transferFrom(source, 0, source.size());
 								} finally {
-									if (source != null) {
-										source.close();
+									if (fIn!=null){
+										try{
+											fIn.close();
+										}catch(IOException x){
+											x.printStackTrace();
+										}
 									}
-									if (destination != null) {
-										destination.close();
+									if (fOut!=null){
+										try{
+											fOut.close();
+										}catch(IOException x){
+											x.printStackTrace();
+										}
 									}
 								}
 							}
@@ -260,8 +269,9 @@ public abstract class PublishHelper {
 
 	}
 
-	private void copyBinaryJars(List<IProject> list, IPath location) {
-		// TODO Auto-generated method stub
+	private static void copyBinaryJars(List<IProject> list, IPath location) {
+		FileInputStream fIn = null;
+		FileOutputStream fOut = null;
 		FileChannel inChannel = null;
 		FileChannel outChannel = null;
 		try {
@@ -286,11 +296,13 @@ public abstract class PublishHelper {
 							}
 						}
 
-						inChannel = new FileInputStream(new File(
-								resource.getLocationURI())).getChannel();
-						outChannel = new FileOutputStream(new File(location
+						fIn = new FileInputStream(new File(resource.getLocationURI()));
+						fOut = new FileOutputStream(new File(location
 								.append(jarId).makeAbsolute()
-								.toPortableString())).getChannel();
+								.toPortableString())
+						);
+						inChannel = fIn.getChannel();
+						outChannel = fOut.getChannel();
 						inChannel.transferTo(0, inChannel.size(), outChannel);
 						break;
 					}
@@ -301,22 +313,22 @@ public abstract class PublishHelper {
 		} catch (CoreException e) {
 			e.printStackTrace();
 		} finally {
-			if (inChannel != null)
+			if (fIn != null)
 				try {
-					inChannel.close();
+					fIn.close();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			if (outChannel != null)
+			if (fOut != null)
 				try {
-					outChannel.close();
+					fOut.close();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 		}
 	}
 
-	private boolean hasBuildProperties(IPluginModelBase model) {
+	private static boolean hasBuildProperties(IPluginModelBase model) {
 		File file = new File(model.getInstallLocation(), "build.properties"); //$NON-NLS-1$
 		return file.exists();
 	}

@@ -202,7 +202,7 @@ public class WARProduct implements IWARProduct {
     writer.println( indent + "   </warConfiguration>" ); //$NON-NLS-1$
   }
 
-  private void writeCloseProduct( final PrintWriter writer ) {
+  private static void writeCloseProduct( final PrintWriter writer ) {
     writer.println( "</product>" ); //$NON-NLS-1$
   }
 
@@ -280,7 +280,7 @@ public class WARProduct implements IWARProduct {
     }
   }
   
-  private String getValidPath( final String path ) {
+  private static String getValidPath( final String path ) {
     StringBuffer buffer = new StringBuffer();
     for( int i = 0; i < path.length(); i++ ) {
       char charAt = path.charAt( i );
@@ -320,7 +320,7 @@ public class WARProduct implements IWARProduct {
     return result;
   }
   
-  private boolean isBundleFragment( final String pluginId ) {
+  private static boolean isBundleFragment( final String pluginId ) {
     boolean result = false;
     ModelEntry entry = PluginRegistry.findEntry( pluginId );
     if( entry != null ) {

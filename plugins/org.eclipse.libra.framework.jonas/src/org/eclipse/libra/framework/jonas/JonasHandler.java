@@ -78,8 +78,6 @@ public class JonasHandler implements IJonasVersionHandler {
 	public String[] getFrameworkVMArguments(IPath installPath, IPath configPath,
 			IPath deployPath, boolean isTestEnv) {
 
-		String configPathStr = deployPath.makeAbsolute().toOSString();
-		String vmArgs = "-Dfelix.config.properties=file:" + configPathStr + "/config.properties"; //$NON-NLS-1$ //$NON-NLS-2$
 		String jonasRoot = installPath.toOSString();
 		String jonasBase = deployPath.append("/jonasbase").toOSString();
 		return new String[] {
@@ -166,7 +164,7 @@ public class JonasHandler implements IJonasVersionHandler {
 		// }
 	}
 
-	final int BUFFER = 2048;
+	static final int BUFFER = 2048;
 
 	public void createJonasBase(IPath location, String instanceDirectory) {
 		try {

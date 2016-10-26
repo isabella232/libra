@@ -103,28 +103,34 @@ public class Felix2Handler implements IFelixVersionHandler {
 
 		if(jmxEnabled)
 			return new String[]{"-Dcom.sun.management.jmxremote.port="+jmxPort, "-Dcom.sun.management.jmxremote.authenticate=false", "-Dcom.sun.management.jmxremote.ssl=false", vmArgs, vmArgs2};
-		else
-			return new String[]{ vmArgs, vmArgs2};
+		
+		return new String[]{ vmArgs, vmArgs2};
 	}
 
-	private  void copyFile(InputStream source, File destFile) throws IOException {
-
-
+	private static void copyFile(InputStream source, File destFile) throws IOException {
 		FileOutputStream destination = null;
-		 try {
-		  destination = new FileOutputStream(destFile);
-		  int c;
-		  while((c = source.read()) != -1){
-			  destination.write(c);
-		  }
-		 }
-		 finally {
-		  if(source != null) {
-		   source.close();
-		  }
-		  if(destination != null) {
-		   destination.close();
-		  }
+		try {
+			destination = new FileOutputStream(destFile);
+			int c;
+			while((c = source.read()) != -1){
+				destination.write(c);
+			}
+		}
+		finally {
+			if(source != null) {
+				try{
+					source.close();
+				}catch(IOException x){
+					x.printStackTrace();
+				}
+			}
+			if(destination != null) {
+				try{
+					destination.close();
+				}catch(IOException x){
+					x.printStackTrace();
+				}
+			}
 		}
 	}
 	
@@ -184,10 +190,18 @@ public class Felix2Handler implements IFelixVersionHandler {
 					+ configPath.append("auto").makeAbsolute().toPortableString());
 			properties.setProperty("org.osgi.framework.storage.clean","onFirstInit");
 
+			FileOutputStream out = null;
 			try {
-				properties.store(new FileOutputStream(configPath.append("config.properties").makeAbsolute().toFile()), "## AUTO GENERATED ##");
+				out = new FileOutputStream(configPath.append("config.properties").makeAbsolute().toFile());
+				properties.store(out, "## AUTO GENERATED ##");
 			} catch (IOException e) {
 				e.printStackTrace();
+			}finally{
+				try{
+					if (out!=null) out.close();
+				}catch(IOException x){
+					x.printStackTrace();
+				}
 			}
 		}
 }

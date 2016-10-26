@@ -19,20 +19,15 @@ import org.eclipse.wst.server.core.IServerAttributes;
  * 
  */
 public class ConfigurationPropertyTester extends PropertyTester {
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.core.expressions.IPropertyTester#test(java.lang.Object,
-	 * java.lang.String, java.lang.Object[], java.lang.Object)
+	/* (non-Javadoc)
+	 * @see org.eclipse.core.expressions.IPropertyTester#test(java.lang.Object, java.lang.String, java.lang.Object[], java.lang.Object)
 	 */
-	public boolean test(Object receiver, String property, Object[] args,
-			Object expectedValue) {
+	public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
 		try {
 			IServerAttributes server = (IServerAttributes) receiver;
-			FrameworkInstanceDelegate jonas = (FrameworkInstanceDelegate) server
-					.loadAdapter(IJonasFrameworkInstance.class, null);
+			FrameworkInstanceDelegate jonas = (FrameworkInstanceDelegate) server.loadAdapter(IJonasFrameworkInstance.class, null);
 			if (jonas != null)
-				return jonas != null;
+				return true;
 		} catch (Exception e) {
 			// ignore
 		}

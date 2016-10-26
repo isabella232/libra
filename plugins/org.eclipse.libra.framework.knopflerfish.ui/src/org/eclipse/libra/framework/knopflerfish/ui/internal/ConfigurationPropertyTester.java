@@ -26,8 +26,8 @@ public class ConfigurationPropertyTester extends PropertyTester {
 		try {
 			IServerAttributes server = (IServerAttributes) receiver;
 			FrameworkInstanceDelegate knopflerfish = (FrameworkInstanceDelegate) server.loadAdapter(IKnopflerfishFramework.class, null);
-			if (knopflerfish != null)
-				return knopflerfish != null;
+			if (knopflerfish!=null)
+				return true;
 		} catch (Exception e) {
 			// ignore
 		}

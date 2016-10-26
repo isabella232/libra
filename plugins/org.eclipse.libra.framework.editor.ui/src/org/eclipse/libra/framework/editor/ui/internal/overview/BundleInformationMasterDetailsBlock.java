@@ -52,9 +52,9 @@ import org.eclipse.wst.server.core.IServer;
  */
 public class BundleInformationMasterDetailsBlock extends MasterDetailsBlock {
 
-	private BundleInformationDetailsPart detailsPart;
+	BundleInformationDetailsPart bundleDetailsPart;
 
-	private BundleInformationMasterPart masterPart;
+	private BundleInformationMasterPart bundleMasterPart;
 
 	private final MultiPageEditorPart serverEditor;
 
@@ -102,22 +102,22 @@ public class BundleInformationMasterDetailsBlock extends MasterDetailsBlock {
 
 	@Override
 	protected void createMasterPart(final IManagedForm managedForm, Composite parent) {
-		masterPart = new BundleInformationMasterPart(parent, managedForm.getToolkit(), ExpandableComposite.TWISTIE
+		bundleMasterPart = new BundleInformationMasterPart(parent, managedForm.getToolkit(), ExpandableComposite.TWISTIE
 				| ExpandableComposite.EXPANDED | ExpandableComposite.TITLE_BAR | Section.DESCRIPTION
 				| ExpandableComposite.FOCUS_TITLE, this);
-		managedForm.addPart(masterPart);
-		masterPart.createContents();
+		managedForm.addPart(bundleMasterPart);
+		bundleMasterPart.createContents();
 	}
 
 	@Override
 	protected void createToolBarActions(IManagedForm managedForm) {
-
+		// nothing
 	}
 
 	@Override
-	protected void registerPages(DetailsPart detailsPart) {
-		this.detailsPart = new BundleInformationDetailsPart(this);
-		detailsPart.setPageProvider(new IDetailsPageProvider() {
+	protected void registerPages(DetailsPart targetDetailsPart) {
+		this.bundleDetailsPart = new BundleInformationDetailsPart(this);
+		targetDetailsPart.setPageProvider(new IDetailsPageProvider() {
 			
 			public Object getPageKey(Object object) {
 				if (object instanceof IBundle) {
@@ -128,7 +128,7 @@ public class BundleInformationMasterDetailsBlock extends MasterDetailsBlock {
 			
 			public IDetailsPage getPage(Object key) {
 				if (key.equals(IBundle.class)) {
-					return BundleInformationMasterDetailsBlock.this.detailsPart;
+					return BundleInformationMasterDetailsBlock.this.bundleDetailsPart;
 				}
 				return null;
 			}
@@ -139,8 +139,8 @@ public class BundleInformationMasterDetailsBlock extends MasterDetailsBlock {
 	 * @param bundles
 	 */
 	public void refresh(Map<Long, IBundle> bundles) {
-		if (masterPart.refresh(bundles)) {
-			detailsPart.refresh(bundles);
+		if (bundleMasterPart.refresh(bundles)) {
+			bundleDetailsPart.refresh(bundles);
 			
 			BundleDependencyEditorPage depPage = getDependencyPage();
 			if (depPage != null) {
@@ -160,7 +160,7 @@ public class BundleInformationMasterDetailsBlock extends MasterDetailsBlock {
 		}
 	}
 
-	private void onSashPaint(Event e) {
+	void onSashPaint(Event e) {
 		Sash sash = (Sash) e.widget;
 		IManagedForm form = (IManagedForm) sash.getParent().getData("form"); //$NON-NLS-1$
 		FormColors colors = form.getToolkit().getColors();
@@ -228,7 +228,7 @@ public class BundleInformationMasterDetailsBlock extends MasterDetailsBlock {
 			hookSashListeners();
 		}
 
-		private void hookSashListeners() {
+		void hookSashListeners() {
 			purgeSashes();
 			Control[] children = getChildren();
 			for (Control element : children) {
@@ -256,7 +256,7 @@ public class BundleInformationMasterDetailsBlock extends MasterDetailsBlock {
 	}
 
 	public void clear() {
-		masterPart.clear();
+		bundleMasterPart.clear();
 	}
 	
 	private BundleDependencyEditorPage getDependencyPage() {
@@ -285,11 +285,11 @@ public class BundleInformationMasterDetailsBlock extends MasterDetailsBlock {
 	}
 
 	public void setSelectedBundle(IBundle bundle) {
-		masterPart.setSelectedBundle(bundle);
+		bundleMasterPart.setSelectedBundle(bundle);
 	}
 
 	public void refresh() {
-		masterPart.updateButtonState();
+		bundleMasterPart.updateButtonState();
 	}
 	
 	public BundleInformationEditorPage getEditorPage() {

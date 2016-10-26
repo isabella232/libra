@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.jar.JarInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -14,7 +13,9 @@ public class ZipUtil {
 	   {
 	      if (!dest.exists())
 	      {
-	         dest.mkdirs();
+	         if (! dest.mkdirs()){
+		         throw new IOException("Could not create destination directory.");
+	         }
 	      }
 	      if (!dest.isDirectory())
 	      {
@@ -65,7 +66,10 @@ public class ZipUtil {
 	            out.flush();
 	            out.close();
 	            jin.closeEntry();
-	            file.setLastModified(entry.getTime());
+	            
+	            if (! file.setLastModified(entry.getTime())){
+	            	// not a real problem, but findbugs requires checking the return code
+	            }
 	         }
 	         entry = jin.getNextEntry();
 	      }

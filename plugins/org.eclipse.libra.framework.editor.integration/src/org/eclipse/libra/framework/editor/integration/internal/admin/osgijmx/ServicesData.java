@@ -48,7 +48,7 @@ public class ServicesData {
 		return map.get(serviceId);
 	}
 	
-	public class ServiceInfo {
+	public static class ServiceInfo {
 		
 		private Long serviceId;
 		private Long bundleId;

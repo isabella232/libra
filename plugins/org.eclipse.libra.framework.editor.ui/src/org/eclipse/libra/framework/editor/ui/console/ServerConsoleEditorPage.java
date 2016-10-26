@@ -23,8 +23,8 @@ import org.eclipse.libra.framework.editor.ui.internal.EditorUIPlugin;
 import org.eclipse.libra.framework.editor.ui.internal.SearchTextHistory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -49,9 +49,9 @@ import org.eclipse.wst.server.ui.ServerUICore;
 @SuppressWarnings("restriction")
 public class ServerConsoleEditorPage extends AbstractBundleEditorPage {
 
-	private Text commandText;
+	Text commandText;
 	
-	private StyledText manifestText;
+	StyledText manifestText;
 
 	private IToolBarManager toolBarManager;
 
@@ -61,7 +61,7 @@ public class ServerConsoleEditorPage extends AbstractBundleEditorPage {
 
 	private Action refreshAction;
 
-	private final SearchTextHistory history = new SearchTextHistory();
+	final SearchTextHistory history = new SearchTextHistory();
 
 	@Override
 	protected void createBundleContent(Composite parent) {
@@ -106,8 +106,7 @@ public class ServerConsoleEditorPage extends AbstractBundleEditorPage {
 		commandText = toolkit.createText(manifestComposite, "", SWT.CANCEL | SWT.SEARCH);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(commandText);
 
-		commandText.addKeyListener(new KeyListener() {
-
+		commandText.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				if (e.character == SWT.CR || e.character == SWT.LF) {
 					history.add(commandText.getText());
@@ -126,9 +125,6 @@ public class ServerConsoleEditorPage extends AbstractBundleEditorPage {
 					commandText.setSelection(command.length());
 					e.doit = false;
 				}
-			}
-
-			public void keyReleased(KeyEvent e) {
 			}
 		});
 
@@ -206,7 +202,7 @@ public class ServerConsoleEditorPage extends AbstractBundleEditorPage {
 		sform.updateToolBar();
 	}
 	
-	private void executeCommand(String cmdLine) {
+	void executeCommand(String cmdLine) {
 		clearStatus();
 		
 		IOSGiFrameworkConsole console = (IOSGiFrameworkConsole) getServer().getOriginal()
@@ -216,6 +212,7 @@ public class ServerConsoleEditorPage extends AbstractBundleEditorPage {
 			IStatus status = EditorUIPlugin.newErrorStatus("Console editor part is not integrated with the runtime.");
 			EditorUIPlugin.log(status);
 			setStatus(status);
+			return ;
 		}
 		
 		try {

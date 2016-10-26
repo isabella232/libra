@@ -10,6 +10,7 @@
 *******************************************************************************/
 package org.eclipse.libra.warproducts.ui.editor;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -78,7 +79,8 @@ public class WARProductOutlinePage extends FormOutlinePage {
     return result;
   }
   
-  private static class LibraryComparator implements Comparator {
+  private static class LibraryComparator implements Comparator, Serializable {
+    private static final long serialVersionUID = -877535050574491831L;
 
     public int compare( final Object o1, 
                         final Object o2 ) {

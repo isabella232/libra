@@ -26,17 +26,17 @@ import org.eclipse.wst.web.internal.deployables.FlatComponentDeployable;
 public class OsgiModuleDeployable extends FlatComponentDeployable {
 
 
-	IVirtualComponent component;
+	IVirtualComponent virtualComponent;
 	
 	public OsgiModuleDeployable(IProject project, IVirtualComponent component) {
 		super(project);
-		this.component = component;
+		this.virtualComponent = component;
 	}
 
 	public String getVersion() {
 		IFacetedProject facetedProject = null;
 		try {
-			facetedProject = ProjectFacetsManager.create(component.getProject());
+			facetedProject = ProjectFacetsManager.create(virtualComponent.getProject());
 			if (facetedProject !=null && ProjectFacetsManager.isProjectFacetDefined("osgi.bundle")) {
 				IProjectFacet projectFacet = ProjectFacetsManager.getProjectFacet("osgi.bundle");
 				return facetedProject.getInstalledVersion(projectFacet).getVersionString();

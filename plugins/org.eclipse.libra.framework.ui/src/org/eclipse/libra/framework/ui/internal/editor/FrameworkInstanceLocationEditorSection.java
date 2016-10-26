@@ -319,7 +319,7 @@ public class FrameworkInstanceLocationEditorSection extends ServerEditorSection 
 		}
 		
 		try {
-			if (frameworkInstance != null && frameworkInstance.getFrameworkInstanceConfiguration() != null) {
+			if (frameworkInstance.getFrameworkInstanceConfiguration() != null) {
 
 				ITargetDefinition original = frameworkInstance.getFrameworkInstanceConfiguration()
 						.getTargetDefinition();

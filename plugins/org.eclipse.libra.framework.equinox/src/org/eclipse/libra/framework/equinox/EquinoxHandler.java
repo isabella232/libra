@@ -131,8 +131,11 @@ public class EquinoxHandler implements IEquinoxVersionHandler {
 				copyFile(this.getClass().getResourceAsStream("java6-server.profile"), new File(profilePath));				
 			}else if(javaProfileProps != null){
 				FileOutputStream os = new FileOutputStream(new File(profilePath));
-				javaProfileProps.store(os, "THIS FILE IS AUTO GENERATED");
-				os.close();
+				try{
+					javaProfileProps.store(os, "THIS FILE IS AUTO GENERATED");
+				}finally{
+					os.close();
+				}
 			}
 		} catch (IOException e) {
 			Trace.trace(Trace.SEVERE, "Could not set equinox VM arguments:"+e.getMessage(), e);
@@ -247,10 +250,11 @@ public class EquinoxHandler implements IEquinoxVersionHandler {
 					else
 						propertyInstall.append("@start, ");
 				} else {
-					for (String string2 : file.list()) {
+					String[] fileList = file.list();
+					if (fileList!=null) for (String string2 : fileList) {
 						if (string2.indexOf(".jar") > -1) {
 							propertyInstall.append(targetBundlePath + string2);
-							String fbundleId = getBundleId(string2);
+//							String fbundleId = getBundleId(string2);
 //							IPluginModelBase modelBase = PluginRegistry.findModel(fbundleId);
 							if(krBundles[i].isFragment())
 								propertyInstall.append(", ");
@@ -268,14 +272,24 @@ public class EquinoxHandler implements IEquinoxVersionHandler {
 		properties.put("osgi.noShutdown", "true"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		try {
-			properties.store(
-					new FileOutputStream(configPath.append("config.ini")
-							.makeAbsolute().toFile()), "## AUTO GENERATED ##");
+			final FileOutputStream out = new FileOutputStream(
+				configPath.append("config.ini").makeAbsolute().toFile()
+			); 
+			try{
+				properties.store(out, "## AUTO GENERATED ##");
+			}finally{
+				try{
+					out.close();
+				}catch(IOException x){
+					x.printStackTrace();
+				}
+			}
 		} catch (IOException e) {
 			Trace.trace(Trace.SEVERE, "Could not create equinox dev.properties configrutaion file:"+e.getMessage(), e);
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private static String getBundleId(String targetBundlePath) {
 		IPath kbPath = new Path(targetBundlePath);
 		String bundleId = kbPath.lastSegment();
@@ -336,23 +350,28 @@ public class EquinoxHandler implements IEquinoxVersionHandler {
 	
 	
 	private static void copyFile(InputStream source, File destFile) throws IOException {
-
-
 		FileOutputStream destination = null;
-		 try {
-		  destination = new FileOutputStream(destFile);
-		  int c;
-		  while((c = source.read()) != -1){
-			  destination.write(c);
-		  }
-		 }
-		 finally {
-		  if(source != null) {
-		   source.close();
-		  }
-		  if(destination != null) {
-		   destination.close();
-		  }
+		try {
+			destination = new FileOutputStream(destFile);
+			int c;
+			while((c = source.read()) != -1){
+				destination.write(c);
+			}
+		} finally {
+			if(source != null) {
+				try{
+					source.close();
+				}catch(IOException x){
+					x.printStackTrace();
+				}
+			}
+			if(destination != null) {
+				try{
+					destination.close();
+				}catch(IOException x){
+					x.printStackTrace();
+				}
+			}
 		}
 	}
 }

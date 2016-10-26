@@ -173,7 +173,6 @@ public class ConfigurationOSGiModuleEditorPart extends ServerEditorPart implemen
 		layout.marginHeight = 0;
 		layout.marginWidth = 0;
 		rightPanel.setLayout(layout);
-		data = new GridData();
 		rightPanel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL
 				| GridData.VERTICAL_ALIGN_BEGINNING));
 
@@ -208,9 +207,7 @@ public class ConfigurationOSGiModuleEditorPart extends ServerEditorPart implemen
 			Trace.trace(Trace.SEVERE, "cannot access configuration",e);
 		}
 		
-		if (server != null){
-			server.loadAdapter(IOSGIFrameworkWorkingCopy.class, null);
-		}
+		server.loadAdapter(IOSGIFrameworkWorkingCopy.class, null);
 		
 		addChangeListener();
 		initialize();

@@ -72,7 +72,7 @@ public class ServiceReference implements IServiceReference {
 	@Override
 	public int hashCode() {
 		int hashCode = 17;
-		hashCode = 31 * hashCode + clazzes.hashCode();
+		hashCode = 31 * hashCode + Arrays.hashCode(clazzes);
 		hashCode = 31 * hashCode + type.hashCode();
 		return hashCode;
 	}

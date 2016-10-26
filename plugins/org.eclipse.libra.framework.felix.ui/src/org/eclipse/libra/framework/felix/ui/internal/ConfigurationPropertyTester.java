@@ -27,7 +27,7 @@ public class ConfigurationPropertyTester extends PropertyTester {
 			IServerAttributes server = (IServerAttributes) receiver;
 			FrameworkInstanceDelegate felix = (FrameworkInstanceDelegate) server.loadAdapter(IFelixFrameworkInstance.class, null);
 			if (felix != null)
-				return felix != null;
+				return true;
 		} catch (Exception e) {
 			// ignore
 		}

@@ -142,9 +142,10 @@ public class EquinoxFrameworkInstance extends FrameworkInstanceDelegate implemen
 	public String getFrameworkJarPath(){
 		IPath installPath = getServer().getRuntime().getLocation();
 		IPath plugins = installPath.append("plugins");
-		if (plugins.toFile().exists()) {
-			File[] files = plugins.toFile().listFiles();
-			for (File file : files) {
+		File pluginsFile = plugins.toFile();
+		if (pluginsFile.exists()) {
+			File[] files = pluginsFile.listFiles();
+			if (files!=null) for (File file : files) {
 				if (file.getName().indexOf("org.eclipse.osgi_") > -1) {
 					return file.getAbsolutePath();
 				}
