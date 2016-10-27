@@ -147,10 +147,10 @@ public class BundleInformationDetailsPart extends AbstractFormPart implements ID
 
 	class PackageImportContentProvider implements ITreeContentProvider {
 
-		private IBundle bundle;
+		private IBundle cpBundle;
 
 		public void dispose() {
-
+			// nothing
 		}
 
 		public Object[] getChildren(Object parentElement) {
@@ -165,8 +165,8 @@ public class BundleInformationDetailsPart extends AbstractFormPart implements ID
 		}
 
 		public Object[] getElements(Object inputElement) {
-			if (bundle.getPackageImports().size() > 0) {
-				return bundle.getPackageImports().toArray();
+			if (cpBundle.getPackageImports().size() > 0) {
+				return cpBundle.getPackageImports().toArray();
 			}
 			return new Object[] { "<no imported packages>" };
 		}
@@ -180,7 +180,7 @@ public class BundleInformationDetailsPart extends AbstractFormPart implements ID
 		}
 
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-			bundle = (IBundle) newInput;
+			cpBundle = (IBundle) newInput;
 		}
 	}
 
@@ -237,6 +237,7 @@ public class BundleInformationDetailsPart extends AbstractFormPart implements ID
 		private IServiceReference ref;
 
 		public void dispose() {
+			// nothing
 		}
 
 		public Object[] getElements(Object inputElement) {
@@ -301,10 +302,10 @@ public class BundleInformationDetailsPart extends AbstractFormPart implements ID
 			}
 		}
 
-		private IBundle bundle;
+		private IBundle cpBundle;
 
 		public void dispose() {
-
+			// nothing
 		}
 
 		public Object[] getChildren(Object parentElement) {
@@ -329,11 +330,11 @@ public class BundleInformationDetailsPart extends AbstractFormPart implements ID
 
 		public Object[] getElements(Object inputElement) {
 			Set<ServicesHolder> serviceHolder = new HashSet<ServicesHolder>();
-			if (bundle.getRegisteredServices().size() > 0) {
-				serviceHolder.add(new ServicesHolder(bundle.getRegisteredServices(), "Registered Services"));
+			if (cpBundle.getRegisteredServices().size() > 0) {
+				serviceHolder.add(new ServicesHolder(cpBundle.getRegisteredServices(), "Registered Services"));
 			}
-			if (bundle.getServicesInUse().size() > 0) {
-				serviceHolder.add(new ServicesHolder(bundle.getServicesInUse(), "Services in Use"));
+			if (cpBundle.getServicesInUse().size() > 0) {
+				serviceHolder.add(new ServicesHolder(cpBundle.getServicesInUse(), "Services in Use"));
 			}
 			if (serviceHolder.size() > 0) {
 				return serviceHolder.toArray();
@@ -350,7 +351,7 @@ public class BundleInformationDetailsPart extends AbstractFormPart implements ID
 		}
 
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-			bundle = (IBundle) newInput;
+			cpBundle = (IBundle) newInput;
 		}
 	}
 

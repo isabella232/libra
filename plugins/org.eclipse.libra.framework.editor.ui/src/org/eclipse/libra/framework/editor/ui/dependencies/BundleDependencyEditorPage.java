@@ -44,8 +44,8 @@ import org.eclipse.libra.framework.editor.ui.internal.dependencies.BundleDepende
 import org.eclipse.libra.framework.editor.ui.internal.dependencies.FocusedBundleDependencyLayoutAlgorithm;
 import org.eclipse.libra.framework.editor.ui.overview.BundleInformationEditorPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -336,8 +336,10 @@ public class BundleDependencyEditorPage extends AbstractBundleEditorPage impleme
 					context.run(true, true, runnable);
 				}
 				catch (InvocationTargetException e1) {
+					e1.printStackTrace();
 				}
 				catch (InterruptedException e2) {
+					e2.printStackTrace();
 				}
 			}
 
@@ -347,8 +349,8 @@ public class BundleDependencyEditorPage extends AbstractBundleEditorPage impleme
 		sform.updateToolBar();
 		initPopupMenu();
 
-		searchControl.getSearchText().addKeyListener(new KeyListener() {
-
+		searchControl.getSearchText().addKeyListener(new KeyAdapter() {
+			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.character == SWT.CR || e.character == SWT.LF) {
 					if (!"type filter text".equals(searchControl.getSearchText().getText())) {
@@ -359,9 +361,6 @@ public class BundleDependencyEditorPage extends AbstractBundleEditorPage impleme
 						new BundleDependencyUpdateJob(true).schedule();
 					}
 				}
-			}
-
-			public void keyReleased(KeyEvent e) {
 			}
 		});
 

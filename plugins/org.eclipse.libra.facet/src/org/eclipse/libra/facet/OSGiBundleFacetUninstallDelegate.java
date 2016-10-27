@@ -62,7 +62,7 @@ public class OSGiBundleFacetUninstallDelegate implements IDelegate {
 		}
 	}
 
-	private void removePluginNature(IProject project, IProgressMonitor monitor) throws CoreException {
+	private static void removePluginNature(IProject project, IProgressMonitor monitor) throws CoreException {
 		IProjectDescription description = project.getDescription();
 		if (description.hasNature(IBundleProjectDescription.PLUGIN_NATURE)) {
 			String[] natures = description.getNatureIds();
@@ -84,7 +84,7 @@ public class OSGiBundleFacetUninstallDelegate implements IDelegate {
 	}
 	
 	// workaround - see bug 344720
-	private void removeFromBuildSpec(IProjectDescription description, String builderId) {
+	private static void removeFromBuildSpec(IProjectDescription description, String builderId) {
 		ICommand[] commands = description.getBuildSpec();
 		for (int i = 0; i < commands.length; ++i) {
 			if (commands[i].getBuilderName().equals(builderId)) {
@@ -97,7 +97,7 @@ public class OSGiBundleFacetUninstallDelegate implements IDelegate {
 		}
 	}
 
-	private void removeRequiredBundlesClasspathContainer(IProject project, IProgressMonitor monitor) throws CoreException {
+	private static void removeRequiredBundlesClasspathContainer(IProject project, IProgressMonitor monitor) throws CoreException {
 		if (isJavaProject(project)) {
 			IJavaProject javaProject = JavaCore.create(project);
 			IClasspathEntry[] entries = javaProject.getRawClasspath();
@@ -115,12 +115,12 @@ public class OSGiBundleFacetUninstallDelegate implements IDelegate {
 		}
 	}
 
-	private void deleteBuildProperties(IProject project, IProgressMonitor monitor) throws CoreException {
+	private static void deleteBuildProperties(IProject project, IProgressMonitor monitor) throws CoreException {
 		IResource buildPropertiesFile = findResource(project, BUILD_PROPERTIES);
 		buildPropertiesFile.delete(IResource.KEEP_HISTORY, monitor);
 	}
 	
-	private void cleanUpManifest(IProject project, IProgressMonitor monitor) throws CoreException {
+	private static void cleanUpManifest(IProject project, IProgressMonitor monitor) throws CoreException {
 		IResource manifestFile = findResource(project, MANIFEST_URI);
 		manifestFile.delete(IResource.KEEP_HISTORY, monitor);
 		
@@ -131,7 +131,7 @@ public class OSGiBundleFacetUninstallDelegate implements IDelegate {
 		}
 	}
 	
-	private IResource findResource(IProject project, String memberURI) throws CoreException {
+	private static IResource findResource(IProject project, String memberURI) throws CoreException {
 		IBundleProjectDescription bundleProjectDescription = getBundleProjectDescription(project);
 		IPath bundleRoot = bundleProjectDescription.getBundleRoot();
 		IPath memberPath = bundleRoot;

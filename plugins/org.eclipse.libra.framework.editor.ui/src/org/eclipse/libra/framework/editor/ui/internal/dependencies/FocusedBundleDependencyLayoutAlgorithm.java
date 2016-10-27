@@ -32,6 +32,9 @@ public class FocusedBundleDependencyLayoutAlgorithm implements LayoutAlgorithm {
 
 	private final BundleDependencyContentProvider contentProvider;
 
+	/**
+	 * @param styles unused 
+	 */
 	public FocusedBundleDependencyLayoutAlgorithm(int styles, CompositeLayoutAlgorithm layoutAlgorithm,
 			BundleDependencyContentProvider contentProvider) {
 		this.contentProvider = contentProvider;

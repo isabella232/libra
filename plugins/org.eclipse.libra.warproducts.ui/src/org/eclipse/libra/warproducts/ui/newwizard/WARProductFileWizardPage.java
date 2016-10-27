@@ -88,8 +88,8 @@ public class WARProductFileWizardPage extends PDEWizardNewFileCreationPage {
     basicButton.setSelection( true );
   }
 
-  private String[] getLaunchConfigurations() {
-    ArrayList list = new ArrayList();
+  private static String[] getLaunchConfigurations() {
+    ArrayList<String> list = new ArrayList<String>();
     try {
       String eclipseConf = EclipseLaunchShortcut.CONFIGURATION_TYPE;
       addLaunchConfigToListFromType( list, eclipseConf  );
@@ -103,10 +103,10 @@ public class WARProductFileWizardPage extends PDEWizardNewFileCreationPage {
       PDEPlugin.logException( e );
     }
     String[] launchConfigArray = new String[ list.size() ];
-    return ( String[] )list.toArray( launchConfigArray );
+    return list.toArray( launchConfigArray );
   }
   
-  private void addLaunchConfigToListFromType( final List list, 
+  private static void addLaunchConfigToListFromType( final List<String> list, 
                                               final String type ) 
     throws CoreException 
   {
@@ -222,7 +222,7 @@ public class WARProductFileWizardPage extends PDEWizardNewFileCreationPage {
     return result;
   }
 
-  private IContainer getSelectedContainer( final IPath containerPath ) {
+  private static IContainer getSelectedContainer( final IPath containerPath ) {
     IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
     IContainer container;
     if( containerPath.segmentCount() > 1 ) {

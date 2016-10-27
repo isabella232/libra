@@ -74,7 +74,7 @@ public class WARProductModelTest extends TestCase {
     assertTrue( file.exists() );
   }
 
-  private void setUpProject() throws Exception  {
+  private static void setUpProject() throws Exception  {
     IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
     IProject project = root.getProject( "test.rap" );
     if( !project.exists() ) {

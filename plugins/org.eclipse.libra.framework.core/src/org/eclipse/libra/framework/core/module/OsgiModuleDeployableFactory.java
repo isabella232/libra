@@ -86,7 +86,7 @@ public class OsgiModuleDeployableFactory extends ProjectModuleFactoryDelegate {
 	}
 
 	
-	private boolean isValidModule(IProject project) {
+	private static boolean isValidModule(IProject project) {
 		try {
 			IFacetedProject facetedProject = ProjectFacetsManager
 					.create(project);

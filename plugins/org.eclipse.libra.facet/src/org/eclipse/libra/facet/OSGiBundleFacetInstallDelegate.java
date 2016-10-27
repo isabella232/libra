@@ -80,7 +80,7 @@ public class OSGiBundleFacetInstallDelegate implements IDelegate {
 		doExecute(project, config, monitor);
 	}
 	
-	private void doExecute(IProject project,
+	private static void doExecute(IProject project,
 			OSGiBundleFacetInstallConfig config, IProgressMonitor monitor)
 			throws CoreException {
 		setBundleRoot(project);
@@ -104,7 +104,7 @@ public class OSGiBundleFacetInstallDelegate implements IDelegate {
 		}
 	}
 	
-	private void createBundleProjectDescription(IProject project,
+	private static void createBundleProjectDescription(IProject project,
 			OSGiBundleFacetInstallConfig config, IProgressMonitor monitor)
 			throws CoreException {
 		IBundleProjectDescription bundleProjectDescription = getBundleProjectDescription(project);

@@ -15,10 +15,10 @@ import java.util.List;
 
 public class Validation {
   
-  private List errors;
+  private List<ValidationError> errors;
 
   Validation() {
-    this.errors = new ArrayList();
+    this.errors = new ArrayList<ValidationError>();
   }
 
   public boolean isValid() {

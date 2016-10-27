@@ -87,8 +87,8 @@ public class ConvertProjectsToBundlesWizardPage extends WizardPage {
 		}
 	}
 
-	IObservableSet fUnconverted;
-	IObservableSet fSelected;
+	IObservableSet<IProject> fUnconverted;
+	IObservableSet<IProject> fSelected;
 
 	public ConvertProjectsToBundlesWizardPage(IProject[] unconverted, IProject[] selected) {
 		super("converToWAB"); //$NON-NLS-1$
@@ -96,8 +96,8 @@ public class ConvertProjectsToBundlesWizardPage extends WizardPage {
 		setTitle(Messages.ConvertProjectsToBundlesWizardPage_Title);
 		setDescription(Messages.ConvertProjectsToBundlesWizardPage_Description);
 		
-		this.fUnconverted = new WritableSet(Arrays.asList(unconverted), IProject.class);
-		this.fSelected = new WritableSet(Arrays.asList(selected), IProject.class);
+		this.fUnconverted = new WritableSet<IProject>(Arrays.asList(unconverted), IProject.class);
+		this.fSelected = new WritableSet<IProject>(Arrays.asList(selected), IProject.class);
 	}
 
 	public void createControl(Composite parent) {
@@ -112,7 +112,7 @@ public class ConvertProjectsToBundlesWizardPage extends WizardPage {
 	}
 
 	public IProject[] getProjects() {
-		return (IProject[]) fSelected.toArray(new IProject[fSelected.size()]);
+		return fSelected.toArray(new IProject[fSelected.size()]);
 	}
 
 	private void createProjectsViewer(Composite parent) {
@@ -170,9 +170,10 @@ public class ConvertProjectsToBundlesWizardPage extends WizardPage {
 		
 		Label selectedCountLabel = new Label(buttonGroup, SWT.WRAP);
 		GridDataFactory.swtDefaults().align(SWT.FILL, SWT.BOTTOM).grab(false, true).applyTo(selectedCountLabel);
-		dbc.bindValue(SWTObservables.observeText(selectedCountLabel), new ComputedValue(String.class) {
+		dbc.bindValue(SWTObservables.observeText(selectedCountLabel), new ComputedValue<String>(String.class) {
+			@SuppressWarnings("boxing")
 			@Override
-			protected Object calculate() {
+			protected String calculate() {
 				return NLS.bind(Messages.ConvertProjectsToBundlesWizardPage_SelectionCounter, fSelected.size(), fUnconverted.size());
 			}
 		});

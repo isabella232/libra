@@ -47,14 +47,12 @@ public class OSGiBundleFacetEventHandler implements IDelegate {
 			
 			// remove the javax.persistence package import, if it already exists
 			ArrayList<IPackageImportDescription> imports = new ArrayList<IPackageImportDescription>();
-			if (imports != null) {
-				imports.addAll(Arrays.asList(bundleProjectDescription.getPackageImports()));
-				
-				for (IPackageImportDescription imp : imports) {
-					if (JAVAX_PERSISTENCE_PACKAGE.equals(imp.getName())) {
-						imports.remove(imp);
-						break;
-					}
+			imports.addAll(Arrays.asList(bundleProjectDescription.getPackageImports()));
+			
+			for (IPackageImportDescription imp : imports) {
+				if (JAVAX_PERSISTENCE_PACKAGE.equals(imp.getName())) {
+					imports.remove(imp);
+					break;
 				}
 			}
 			

@@ -28,8 +28,8 @@ import org.eclipse.swt.graphics.Image;
 public class WARProductOutlinePage extends FormOutlinePage {
 
   private Object[] plugins;
-  private Object[] libraries;
-  private final Comparator libraryComparator;
+  private IPath[] libraries;
+  private final Comparator<IPath> libraryComparator;
   
   public WARProductOutlinePage( final PDEFormEditor editor ) {
     super( editor );
@@ -79,13 +79,11 @@ public class WARProductOutlinePage extends FormOutlinePage {
     return result;
   }
   
-  private static class LibraryComparator implements Comparator, Serializable {
+  private static class LibraryComparator implements Comparator<IPath>, Serializable {
     private static final long serialVersionUID = -877535050574491831L;
 
-    public int compare( final Object o1, 
-                        final Object o2 ) {
-      IPath p1 = ( IPath )o1;
-      IPath p2 = ( IPath )o2;
+    public int compare( final IPath p1, 
+                        final IPath p2 ) {
       return p1.toOSString().compareTo( p2.toOSString() );
     }
   }

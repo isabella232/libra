@@ -189,7 +189,7 @@ public class ExportWARProductWizard extends ProductExportWizard {
   }
 
   private BundleDescription[] getPluginModels() {
-    ArrayList list = new ArrayList();
+    ArrayList<BundleDescription> list = new ArrayList<BundleDescription>();
     State state = TargetPlatformHelper.getState();
     IProductPlugin[] plugins = product.getPlugins();
     for( int i = 0; i < plugins.length; i++ ) {

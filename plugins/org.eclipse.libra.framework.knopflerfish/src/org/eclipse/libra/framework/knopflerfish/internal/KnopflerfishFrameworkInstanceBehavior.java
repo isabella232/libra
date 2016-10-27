@@ -116,15 +116,15 @@ public class KnopflerfishFrameworkInstanceBehavior extends
 		if (status != null && !status.isOK())
 			throw new CoreException(status);
 
-		monitor = ProgressUtil.getMonitorFor(monitor);
-		monitor.beginTask(Messages.publishServerTask, 600);
+		IProgressMonitor monitor2 = ProgressUtil.getMonitorFor(monitor);
+		monitor2.beginTask(Messages.publishServerTask, 600);
 
 		// TODO OSAMI 1) Cleanup 2) Backup and Publish,
 
 		// if (status != null && !status.isOK())
 		// throw new CoreException(status);
 
-		monitor.done();
+		monitor2.done();
 
 		setServerPublishState(IServer.PUBLISH_STATE_NONE);
 	}
@@ -133,6 +133,9 @@ public class KnopflerfishFrameworkInstanceBehavior extends
 	@SuppressWarnings("rawtypes")
 	protected void publishModules(int kind, List modules, List deltaKind2,
 			MultiStatus multi, IProgressMonitor monitor) {
+
+		@SuppressWarnings("unchecked")
+		final List<IModule[]> myModules = modules;
 
 
 		IPath confDir = getBaseDirectory();
@@ -152,7 +155,7 @@ public class KnopflerfishFrameworkInstanceBehavior extends
 		FrameworkInstanceConfiguration felixConfiguration;
 		try {
 			felixConfiguration = getKnopflerfishRuntimeInstance().getKnopflerfishConfiguration();
-			publishHelper.exportBundles(modules, felixConfiguration, confDir);
+			publishHelper.exportBundles(myModules, felixConfiguration, confDir);
 			((Knopflerfish31Handler)getKnopflerfishVersionHandler()).prepareFrameworkConfigurationFile(installPath,confDir,publishHelper,felixConfiguration);
 
 		} catch (CoreException e) {

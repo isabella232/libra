@@ -270,7 +270,7 @@ public class WARProductExportOperation extends FeatureExportOperation {
     }
   }
       
-  private void copyLibrary( final String libDir, final IPath filePath ) 
+  private static void copyLibrary( final String libDir, final IPath filePath ) 
     throws IOException 
   {
     String fileName = filePath.segment( filePath.segmentCount() - 1 );
@@ -325,8 +325,7 @@ public class WARProductExportOperation extends FeatureExportOperation {
     if( fInfo.exportSource && fInfo.exportSourceBundle ) {
       properties.put( IBuildPropertiesConstants.PROPERTY_INDIVIDUAL_SOURCE,
                       "true" ); //$NON-NLS-1$
-      List workspacePlugins     
-        = Arrays.asList( PluginRegistry.getWorkspaceModels() );
+      List<IPluginModelBase> workspacePlugins = Arrays.asList( PluginRegistry.getWorkspaceModels() );
       for( int i = 0; i < fInfo.items.length; i++ ) {
         if( fInfo.items[ i ] instanceof IFeatureModel ) {
           IFeature feature = ( ( IFeatureModel )fInfo.items[ i ] ).getFeature();
@@ -361,7 +360,7 @@ public class WARProductExportOperation extends FeatureExportOperation {
     return fInfo.exportMetadata;
   }
 
-  private String getRootFileLocations( final boolean hasLaunchers ) {
+  private static String getRootFileLocations( final boolean hasLaunchers ) {
     // Get the files that go in the root of the eclipse install, excluding the
     // launcher
     StringBuffer buffer = new StringBuffer();
@@ -380,7 +379,7 @@ public class WARProductExportOperation extends FeatureExportOperation {
     return buffer.toString();
   }
 
-  private void appendAbsolutePath( final StringBuffer buffer, 
+  private static void appendAbsolutePath( final StringBuffer buffer, 
                                    final File file ) 
   {
     if( buffer.length() > 0 )
@@ -389,8 +388,8 @@ public class WARProductExportOperation extends FeatureExportOperation {
     buffer.append( file.getAbsolutePath() );
   }
 
-  protected HashMap createAntBuildProperties( final String[][] configs ) {
-    HashMap properties = super.createAntBuildProperties( configs );
+  protected HashMap<String,String> createAntBuildProperties( final String[][] configs ) {
+    HashMap<String,String> properties = super.createAntBuildProperties( configs );
     fAntBuildProperties.put( IXMLConstants.PROPERTY_COLLECTING_FOLDER, root );
     fAntBuildProperties.put( IXMLConstants.PROPERTY_ARCHIVE_PREFIX, root );
     return properties;
@@ -433,7 +432,7 @@ public class WARProductExportOperation extends FeatureExportOperation {
     return super.getAssemblyScriptName( featureID, os, ws, arch, featureLocation );
   }
   
-  private void addExtensionbundleToConfigIni( String configIni ) {
+  private static void addExtensionbundleToConfigIni( String configIni ) {
     try {
       File file = new File( configIni );
       if( file.exists() ) {

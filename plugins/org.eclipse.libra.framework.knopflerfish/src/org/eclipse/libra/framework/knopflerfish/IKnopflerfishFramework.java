@@ -14,5 +14,5 @@ import org.eclipse.libra.framework.core.IOSGIFramework;
 
 
 public interface IKnopflerfishFramework extends IOSGIFramework {
-	
+	// nothing
 }

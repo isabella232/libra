@@ -28,7 +28,7 @@ public class InfrastructureCreatorTest extends TestCase {
     tempDir = createTempDir();
   }
   
-  private IFolder createTempDir() throws CoreException {
+  private static IFolder createTempDir() throws CoreException {
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
     IWorkspaceRoot root = workspace.getRoot();
     IProject project = root.getProject( TEMP_PROJECT );
@@ -151,7 +151,7 @@ public class InfrastructureCreatorTest extends TestCase {
     assertTrue( exceptionThrown );
   }
 
-  private StringBuffer readFile( final InputStream fileStream ) 
+  private static StringBuffer readFile( final InputStream fileStream ) 
     throws IOException
   {
     InputStreamReader streamReader = new InputStreamReader( fileStream );

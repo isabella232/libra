@@ -82,7 +82,7 @@ public class WARProductTest extends TestCase {
   }
   
   public void testWrite() {
-    String xml = writenXmlFromProduct();
+    String xml = writtenXmlFromProduct();
     assertTrue( xml.indexOf( "<warConfiguration webXml=\"/test/web.xml" + "\" " 
                              + "launchIni=\"/test/launch.ini" 
                              + "\">" ) > -1 );
@@ -101,7 +101,7 @@ public class WARProductTest extends TestCase {
   }
   
   public void testParse() throws CoreException {
-    String xml = writenXmlFromProduct();
+    String xml = writtenXmlFromProduct();
     WARProductModel model = new WARProductModel();
     InputStream stream = new ByteArrayInputStream( xml.getBytes() );
     model.load( stream, false );
@@ -143,7 +143,7 @@ public class WARProductTest extends TestCase {
     }
   }
 
-  private String writenXmlFromProduct() {
+  private static String writtenXmlFromProduct() {
     WARProductModel model = new WARProductModel();
     WARProductModelFactory factory = new WARProductModelFactory( model );
     IWARProduct product = ( IWARProduct )factory.createProduct();
@@ -190,7 +190,7 @@ public class WARProductTest extends TestCase {
     assertFalse( product.isLibraryFromTarget( jarPath2 ) );
   }
   
-  private String getAbsoluteFilePath( final String folder, final String file ) {
+  private static String getAbsoluteFilePath( final String folder, final String file ) {
     return File.separator + folder + File.separator + file;
   }
   

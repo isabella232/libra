@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.libra.facet;
 
+import java.util.ArrayList;
+
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.value.SelectObservableValue;
 import org.eclipse.core.databinding.observable.value.WritableValue;
@@ -17,36 +19,41 @@ import org.eclipse.wst.common.project.facet.core.ActionConfig;
 
 public class OSGiBundleFacetUninstallConfig extends ActionConfig {
 	
-	private SelectObservableValue strategyValue;
-	private WritableValue[] optionValues;
+	private SelectObservableValue<OSGiBundleFacetUninstallStrategy> strategyValue;
+	private ArrayList<WritableValue<Boolean>> optionValues;
 	
 	public OSGiBundleFacetUninstallConfig() {
 		Realm realm = OSGiBundleFacetRealm.getRealm();
 		
-		strategyValue = new SelectObservableValue(realm, OSGiBundleFacetUninstallStrategy.class);
-		optionValues = new WritableValue[OSGiBundleFacetUninstallStrategy.values().length];
-		for (int i = 0; i < optionValues.length; i++) {
-			optionValues[i] = new WritableValue(realm, null, Boolean.class);
-			strategyValue.addOption(OSGiBundleFacetUninstallStrategy.values()[i], optionValues[i]);
+		strategyValue = new SelectObservableValue<OSGiBundleFacetUninstallStrategy>(realm, OSGiBundleFacetUninstallStrategy.class);
+		
+		final OSGiBundleFacetUninstallStrategy[] values = OSGiBundleFacetUninstallStrategy.values();
+		
+		optionValues =  new ArrayList<WritableValue<Boolean>>(values.length);
+		for (int i = 0; i < values.length; i++) {
+			final WritableValue<Boolean> wv = new WritableValue<Boolean>(realm, null, Boolean.class);
+			optionValues.set(i, wv);
+			strategyValue.addOption(OSGiBundleFacetUninstallStrategy.values()[i], wv);
 		}
 		
 		strategyValue.setValue(OSGiBundleFacetUninstallStrategy.defaultStrategy());
 	}
 
-	public SelectObservableValue getStrategyValue() {
+	public SelectObservableValue<OSGiBundleFacetUninstallStrategy> getStrategyValue() {
 		return strategyValue;
 	}
 	
 	public OSGiBundleFacetUninstallStrategy getStrategy() {
-		return (OSGiBundleFacetUninstallStrategy) strategyValue.getValue();
+		return strategyValue.getValue();
 	}
 	
 	public void setStrategy(OSGiBundleFacetUninstallStrategy strategy) {
 		strategyValue.setValue(strategy);
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public WritableValue[] getOptionValues() {
-		return optionValues.clone();
+		return optionValues.toArray(new WritableValue[0]);
 	}
 	
 }

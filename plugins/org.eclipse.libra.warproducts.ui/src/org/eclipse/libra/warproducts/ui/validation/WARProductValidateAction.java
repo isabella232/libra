@@ -10,6 +10,7 @@
 package org.eclipse.libra.warproducts.ui.validation;
 
 import java.util.*;
+import java.util.Map.Entry;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -32,7 +33,7 @@ import org.eclipse.pde.internal.ui.PDEPluginImages;
 public class WARProductValidateAction extends Action {
 
   IWARProduct product;
-  List listeners;
+  List<IValidationListener> listeners;
 
   public WARProductValidateAction( final IWARProduct product ) {
     super( Messages.ValidateActionTitle, IAction.AS_PUSH_BUTTON );
@@ -42,7 +43,7 @@ public class WARProductValidateAction extends Action {
   
   public void addValidationListener( final IValidationListener listener ) {
     if( listeners == null ) {
-      listeners = new ArrayList();
+      listeners = new ArrayList<IValidationListener>();
     }
     if( !listeners.contains( listener ) ) {
       listeners.add( listener );
@@ -50,7 +51,7 @@ public class WARProductValidateAction extends Action {
   }
 
   public void run() {
-    HashMap map = new HashMap();
+    HashMap<String,IPluginModelBase> map = new HashMap<String,IPluginModelBase>();
     IProductPlugin[] plugins = product.getPlugins();
     for( int i = 0; i < plugins.length; i++ ) {
       String id = plugins[ i ].getId();
@@ -59,7 +60,7 @@ public class WARProductValidateAction extends Action {
     validate( map );
   }
 
-  private void addBundleIfExisting( final HashMap map, final String id ) {
+  private static void addBundleIfExisting( final Map<String,IPluginModelBase> map, final String id ) {
     if( id != null && !map.containsKey( id ) ) {
       IPluginModelBase model = PluginRegistry.findModel( id );
       if( bundleExist( id, model ) ) {
@@ -68,7 +69,7 @@ public class WARProductValidateAction extends Action {
     }
   }
   
-  private boolean bundleExist( final String id, final IPluginModelBase model ) {
+  private static boolean bundleExist( final String id, final IPluginModelBase model ) {
     boolean result = false;
     if( model != null ) {
       boolean matchesCurrentEnvironment 
@@ -80,11 +81,10 @@ public class WARProductValidateAction extends Action {
     return result;
   }
 
-  private void validate( final HashMap map ) {
+  private void validate( final Map<String,IPluginModelBase> map ) {
     try {
       IPluginModelBase[] baseModel = new IPluginModelBase[ map.size() ];
-      Object[] array = map.values().toArray( baseModel );
-      IPluginModelBase[] models = ( IPluginModelBase[] )array;
+      IPluginModelBase[] models  = map.values().toArray( baseModel );
       LaunchValidationOperation operation 
         = new ProductValidationOperation( models );
       operation.run( new NullProgressMonitor() );
@@ -96,8 +96,8 @@ public class WARProductValidateAction extends Action {
 
   private void verifyResult( final LaunchValidationOperation operation )
   {
-    Map errors = operation.getInput();
-    varifyPDEErrors( errors );
+    Map<Object,Object[]> errors = operation.getInput();
+    verifyPDEErrors( errors );
     validateWarContent( errors );
     notifyListeners( errors );
   }
@@ -105,19 +105,16 @@ public class WARProductValidateAction extends Action {
   private void notifyListeners( final Map errors ) {
     if( listeners != null ) {
       for( int i = 0; i < listeners.size(); i++ ) {
-        IValidationListener listener 
-          = ( IValidationListener )listeners.get( i );
+        IValidationListener listener = listeners.get( i );
         listener.validationFinished( errors );
       }
     }
   }
 
-  private void varifyPDEErrors( final Map map ) {
-    Object[] keys = new Object[ map.size() ];
-    map.keySet().toArray( keys );
-    for( int i = 0; i < keys.length; i++ ) {
-      Object currentKey = keys[ i ];
-      ResolverError[] errors = ( ResolverError[] )map.get( currentKey );
+  private static void verifyPDEErrors( final Map<Object,Object[]> map ) {
+    for(final Entry<?,?> entry: map.entrySet()){
+      Object currentKey = entry.getKey();
+      ResolverError[] errors = (ResolverError[]) entry.getValue();
       ResolverError[] validErrors = validateErrors( errors );
       map.remove( currentKey );
       if( validErrors.length > 0 ) {
@@ -126,8 +123,8 @@ public class WARProductValidateAction extends Action {
     }
   }
   
-  private ResolverError[] validateErrors( final ResolverError[] errors ) {
-    List validErrors = new ArrayList();
+  private static ResolverError[] validateErrors( final ResolverError[] errors ) {
+    List<ResolverError> validErrors = new ArrayList<ResolverError>();
     for( int i = 0; i < errors.length; i++ ) {
       ResolverError error = errors[ i ];
       VersionConstraint constraint = error.getUnsatisfiedConstraint();
@@ -149,7 +146,7 @@ public class WARProductValidateAction extends Action {
     return result;
   }
 
-  private boolean isBanned( final String unresolvedBundleId ) {
+  private static boolean isBanned( final String unresolvedBundleId ) {
     boolean result = false;
     String[] bannedBundles = Validator.BANNED_BUNDLES;
     for( int i = 0; i < bannedBundles.length && !result; i++ ) {
@@ -160,15 +157,15 @@ public class WARProductValidateAction extends Action {
     return result;
   }
 
-  private void validateWarContent( final Map map ) {
+  private void validateWarContent( final Map<Object,Object[]> map ) {
     Validator validator = new Validator( product );
     Validation validation = validator.validate();
     if( !validation.isValid() ) {
-      handleWARValiadtionErrors( map, validation.getErrors() );
+      handleWARValidationErrors( map, validation.getErrors() );
     }
   }
 
-  private void handleWARValiadtionErrors( final Map map, 
+  private static void handleWARValidationErrors( final Map<Object,Object[]> map, 
                                           final ValidationError[] errors ) 
   {
     String key = Messages.ValidateAction;

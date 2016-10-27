@@ -74,16 +74,16 @@ public class BundleDependencyContentResult {
 	public Integer getIncomingDegree() {
 		int degree = 0;
 		for (Integer integer : incomingDependencies.keySet()) {
-			degree = Math.max(degree, integer);
+			degree = Math.max(degree, integer.intValue());
 		}
-		return degree;
+		return Integer.valueOf(degree);
 	}
 
 	public Integer getOutgoingDegree() {
 		int degree = 0;
 		for (Integer integer : outgoingDependencies.keySet()) {
-			degree = Math.max(degree, integer);
+			degree = Math.max(degree, integer.intValue());
 		}
-		return degree;
+		return Integer.valueOf(degree);
 	}
 }

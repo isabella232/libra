@@ -43,11 +43,12 @@ public class PluginSectionExtended extends PluginSection {
     }
   }
 
-  private void validHandleAddRequired( final IProductPlugin[] plugins,
-                                       final boolean includeOptional )
+  private static void validHandleAddRequired(
+                                             final IProductPlugin[] plugins,
+                                             final boolean includeOptional )
   {
     if( plugins.length > 0 ) {
-      ArrayList list = new ArrayList( plugins.length );
+      ArrayList<BundleDescription> list = new ArrayList<BundleDescription>( plugins.length );
       for( int i = 0; i < plugins.length; i++ ) {
         list.add( TargetPlatformHelper.getState()
           .getBundle( plugins[ i ].getId(), null ) );
@@ -70,7 +71,7 @@ public class PluginSectionExtended extends PluginSection {
           }
         }
       }
-      List dependencies = validateBundleIds( calculator.getBundleIDs() );
+      List<String> dependencies = validateBundleIds( calculator.getBundleIDs() );
       validateBundleIds( dependencies );
       
       IProduct product = plugins[ 0 ].getProduct();
@@ -78,7 +79,7 @@ public class PluginSectionExtended extends PluginSection {
       IProductPlugin[] requiredPlugins 
         = new IProductPlugin[ dependencies.size() ];
       for( int i = 0; i < requiredPlugins.length; i++ ) {
-        String id = ( String )dependencies.get( i );
+        String id = dependencies.get( i );
         IProductPlugin plugin = factory.createPlugin();
         plugin.setId( id );
         requiredPlugins[ i ] = plugin;
@@ -87,24 +88,24 @@ public class PluginSectionExtended extends PluginSection {
     }
   }
 
-  private List validateBundleIds( final Collection bundleIDs ) {
-    List validBundles = new ArrayList();
+  private static List<String> validateBundleIds( final Collection<String> bundleIDs ) {
+    List<String> validBundles = new ArrayList<String>();
     copyBundleIds( bundleIDs, validBundles );
     handleBannedBundles( validBundles );
     handleRequiredBundles( validBundles );
     return validBundles;
   }
 
-  private void copyBundleIds( final Collection bundleIDs, 
-                              final List validBundles ) 
+  private static void copyBundleIds( final Collection<String> bundleIDs, 
+                              final List<String> validBundles ) 
   {
-    Iterator iter = bundleIDs.iterator();
+    Iterator<String> iter = bundleIDs.iterator();
     while( iter.hasNext() ) {
       validBundles.add( iter.next() );
     }
   }
 
-  private void handleRequiredBundles( final Collection bundleIDs ) {
+  private static void handleRequiredBundles( final Collection<String> bundleIDs ) {
     String[] requiredBundles = Validator.REQUIRED_BUNDLES;
     for( int i = 0; i < requiredBundles.length; i++ ) {
       String requiredId = requiredBundles[ i ];
@@ -114,7 +115,7 @@ public class PluginSectionExtended extends PluginSection {
     }
   }
 
-  private void handleBannedBundles( final Collection bundleIDs ) {
+  private static void handleBannedBundles( final Collection<String> bundleIDs ) {
     String[] bannedBundles = Validator.BANNED_BUNDLES;
     for( int i = 0; i < bannedBundles.length; i++ ) {
       String bannedId = bannedBundles[ i ];

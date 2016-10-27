@@ -130,7 +130,7 @@ public class Knopflerfish31Handler implements IKnopflerfishVersionHandler {
 		return true;
 	}
 
-	private void writeXargs(IPath installPath, IPath confPath, PrintWriter out,
+	private static void writeXargs(IPath installPath, IPath confPath, PrintWriter out,
 			KnopflerfishConfigurationPublishHelper publishHelper,
 			FrameworkInstanceConfiguration configuration) {
 
@@ -195,7 +195,11 @@ public class Knopflerfish31Handler implements IKnopflerfishVersionHandler {
 		out.flush();
 	}
 
-	private void writePropsXargs(PrintWriter out,
+	/**
+	 * @param publishHelper  unused
+	 * @param configuration  unused
+	 */
+	private static void writePropsXargs(PrintWriter out,
 			KnopflerfishConfigurationPublishHelper publishHelper,
 			FrameworkInstanceConfiguration configuration) {
 
@@ -262,6 +266,7 @@ public class Knopflerfish31Handler implements IKnopflerfishVersionHandler {
 				try {
 					out.close();
 				} catch (IOException e) {
+					e.printStackTrace();
 				}
 		}
 	}

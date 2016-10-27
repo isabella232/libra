@@ -17,6 +17,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.libra.warproducts.core.*;
 import org.eclipse.libra.warproducts.ui.WARProductConstants;
+import org.eclipse.pde.core.plugin.IPluginModelBase;
 import org.eclipse.pde.core.plugin.TargetPlatform;
 import org.eclipse.pde.internal.core.iproduct.*;
 import org.eclipse.pde.internal.core.iproduct.IProduct;
@@ -119,8 +120,8 @@ public class WARProductFromConfigOperation
       workspaceId = IPDELauncherConstants.WORKSPACE_BUNDLES;
       targetId = IPDELauncherConstants.TARGET_BUNDLES;
     }
-    Set set = new HashSet();
-    Map map = BundleLauncherHelper.getWorkspaceBundleMap( launchConfig,
+    Set<String> set = new HashSet<String>();
+    Map<IPluginModelBase, String> map = BundleLauncherHelper.getWorkspaceBundleMap(launchConfig,
                                                           set,
                                                           workspaceId );
     map.putAll( BundleLauncherHelper.getTargetBundleMap( launchConfig,

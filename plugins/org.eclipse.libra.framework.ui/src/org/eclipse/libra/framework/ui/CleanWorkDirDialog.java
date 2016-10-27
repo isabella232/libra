@@ -166,9 +166,6 @@ public class CleanWorkDirDialog extends Dialog {
 		protected IStatus run(IProgressMonitor monitor) {
 			final Object mutex = new Object();
 
-			if (module != null) {
-			}
-			
 			// If state has changed since dialog was open, abort
 			if (server.getServerState() != state) {
 				return newErrorStatus(

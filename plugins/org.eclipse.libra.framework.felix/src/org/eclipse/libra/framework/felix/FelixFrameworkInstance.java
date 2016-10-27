@@ -111,7 +111,7 @@ public class FelixFrameworkInstance extends FrameworkInstanceDelegate implements
 
 	}
 
-	private ITargetLocation[] getDefaultBundleContainers(IPath installPath) {
+	private static ITargetLocation[] getDefaultBundleContainers(IPath installPath) {
 		ITargetLocation[] containers = new ITargetLocation[2];
 		ITargetPlatformService service = TargetDefinitionUtil.getTargetPlatformService();
 

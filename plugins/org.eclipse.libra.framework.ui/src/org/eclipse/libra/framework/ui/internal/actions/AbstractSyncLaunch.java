@@ -37,7 +37,7 @@ public abstract class AbstractSyncLaunch {
 	 * @see IObjectActionDelegate#setActivePart(IAction, IWorkbenchPart)
 	 */
 	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-		
+		// nothing
 	}
 	
 	/**

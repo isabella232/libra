@@ -131,15 +131,15 @@ public class BundleDependencyLayoutAlgorithm extends AbstractLayoutAlgorithm {
 			currentY = boundsY + 10;
 			currentX = currentX + columnWith + 30;
 
-			int maxDegree = contentResult.getOutgoingDegree();
+			int maxDegree = contentResult.getOutgoingDegree().intValue();
 			degree = 1;
 			while (degree <= maxDegree) {
 				Set<InternalNode> degreeNodes = new HashSet<InternalNode>();
-				Set<IBundle> deps = contentResult.getOutgoingDependencies().get(degree);
+				Set<IBundle> deps = contentResult.getOutgoingDependencies().get(Integer.valueOf(degree));
 				for (IBundle bundle : deps) {
 					if (!bundlesProcessed.contains(bundle)
 							&& !rootBundles.contains(bundle)
-							&& lowestRanking(bundle, contentResult.getOutgoingDegree(), contentResult
+							&& lowestRanking(bundle, maxDegree, contentResult
 									.getOutgoingDependencies()) == degree) {
 						for (InternalNode node : entitiesToLayout) {
 							LayoutEntity obj = node.getLayoutEntity();
@@ -186,10 +186,10 @@ public class BundleDependencyLayoutAlgorithm extends AbstractLayoutAlgorithm {
 		}
 	}
 
-	private int lowestRanking(IBundle bundle, int maxDegree, Map<Integer, Set<IBundle>> bundles) {
+	private static int lowestRanking(IBundle bundle, int maxDegree, Map<Integer, Set<IBundle>> bundles) {
 		int ranking = 1;
 		while (ranking <= maxDegree) {
-			for (IBundle b : bundles.get(ranking)) {
+			for (IBundle b : bundles.get(Integer.valueOf(ranking))) {
 				if (b.equals(bundle)) {
 					return ranking;
 				}
@@ -216,15 +216,18 @@ public class BundleDependencyLayoutAlgorithm extends AbstractLayoutAlgorithm {
 
 	@Override
 	protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider) {
+		// nothing
 	}
 
 	@Override
 	protected void preLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider,
 			double x, double y, double width, double height) {
+		// nothing
 	}
 
 	@Override
 	public void setLayoutArea(double x, double y, double width, double height) {
+		// nothing
 	}
 
 	static class ColumnHolder {

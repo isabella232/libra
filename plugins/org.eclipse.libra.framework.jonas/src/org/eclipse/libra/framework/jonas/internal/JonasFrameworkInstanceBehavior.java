@@ -116,15 +116,15 @@ public class JonasFrameworkInstanceBehavior extends
 		if (status != null && !status.isOK())
 			throw new CoreException(status);
 
-		monitor = ProgressUtil.getMonitorFor(monitor);
-		monitor.beginTask(Messages.publishServerTask, 600);
+		IProgressMonitor monitor2 = ProgressUtil.getMonitorFor(monitor);
+		monitor2.beginTask(Messages.publishServerTask, 600);
 
 		// TODO OSAMI 1) Cleanup 2) Backup and Publish,
 
 		// if (status != null && !status.isOK())
 		// throw new CoreException(status);
 
-		monitor.done();
+		monitor2.done();
 
 		setServerPublishState(IServer.PUBLISH_STATE_NONE);
 	}
@@ -134,6 +134,8 @@ public class JonasFrameworkInstanceBehavior extends
 	protected void publishModules(int kind, List modules, List deltaKind2,
 			MultiStatus multi, IProgressMonitor monitor) {
 
+		@SuppressWarnings("unchecked")
+		final List<IModule[]> myModules = modules;
 
 		IPath confDir = getBaseDirectory();
 
@@ -148,9 +150,9 @@ public class JonasFrameworkInstanceBehavior extends
 				deployPath.mkdir();
 			}
 			
-			publishHelper.exportBundles(modules, jonasConfiguration, installDir, deployDir);
+			publishHelper.exportBundles(myModules, jonasConfiguration, installDir, deployDir);
 			getJonasVersionHandler().prepareFrameworkConfigurationFile(deployDir,
-					publishHelper.getServerModules(modules,"reference:file:", " " ),
+					publishHelper.getServerModules(myModules,"reference:file:", " " ),
 					publishHelper.getTargetBundles(jonasConfiguration,"reference:file:", " "));
 
 		} catch (CoreException e) {

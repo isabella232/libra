@@ -38,10 +38,10 @@ public class OSGiBundleFacetInstallConfig extends ActionConfig implements IFacet
 	
 	private static final String QUALIFIER = "qualifier"; //$NON-NLS-1$
 
-	private IObservableValue symbolicNameValue;
-	private IObservableValue versionValue;
-	private IObservableValue nameValue;
-	private IObservableValue vendorValue;
+	private IObservableValue<String> symbolicNameValue;
+	private IObservableValue<String> versionValue;
+	private IObservableValue<String> nameValue;
+	private IObservableValue<String> vendorValue;
 	
 	private Map<String, String> headers;
 	
@@ -50,42 +50,42 @@ public class OSGiBundleFacetInstallConfig extends ActionConfig implements IFacet
 		
 		headers = new HashMap<String, String>();
 		
-		symbolicNameValue = new WritableValue(realm, getDefaultSymbolicName(), String.class);
-		versionValue = new WritableValue(realm, getDefaultVersion(), String.class);
-		nameValue = new WritableValue(realm, getDefaultSymbolicName(), String.class);
-		vendorValue = new WritableValue(realm, getDefaultVendor(), String.class);
+		symbolicNameValue = new WritableValue<String>(realm, getDefaultSymbolicName(), String.class);
+		versionValue = new WritableValue<String>(realm, getDefaultVersion(), String.class);
+		nameValue = new WritableValue<String>(realm, getDefaultSymbolicName(), String.class);
+		vendorValue = new WritableValue<String>(realm, getDefaultVendor(), String.class);
 	}
 	
-	public IObservableValue getSymbolicNameValue() {
+	public IObservableValue<String> getSymbolicNameValue() {
 		return symbolicNameValue;
 	}
 
-	public IObservableValue getVersionValue() {
+	public IObservableValue<String> getVersionValue() {
 		return versionValue;
 	}
 
-	public IObservableValue getNameValue() {
+	public IObservableValue<String> getNameValue() {
 		return nameValue;
 	}
 
-	public IObservableValue getVendorValue() {
+	public IObservableValue<String> getVendorValue() {
 		return vendorValue;
 	}
 
 	public String getSymbolicName() {
-		return (String) getSymbolicNameValue().getValue();
+		return getSymbolicNameValue().getValue();
 	}
 
 	public Version getVersion() {
-		return Version.parseVersion((String) getVersionValue().getValue());
+		return Version.parseVersion(getVersionValue().getValue());
 	}
 
 	public String getName() {
-		return (String) getNameValue().getValue();
+		return getNameValue().getValue();
 	}
 
 	public String getVendor() {
-		return (String) getVendorValue().getValue();
+		return getVendorValue().getValue();
 	}
 
 	public Map<String, String> getHeaders() {
@@ -141,7 +141,7 @@ public class OSGiBundleFacetInstallConfig extends ActionConfig implements IFacet
 		vendorValue.setValue(getDefaultVendor());
 	}
 
-	private Object getDefaultSymbolicName() {
+	private String getDefaultSymbolicName() {
 		String symbolicName = null;
 		
 		// check if there any existing manifest headers
@@ -174,7 +174,7 @@ public class OSGiBundleFacetInstallConfig extends ActionConfig implements IFacet
 		return version;
 	}
 
-	private Object getDefaultName() {
+	private String getDefaultName() {
 		String bundleName = null;
 		
 		// check if there any existing manifest headers
@@ -197,7 +197,7 @@ public class OSGiBundleFacetInstallConfig extends ActionConfig implements IFacet
 		return bundleName;
 	}
 
-	private Object getDefaultVendor() {
+	private String getDefaultVendor() {
 		String vendor = null;
 		
 		// check if there any existing manifest headers

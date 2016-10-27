@@ -40,7 +40,7 @@ public class PluginStatusDialogLableProvider extends DefaultLabelProvider {
     return result;
   }
 
-  private Image getValidationErrorImage( final Object element ) {
+  private static Image getValidationErrorImage( final Object element ) {
     PDELabelProvider pdeLabelProvider 
       = PDEPlugin.getDefault().getLabelProvider();
     Image result;

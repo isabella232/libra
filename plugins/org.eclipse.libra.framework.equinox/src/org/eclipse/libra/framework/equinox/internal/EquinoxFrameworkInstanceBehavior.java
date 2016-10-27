@@ -119,15 +119,15 @@ public class EquinoxFrameworkInstanceBehavior extends
 		if (status != null && !status.isOK())
 			throw new CoreException(status);
 
-		monitor = ProgressUtil.getMonitorFor(monitor);
-		monitor.beginTask(Messages.publishServerTask, 600);
+		IProgressMonitor monitor2 = ProgressUtil.getMonitorFor(monitor);
+		monitor2.beginTask(Messages.publishServerTask, 600);
 
 		// TODO OSAMI 1) Cleanup 2) Backup and Publish,
 
 		// if (status != null && !status.isOK())
 		// throw new CoreException(status);
 
-		monitor.done();
+		monitor2.done();
 
 		setServerPublishState(IServer.PUBLISH_STATE_NONE);
 	}
@@ -137,16 +137,18 @@ public class EquinoxFrameworkInstanceBehavior extends
 	protected void publishModules(int kind, List modules, List deltaKind2,
 			MultiStatus multi, IProgressMonitor monitor) {
 
+		@SuppressWarnings("unchecked")
+		final List<IModule[]> myModules = modules;
 
 		IPath confDir = getBaseDirectory();
 
 		FrameworkInstanceConfiguration equinoxConfiguration;
 		try {
 			equinoxConfiguration = getEquinoxRuntimeInstance().getEquinoxConfiguration();
-			publishHelper.exportBundles(modules, equinoxConfiguration, confDir);
+			publishHelper.exportBundles(myModules, equinoxConfiguration, confDir);
 			String frameworkJarPath = "reference:file:"+getEquinoxRuntimeInstance().getFrameworkJarPath();
 			getEquinoxVersionHandler().prepareFrameworkConfigurationFile(confDir,
-					publishHelper.getServerModules(modules,"reference:file:", " " ),
+					publishHelper.getServerModules(myModules,"reference:file:", " " ),
 					frameworkJarPath, publishHelper.getTargetBundles(equinoxConfiguration));
 
 		} catch (CoreException e) {

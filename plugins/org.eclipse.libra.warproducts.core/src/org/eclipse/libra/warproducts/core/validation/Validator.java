@@ -84,7 +84,7 @@ public class Validator {
     }
   }
 
-  private boolean librariesContainsServletBridge( final IPath[] libraries ) {
+  private static boolean librariesContainsServletBridge( final IPath[] libraries ) {
     boolean result = false;
     for( int i = 0; i < libraries.length && !result; i++ ) {
       IPath path = libraries[ i ];
@@ -146,7 +146,7 @@ public class Validator {
     }
   }
 
-  private String[] getBundleIdArray( final IProductPlugin[] plugins ) {
+  private static String[] getBundleIdArray( final IProductPlugin[] plugins ) {
     String[] result = new String[ plugins.length ];
     for( int i = 0; i < plugins.length; i++ ) {
       result[ i ] = plugins[ i ].getId();
@@ -167,7 +167,7 @@ public class Validator {
     validation.addError( error );
   }
 
-  private boolean isBundleContained( final String id, 
+  private static boolean isBundleContained( final String id, 
                                      final String[] bundleList ) 
   {
     boolean result = false;

@@ -56,6 +56,7 @@ public class FrameworkInstanceConfiguration {
 		try {
 			loadTarget();
 		} catch (CoreException e) {
+			e.printStackTrace();
 		}
 		return targetDefinition;
 	}
@@ -77,9 +78,6 @@ public class FrameworkInstanceConfiguration {
 		} else {
 			loadTarget();
 		}
-
-
-
 	}
 
 	private ITargetDefinition loadTarget() throws CoreException {
@@ -156,9 +154,9 @@ public class FrameworkInstanceConfiguration {
 		load(path, monitor);
 	}
 
-	public void load(IPath path, IProgressMonitor monitor) throws CoreException {
+	public void load(IPath path, IProgressMonitor monitorP) throws CoreException {
 		try {
-			monitor = ProgressUtil.getMonitorFor(monitor);
+			IProgressMonitor monitor = ProgressUtil.getMonitorFor(monitorP);
 			monitor.beginTask(Messages.loadingTask, 7);
 
 			// InputStream in = new
@@ -198,7 +196,7 @@ public class FrameworkInstanceConfiguration {
 	 */
 	protected void save(IPath path, boolean forceDirty, IProgressMonitor monitor)
 			throws CoreException {
-
+		// TODO Frameworkinstance.save() no implementation - ?
 	}
 
 	/**
@@ -226,6 +224,7 @@ public class FrameworkInstanceConfiguration {
 	 */
 	public void save(IFolder folder, IProgressMonitor monitor)
 			throws CoreException {
+		// TODO Frameworkinstance.save() no implementation - ?
 	}
 
 	/**

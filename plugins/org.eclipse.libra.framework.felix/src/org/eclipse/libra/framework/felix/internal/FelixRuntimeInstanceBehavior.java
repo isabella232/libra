@@ -118,15 +118,15 @@ public class FelixRuntimeInstanceBehavior extends
 		if (status != null && !status.isOK())
 			throw new CoreException(status);
 
-		monitor = ProgressUtil.getMonitorFor(monitor);
-		monitor.beginTask(Messages.publishServerTask, 600);
+		IProgressMonitor monitor2 = ProgressUtil.getMonitorFor(monitor);
+		monitor2.beginTask(Messages.publishServerTask, 600);
 
 		// TODO OSAMI 1) Cleanup 2) Backup and Publish,
 
 		// if (status != null && !status.isOK())
 		// throw new CoreException(status);
 
-		monitor.done();
+		monitor2.done();
 
 		setServerPublishState(IServer.PUBLISH_STATE_NONE);
 	}
@@ -136,6 +136,8 @@ public class FelixRuntimeInstanceBehavior extends
 	protected void publishModules(int kind, List modules, List deltaKind2,
 			MultiStatus multi, IProgressMonitor monitor) {
 
+		@SuppressWarnings("unchecked")
+		final List<IModule[]> myModules = modules;
 
 		IPath confDir = getBaseDirectory();
 
@@ -145,9 +147,9 @@ public class FelixRuntimeInstanceBehavior extends
 			felixConfiguration = getFelixRuntimeInstance().getFelixConfiguration();
 			
 			
-			publishHelper.exportBundles(modules, felixConfiguration, confDir);
+			publishHelper.exportBundles(myModules, felixConfiguration, confDir);
 			getFelixVersionHandler().prepareFrameworkConfigurationFile(confDir,
-					publishHelper.getServerModules(modules,"reference:file:", " " ),
+					publishHelper.getServerModules(myModules,"reference:file:", " " ),
 					publishHelper.getTargetBundles(felixConfiguration,"reference:file:", " "));
 
 		} catch (CoreException e) {

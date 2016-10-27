@@ -38,11 +38,10 @@ public class WARProductInitializerTest extends TestCase {
     assertTrue( validation.isValid() );
   }
 
-  private IProductPlugin[] createFakeEnvironment( 
-    final WARProductModelFactory factory ) 
+  private static IProductPlugin[] createFakeEnvironment( final WARProductModelFactory factory ) 
   {
     String[] bundles = Validator.REQUIRED_BUNDLES;
-    List bundleList = new ArrayList();
+    List<IProductPlugin> bundleList = new ArrayList<IProductPlugin>();
     for( int i = 0; i < bundles.length; i++ ) {
       IProductPlugin plugin = factory.createPlugin();
       plugin.setId( bundles[ i ] );
@@ -58,7 +57,7 @@ public class WARProductInitializerTest extends TestCase {
     return result;
   }
   
-  private void addFakeServletBridge( final IWARProduct product ) 
+  private static void addFakeServletBridge( final IWARProduct product ) 
     throws Exception 
   {
     String bridgeId = "org.eclipse.equinox.servletbridge";

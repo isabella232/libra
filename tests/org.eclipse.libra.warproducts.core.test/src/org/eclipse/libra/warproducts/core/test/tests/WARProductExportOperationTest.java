@@ -14,8 +14,6 @@ import java.util.*;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
-import junit.framework.TestCase;
-
 import org.eclipse.core.resources.*;
 import org.eclipse.core.runtime.*;
 import org.eclipse.libra.warproducts.core.*;
@@ -26,6 +24,8 @@ import org.eclipse.pde.internal.core.exports.FeatureExportInfo;
 import org.eclipse.pde.internal.core.iproduct.*;
 import org.eclipse.pde.internal.core.iproduct.IProduct;
 import org.osgi.framework.Version;
+
+import junit.framework.TestCase;
 
 
 public class WARProductExportOperationTest extends TestCase {
@@ -38,7 +38,7 @@ public class WARProductExportOperationTest extends TestCase {
   protected void setUp() throws Exception {
   }
   
-  private IFolder createTempDir() throws CoreException {
+  private static IFolder createTempDir() throws CoreException {
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
     IWorkspaceRoot root = workspace.getRoot();
     IProject project = root.getProject( "warProject" );
@@ -57,10 +57,10 @@ public class WARProductExportOperationTest extends TestCase {
     deleteWarFile();
   }
   
-  private void deleteWarFile() {
+  private static void deleteWarFile() {
     File war = new File( WAR_FILE_PATH );
     if( war.exists() ) {
-      war.delete();
+      war.delete(); // TODO File.delete() check return code
     }
   }
   
@@ -70,7 +70,7 @@ public class WARProductExportOperationTest extends TestCase {
     testWARContents( war );
   }
 
-  private IFolder getLinkedFolder() throws CoreException, IOException {
+  private static IFolder getLinkedFolder() throws CoreException, IOException {
     IWorkspace workspace = ResourcesPlugin.getWorkspace();
     IWorkspaceRoot root = workspace.getRoot();
     IProject project = root.getProject( "testLinkedResources" );
@@ -96,9 +96,9 @@ public class WARProductExportOperationTest extends TestCase {
     testWARContents( war );
   }
 
-  private void testWARContents( final File war ) throws Exception
+  private static void testWARContents( final File war ) throws Exception
   {
-    List warEntryList = extractWarEntriesAsString( war );
+    List<String> warEntryList = extractWarEntriesAsString( war );
     testWARFileRootIsWebInf( warEntryList );
     testWARFileContainsWebXML( warEntryList );
     testWARFileContainsLibFolder( warEntryList );
@@ -108,55 +108,55 @@ public class WARProductExportOperationTest extends TestCase {
     testLibContainsJar( warEntryList );
   }
   
-  private void testWARFileRootIsWebInf( final List warEntryList ) 
+  private static void testWARFileRootIsWebInf( final List<String> warEntryList ) 
     throws Exception 
   {
     assertTrue( warEntryList.contains( "WEB-INF/" ) );
   }
   
-  private void testWARFileContainsWebXML( final List warEntryList ) 
+  private static void testWARFileContainsWebXML( final List<String> warEntryList ) 
     throws Exception 
   {
     assertTrue( warEntryList.contains( "WEB-INF/web.xml" ) );
   }
   
-  private  void testWARFileContainsLibFolder( final List warEntryList) 
+  private static  void testWARFileContainsLibFolder( final List<String> warEntryList) 
     throws Exception 
   {
     assertTrue( warEntryList.contains( "WEB-INF/lib/" ) );
   }
   
-  private void testWebInfFolderContainsLaunchIni( final List warEntryList ) 
+  private static void testWebInfFolderContainsLaunchIni( final List<String> warEntryList ) 
     throws Exception 
   {
     assertTrue( warEntryList.contains( "WEB-INF/launch.ini" ) );
   }
   
-  public void testWebInfFolderContainsPlugins( final List warEntryList ) 
+  public void testWebInfFolderContainsPlugins( final List<?> warEntryList ) 
     throws Exception 
   {
     assertTrue( warEntryList.contains( "WEB-INF/plugins/" ) );
   }
   
-  private void testDidntContainsDotEclipseProduct( final List warEntryList ) 
+  private static void testDidntContainsDotEclipseProduct( final List<String> warEntryList ) 
     throws Exception 
   {
     assertTrue( !warEntryList.contains( "WEB-INF/.eclipseproduct" ) );
   }
   
-  private void testLibContainsJar( final List warEntryList ) 
+  private static void testLibContainsJar( final List<String> warEntryList ) 
   throws Exception 
 {
   String path = "WEB-INF/lib/test.jar";
   assertTrue( warEntryList.contains( path ) );
 }
 
-  private List extractWarEntriesAsString( File war )
+  private static List<String> extractWarEntriesAsString( File war )
     throws ZipException, IOException
   {
     ZipFile zip = new ZipFile( war );
-    List warEntryList = new ArrayList();
-    Enumeration entries = zip.entries();
+    List<String> warEntryList = new ArrayList<String>();
+    Enumeration<?> entries = zip.entries();
     while( entries.hasMoreElements() ) {
       Object nextElement = entries.nextElement();
       warEntryList.add( nextElement.toString() );
@@ -212,7 +212,7 @@ public class WARProductExportOperationTest extends TestCase {
     return job;
   }
 
-  private FeatureExportInfo configureFeatureExport( final IWARProduct product ) 
+  private static FeatureExportInfo configureFeatureExport( final IWARProduct product ) 
   {
     FeatureExportInfo info = new FeatureExportInfo();
     info.toDirectory = false;
@@ -232,8 +232,8 @@ public class WARProductExportOperationTest extends TestCase {
     return getClass().getResourceAsStream( "/test.warproduct" );
   }
 
-  private BundleDescription[] getPluginModels( final IProduct product ) {
-    ArrayList list = new ArrayList();
+  private static BundleDescription[] getPluginModels( final IProduct product ) {
+    ArrayList<BundleDescription> list = new ArrayList<BundleDescription>();
     State state = TargetPlatformHelper.getState();
     IProductPlugin[] plugins = product.getPlugins();
     for( int i = 0; i < plugins.length; i++ ) {

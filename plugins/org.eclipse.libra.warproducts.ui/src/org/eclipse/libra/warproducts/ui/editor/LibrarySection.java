@@ -272,7 +272,7 @@ public class LibrarySection extends TableSection
     dialog.create();
     IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
     helpSystem.setHelp( dialog.getShell(), IHelpContextIds.ADD_LIBRARY );
-    List newLibs = new ArrayList();
+    List<IPath> newLibs = new ArrayList<IPath>();
     if( dialog.open() == Window.OK ) {
       updateProduct( dialog, newLibs );
     }
@@ -281,7 +281,7 @@ public class LibrarySection extends TableSection
   }
 
   private void updateProduct( final ElementTreeSelectionDialog dialog, 
-                              final List newLibs )
+                              final List<IPath> newLibs )
   {
     Object[] elements = dialog.getResult();
     for( int i = 0; i < elements.length; i++ ) {
@@ -304,7 +304,7 @@ public class LibrarySection extends TableSection
     }
   }
 
-  private void tryToAddServletBridge( final IWARProduct product, 
+  private static void tryToAddServletBridge( final IWARProduct product, 
                                       final Validation validation )
   {
     ValidationError[] errors = validation.getErrors();

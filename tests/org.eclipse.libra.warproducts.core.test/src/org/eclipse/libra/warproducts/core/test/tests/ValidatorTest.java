@@ -178,7 +178,7 @@ public class ValidatorTest extends TestCase {
     checkForBannedBundle( id );
   }
 
-  private void checkForBannedBundle( final String id ) throws Exception 
+  private static void checkForBannedBundle( final String id ) throws Exception 
   {
     IWARProduct product = createBasicProductWithLibraries();
     IProductPlugin plugin = new ProductPlugin( product.getModel() );
@@ -226,7 +226,7 @@ public class ValidatorTest extends TestCase {
     checkForMissingRequiredBundle( id );
   }
   
-  private void checkForMissingRequiredBundle( final String id ) 
+  private static void checkForMissingRequiredBundle( final String id ) 
     throws IOException 
   {
     IWARProduct product = createPlainProducttWithLibraries();
@@ -251,7 +251,7 @@ public class ValidatorTest extends TestCase {
     assertTrue( foundMissingBundle );
   }
 
-  private IWARProduct createBasicProductWithLibraries() throws Exception {
+  private static IWARProduct createBasicProductWithLibraries() throws Exception {
     IWARProduct product = createBasicProduct();
     IWorkspaceRoot wsRoot = ResourcesPlugin.getWorkspace().getRoot();
     IProject project = wsRoot.getProject( "warProduct" );
@@ -277,7 +277,7 @@ public class ValidatorTest extends TestCase {
     return product;
   }
 
-  private IWARProduct createBasicProduct() {
+  private static IWARProduct createBasicProduct() {
     WARProductModel model = new WARProductModel();
     WARProductModelFactory factory = new WARProductModelFactory( model );
     String requiredBundles[] = Validator.REQUIRED_BUNDLES;
@@ -288,7 +288,7 @@ public class ValidatorTest extends TestCase {
     return product;
   }
   
-  private IWARProduct createPlainProducttWithLibraries() throws IOException {
+  private static IWARProduct createPlainProducttWithLibraries() throws IOException {
     IWARProduct product = createPlainProduct();
     File testJar = File.createTempFile( "test", ".jar" );
     Path testPath = new Path( testJar.getAbsolutePath() );
@@ -300,14 +300,14 @@ public class ValidatorTest extends TestCase {
     return product;
   }
   
-  private IWARProduct createPlainProduct() {
+  private static IWARProduct createPlainProduct() {
     WARProductModel model = new WARProductModel();
     WARProductModelFactory factory = new WARProductModelFactory( model );
     IWARProduct product = ( IWARProduct )factory.createProduct();
     return product;
   }
 
-  private void addBundleToProduct( final WARProductModelFactory factory, 
+  private static void addBundleToProduct( final WARProductModelFactory factory, 
                                    final String id, 
                                    final IWARProduct product ) 
   {

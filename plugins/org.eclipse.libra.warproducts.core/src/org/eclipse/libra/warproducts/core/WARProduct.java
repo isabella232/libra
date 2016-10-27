@@ -26,7 +26,7 @@ public class WARProduct implements IWARProduct {
 
   private static final long serialVersionUID = -8956436490095281273L;
   private IProduct delegate;
-  private Map libraries;
+  private Map<IPath, Boolean> libraries;
   private IPath webXmlPath;
   private IPath launchIniPath;
   private IPreferencesInfo fPreferencesInfo;
@@ -34,7 +34,7 @@ public class WARProduct implements IWARProduct {
 
   public WARProduct( final IProduct delegate ) {
     this.delegate = delegate;
-    libraries = new HashMap();
+    libraries = new HashMap<IPath, Boolean>();
   }
   
   public void addLibrary( final IPath libraryPath, final boolean fromTarget ) {
@@ -67,13 +67,13 @@ public class WARProduct implements IWARProduct {
 
   public IPath[] getLibraries() {
     IPath[] result = new IPath[ libraries.size() ];
-    Set keySet = libraries.keySet();
+    Set<IPath> keySet = libraries.keySet();
     keySet.toArray( result );
     return result;
   }
   
   public boolean isLibraryFromTarget( final IPath libraryPath ) {
-    Boolean result = ( Boolean )libraries.get( libraryPath );
+    Boolean result = libraries.get( libraryPath );
     return result.booleanValue();
   }
   
@@ -193,7 +193,7 @@ public class WARProduct implements IWARProduct {
       libraries.keySet().toArray( pathes );
       for( int i = 0; i < pathes.length; i++ ) {
         String libraryPath = pathes[ i ].toPortableString();
-        Boolean fromTarget = ( Boolean )libraries.get( pathes[ i ] );
+        Boolean fromTarget = libraries.get( pathes[ i ] );
         writer.println( "      " + "<library path=\"" + libraryPath +  //$NON-NLS-1$ //$NON-NLS-2$
                         "\" fromTarget=\"" + fromTarget + "\"/>" ); //$NON-NLS-1$ //$NON-NLS-2$
       }
@@ -300,7 +300,7 @@ public class WARProduct implements IWARProduct {
   }
   
   public IPluginConfiguration[] getPluginConfigurations() {
-    List containedBundles = new ArrayList();
+    List<IPluginConfiguration> containedBundles = new ArrayList<IPluginConfiguration>();
     IProductPlugin[] plugins = getPlugins();
     if( plugins != null && plugins.length > 0 ) {
       WARProductModelFactory factory = new WARProductModelFactory( getModel() );

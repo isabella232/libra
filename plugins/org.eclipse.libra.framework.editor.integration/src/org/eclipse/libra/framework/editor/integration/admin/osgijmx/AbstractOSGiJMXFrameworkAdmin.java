@@ -66,9 +66,10 @@ public abstract class AbstractOSGiJMXFrameworkAdmin implements IOSGiFrameworkAdm
 			ServiceStateMBean serviceStateMBean = getServiceStateMBean(connection);
 			ServicesData servicesData = new ServicesData(serviceStateMBean);
 			
-			Set keys = bundlesData.keySet();
+			Set<?> keys = bundlesData.keySet();
 			for (Object key : keys) {
-				CompositeData bundleInfo = bundlesData.get(((Collection) key).toArray());
+				// TODO Weird cast & get?
+				CompositeData bundleInfo = bundlesData.get(((Collection<?>) key).toArray());
 				String id = bundleInfo.get(BundleStateMBean.IDENTIFIER).toString();
 				String symbolicName = bundleInfo.get(BundleStateMBean.SYMBOLIC_NAME).toString();
 				String version = bundleInfo.get(BundleStateMBean.VERSION).toString();
@@ -77,9 +78,10 @@ public abstract class AbstractOSGiJMXFrameworkAdmin implements IOSGiFrameworkAdm
 				Bundle bundle = new Bundle(id, symbolicName, version, state, location);
 				
 				TabularData headers = (TabularData) bundleInfo.get(BundleStateMBean.HEADERS);
-				Set headerKeys = headers.keySet();
+				Set<?> headerKeys = headers.keySet();
 				for (Object headerKey : headerKeys) {
-					CompositeData headerCData = headers.get(((Collection) headerKey).toArray()); 
+					// TODO Weird cast & get?
+					CompositeData headerCData = headers.get(((Collection<?>) headerKey).toArray()); 
 					String hKey = (String) headerCData.get(BundleStateMBean.KEY);
 					String hValue = (String) headerCData.get(BundleStateMBean.VALUE);
 					bundle.addHeader(hKey, hValue);
@@ -124,7 +126,7 @@ public abstract class AbstractOSGiJMXFrameworkAdmin implements IOSGiFrameworkAdm
 					bundle.addUsingService(sr); 
 				}
 				
-				map.put(Long.parseLong(id), bundle);
+				map.put(Long.valueOf(id), bundle);
 			}
 		} catch (UndeclaredThrowableException e) {
 			if (e.getCause() instanceof InstanceNotFoundException) {

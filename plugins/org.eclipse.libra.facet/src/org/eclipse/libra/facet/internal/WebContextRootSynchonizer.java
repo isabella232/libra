@@ -132,7 +132,7 @@ public class WebContextRootSynchonizer implements IResourceChangeListener {
         }
 	}
 
-	private boolean isWAB(IProject project) {
+	private static boolean isWAB(IProject project) {
 		boolean result = false;
     	try {
 			result = isWebApplicationBundle(project);
@@ -143,7 +143,7 @@ public class WebContextRootSynchonizer implements IResourceChangeListener {
     	return result;
 	}
 	
-	private boolean isContentChanged(IResourceDelta delta) {
+	private static boolean isContentChanged(IResourceDelta delta) {
 		return delta != null && delta.getKind() == IResourceDelta.CHANGED
 				&& (delta.getFlags() & IResourceDelta.CONTENT) != 0;
 	}
