@@ -55,6 +55,9 @@ public class ModuleTraverser {
 
  
 
+    /**
+	 * @param monitor unused 
+	 */
     private static void traverseOSGIComponent(IVirtualComponent component,
             IModuleVisitor visitor, IProgressMonitor monitor)
             throws CoreException {

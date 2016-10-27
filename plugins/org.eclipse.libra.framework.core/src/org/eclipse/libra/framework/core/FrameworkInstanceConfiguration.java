@@ -69,6 +69,10 @@ public class FrameworkInstanceConfiguration {
 		return configPath;
 	}
 
+	/**
+	 * @param folder  unused
+	 * @param monitor unused
+	 */
 	public void load(IFolder folder, IProgressMonitor monitor)
 			throws CoreException {
 
@@ -149,6 +153,9 @@ public class FrameworkInstanceConfiguration {
 			propertyListeners.remove(listener);
 	}
 
+	/**
+	 * @param isTestEnv unused 
+	 */
 	public void importFromPath(IPath path, boolean isTestEnv,
 			IProgressMonitor monitor) throws CoreException {
 		load(path, monitor);

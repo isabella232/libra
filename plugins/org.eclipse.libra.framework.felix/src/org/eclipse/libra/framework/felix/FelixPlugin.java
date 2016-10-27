@@ -71,6 +71,9 @@ public class FelixPlugin extends AbstractUIPlugin {
 		(new DefaultScope()).getNode(PLUGIN_ID).put(id, value);
 	}
 	
+	/**
+	 * @param id unused 
+	 */
 	public static IFelixVersionHandler getFelixVersionHandler(String id) {
 //		if (id.indexOf("runtime") > 0)
 //			id = id.substring(0, 30) + id.substring(38);

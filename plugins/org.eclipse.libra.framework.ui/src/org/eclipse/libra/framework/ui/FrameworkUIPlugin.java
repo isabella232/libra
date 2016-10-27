@@ -38,7 +38,7 @@ import org.eclipse.wst.server.core.IServer;
 public class FrameworkUIPlugin extends AbstractUIPlugin {
 	protected static FrameworkUIPlugin singleton;
 
-	protected Map imageDescriptors = new HashMap();
+	protected Map<String, ImageDescriptor> imageDescriptors = new HashMap<String, ImageDescriptor>();
 
 	// base url for icons
 	private static URL ICON_BASE_URL;
@@ -96,7 +96,7 @@ public class FrameworkUIPlugin extends AbstractUIPlugin {
 	public static ImageDescriptor getImageDescriptor(String key) {
 		try {
 			getInstance().getImageRegistry();
-			return (ImageDescriptor) getInstance().imageDescriptors.get(key);
+			return getInstance().imageDescriptors.get(key);
 		} catch (Exception e) {
 			return null;
 		}
