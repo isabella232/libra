@@ -29,13 +29,12 @@ public class OSGiBundleFacetUninstallConfig extends ActionConfig {
 		
 		final OSGiBundleFacetUninstallStrategy[] values = OSGiBundleFacetUninstallStrategy.values();
 		
-		optionValues =  new ArrayList<WritableValue<Boolean>>(values.length);
-		for (int i = 0; i < values.length; i++) {
+		optionValues =  new ArrayList<WritableValue<Boolean>>(values==null ? 0 : values.length);
+		if (values!=null) for (final OSGiBundleFacetUninstallStrategy val: values) {
 			final WritableValue<Boolean> wv = new WritableValue<Boolean>(realm, null, Boolean.class);
-			optionValues.set(i, wv);
-			strategyValue.addOption(OSGiBundleFacetUninstallStrategy.values()[i], wv);
+			optionValues.add(wv);
+			strategyValue.addOption(val, wv);
 		}
-		
 		strategyValue.setValue(OSGiBundleFacetUninstallStrategy.defaultStrategy());
 	}
 
