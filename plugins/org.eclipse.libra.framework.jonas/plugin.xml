@@ -76,7 +76,7 @@
 
   <extension point="org.eclipse.wst.server.core.launchableAdapters">
      <launchableAdapter
-        class="org.eclipse.libra.framework.core.launching.LaunchableAdapterDelegate"
+        class="org.eclipse.libra.framework.core.launching.LibraLaunchableAdapterDelegate"
         id="org.eclipse.libra.framework.jonas.osgi"/>
   </extension>
 

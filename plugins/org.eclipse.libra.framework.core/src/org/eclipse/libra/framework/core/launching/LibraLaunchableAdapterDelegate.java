@@ -24,7 +24,7 @@ import org.eclipse.wst.server.core.IServer;
 /**
  * Launchable adapter delegate for OSGi resources.
  */
-public class LaunchableAdapterDelegate extends
+public class LibraLaunchableAdapterDelegate extends
 		org.eclipse.wst.server.core.model.LaunchableAdapterDelegate {
 	/*
 	 * @see LaunchableAdapterDelegate#getLaunchable(IServer, IModuleArtifact)
