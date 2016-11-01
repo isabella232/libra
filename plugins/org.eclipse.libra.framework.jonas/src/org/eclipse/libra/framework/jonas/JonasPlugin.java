@@ -21,15 +21,11 @@ public class JonasPlugin extends AbstractUIPlugin {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.libra.framework.jonas"; //$NON-NLS-1$
 
-	// The shared instance
-	private static JonasPlugin plugin;
-	
 	/**
 	 * The constructor
 	 */
 	public JonasPlugin() {
 		super();
-		plugin = this;
 	}
 
 	/*
@@ -39,7 +35,6 @@ public class JonasPlugin extends AbstractUIPlugin {
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		plugin = this;
 	}
 
 	/*
@@ -48,20 +43,8 @@ public class JonasPlugin extends AbstractUIPlugin {
 	 */
 	@Override
 	public void stop(BundleContext context) throws Exception {
-		plugin = null;
 		super.stop(context);
 	}
-
-	/**
-	 * Returns the shared instance
-	 *
-	 * @return the shared instance
-	 */
-	public static JonasPlugin getDefault() {
-		return plugin;
-	}
-	
-	
 
 	public static String getPreference(String id) {
 		return Platform.getPreferencesService().getString(PLUGIN_ID, id, "", null);
@@ -80,6 +63,5 @@ public class JonasPlugin extends AbstractUIPlugin {
 //		if (true)//"abc".equals(id))
 			return new JonasHandler();
 	}
-
 
 }

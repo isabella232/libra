@@ -11,26 +11,20 @@ package org.eclipse.libra.framework.knopflerfish.ui;
  *******************************************************************************/
 
 
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 
 public class KnopflerfishUIPlugin extends AbstractUIPlugin {
-	protected static KnopflerfishUIPlugin singleton;
 	public static final String PLUGIN_ID = "org.eclipse.libra.framework.knopflerfish.ui";
-
-
-
 
 	public KnopflerfishUIPlugin() {
 		super();
-		singleton = this;
-	}
-
-
-	public static KnopflerfishUIPlugin getInstance() {
-		return singleton;
 	}
 
 	/**
@@ -39,7 +33,9 @@ public class KnopflerfishUIPlugin extends AbstractUIPlugin {
 	 * @param status org.eclipse.core.runtime.IStatus
 	 */
 	public static void log(IStatus status) {
-		getInstance().getLog().log(status);
+		Bundle bdl = FrameworkUtil.getBundle(KnopflerfishUIPlugin.class);
+		ILog log = bdl==null ? null : Platform.getLog(bdl);
+		if (log!=null) log.log(status);
 	}
 
 	/**

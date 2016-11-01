@@ -11,26 +11,20 @@ package org.eclipse.libra.framework.equinox.ui;
  *******************************************************************************/
 
 
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 
 public class EquinoxUIPlugin extends AbstractUIPlugin {
-	protected static EquinoxUIPlugin singleton;
 	public static final String PLUGIN_ID = "org.eclipse.libra.framework.equinox.ui";
 
 	public EquinoxUIPlugin() {
 		super();
-		singleton = this;
-	}
-
-	/**
-	 * Returns the singleton instance of this plugin.
-	 * @return org.eclipse.jst.server.tomcat.internal.TomcatUIPlugin
-	 */
-	public static EquinoxUIPlugin getInstance() {
-		return singleton;
 	}
 
 	/**
@@ -39,7 +33,9 @@ public class EquinoxUIPlugin extends AbstractUIPlugin {
 	 * @param status org.eclipse.core.runtime.IStatus
 	 */
 	public static void log(IStatus status) {
-		getInstance().getLog().log(status);
+		Bundle bdl = FrameworkUtil.getBundle(EquinoxUIPlugin.class);
+		ILog log = bdl==null ? null : Platform.getLog(bdl);
+		if (log!=null) log.log(status);
 	}
 
 	/**

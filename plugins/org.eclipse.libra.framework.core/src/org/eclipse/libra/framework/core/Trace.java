@@ -32,8 +32,6 @@ public class Trace {
 		"CONFIG   ", "WARNING  ", "SEVERE   ", "FINER    ", "FINEST   "};
 	private static final String spacer = "                                   ";
 	
-	private static final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy HH:mm.ss.SSS");
-	
 	static int pluginLength = -1;
 
 	/**
@@ -61,9 +59,6 @@ public class Trace {
 	 * @param t a throwable
 	 */
 	public static void trace(byte level, String s, Throwable t) {
-		if (!FrameworkCorePlugin.getDefault().isDebugging())
-			return;
-
 		trace(FrameworkCorePlugin.PLUGIN_ID, level, s, t);
 	}
 
@@ -78,9 +73,11 @@ public class Trace {
 		if (pluginId == null || s == null)
 			return;
 
-		if (!FrameworkCorePlugin.getDefault().isDebugging())
+		if (! isTraceEnabled())
 			return;
-		
+
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy HH:mm.ss.SSS");
+
 		StringBuffer sb = new StringBuffer(pluginId);
 		if (pluginId.length() > pluginLength)
 			pluginLength = pluginId.length();
@@ -105,6 +102,6 @@ public class Trace {
 	 * @return true if tracing is enabled
 	 */
 	public static boolean isTraceEnabled() {
-		return FrameworkCorePlugin.getDefault().isDebugging();
+		return FrameworkCorePlugin.isTraceEnabled();
 	}
 }

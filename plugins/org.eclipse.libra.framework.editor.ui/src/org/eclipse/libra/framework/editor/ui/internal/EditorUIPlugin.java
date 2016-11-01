@@ -11,9 +11,13 @@
 package org.eclipse.libra.framework.editor.ui.internal;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Kaloyan Raev
@@ -22,20 +26,10 @@ public class EditorUIPlugin extends AbstractUIPlugin {
 	
 	public static final String PLUGIN_ID = "org.eclipse.libra.framework.editor";
 
-	private static EditorUIPlugin plugin = null;
-
 	public EditorUIPlugin() {
 		super();
-		plugin = this;
 	}
 
-	public static EditorUIPlugin getDefault() {
-		if (plugin == null) {
-			plugin = new EditorUIPlugin();
-		}
-		return plugin;
-	}
-	
 	/**
 	 * Constructs new IStatus object from the given String message. 
 	 * 
@@ -60,7 +54,9 @@ public class EditorUIPlugin extends AbstractUIPlugin {
 	 * @param status status to log
 	 */
 	public static void log(IStatus status) {
-		getDefault().getLog().log(status);
+		Bundle bdl = FrameworkUtil.getBundle(EditorUIPlugin.class);
+		ILog log = bdl==null ? null : Platform.getLog(bdl);
+		if (log!=null) log.log(status);
 	}
 	
 	/**

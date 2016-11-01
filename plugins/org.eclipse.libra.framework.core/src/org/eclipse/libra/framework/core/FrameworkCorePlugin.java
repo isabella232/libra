@@ -19,11 +19,15 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.DefaultScope;
+import org.eclipse.osgi.service.debug.DebugOptions;
 import org.eclipse.pde.core.project.IBundleProjectDescription;
 import org.eclipse.pde.core.project.IBundleProjectService;
 import org.eclipse.pde.internal.core.PDECore;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 
 
 public class FrameworkCorePlugin extends AbstractUIPlugin {
@@ -31,17 +35,43 @@ public class FrameworkCorePlugin extends AbstractUIPlugin {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.libra.framework.core"; //$NON-NLS-1$
 
-	// The shared instance
-	private static FrameworkCorePlugin plugin;
-	
 	/**
 	 * The constructor
 	 */
 	public FrameworkCorePlugin() {
 		super();
-		plugin = this;
 	}
 
+	/**
+	 * Tracing enabled?
+	 * @return whether debug is enabled on the Platform (-debug) AND the {@value #PLUGIN_ID}/debug option
+	 * is set to "true". 
+	 */
+	public static boolean isTraceEnabled() {
+		/* This implementation is a mix of
+		 *  https://wiki.eclipse.org/FAQ_How_do_I_use_the_platform_debug_tracing_facility
+		 * and the previous (defacto deprecated) implementation in org.eclipse.core.runtime.Plugin 
+		 */
+		if (! Platform.inDebugMode()) return false;
+		
+		Bundle bdl = FrameworkUtil.getBundle(FrameworkCorePlugin.class);
+		if (bdl == null){
+			throw new RuntimeException("Could not resolve my own OSGi bundle, something seriously wrong with the Framework!"); //$NON-NLS-1$
+		}
+		String key = bdl.getSymbolicName() + "/debug"; //$NON-NLS-1$
+
+		ServiceReference<DebugOptions> ref = bdl.getBundleContext().getServiceReference(DebugOptions.class);
+		DebugOptions service = ref == null ? null : bdl.getBundleContext().getService(ref);
+
+		// if platform debugging is enabled, check to see if this plugin is enabled for debugging
+		if (service != null){
+			if (! service.isDebugEnabled()) return false;
+			return service.getBooleanOption(key, false);
+		}
+
+		return "true".equalsIgnoreCase(Platform.getDebugOption(key)); 	
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
@@ -49,7 +79,6 @@ public class FrameworkCorePlugin extends AbstractUIPlugin {
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		plugin = this;
 	}
 
 	/*
@@ -58,20 +87,8 @@ public class FrameworkCorePlugin extends AbstractUIPlugin {
 	 */
 	@Override
 	public void stop(BundleContext context) throws Exception {
-		plugin = null;
 		super.stop(context);
 	}
-
-	/**
-	 * Returns the shared instance
-	 *
-	 * @return the shared instance
-	 */
-	public static FrameworkCorePlugin getDefault() {
-		return plugin;
-	}
-	
-	
 
 	public static String getPreference(String id) {
 		return Platform.getPreferencesService().getString(PLUGIN_ID, id, "", null);
@@ -80,7 +97,6 @@ public class FrameworkCorePlugin extends AbstractUIPlugin {
 	public static void setPreference(String id, String value) {
 		(new DefaultScope()).getNode(PLUGIN_ID).put(id, value);
 	}
-	
 	
 	public static IBundleProjectService getBundleProjectService() {
 		PDECore instance = PDECore.getDefault();
@@ -97,6 +113,5 @@ public class FrameworkCorePlugin extends AbstractUIPlugin {
 			return null;
 		}
 	}
-
-
+	
 }

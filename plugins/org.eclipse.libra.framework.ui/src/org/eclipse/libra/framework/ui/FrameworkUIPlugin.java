@@ -56,13 +56,10 @@ public class FrameworkUIPlugin extends AbstractUIPlugin {
 	public static final String IMG_PORT = "port";
 	public static final String IMG_PROJECT_MISSING = "projectMissing";
 
-
 	public static final String PREF_JDK_INSTALL_DIR = "jdkinstall";
-
 
 	public FrameworkUIPlugin() {
 		super();
-		singleton = this;
 	}
 
 	protected ImageRegistry createImageRegistry() {
