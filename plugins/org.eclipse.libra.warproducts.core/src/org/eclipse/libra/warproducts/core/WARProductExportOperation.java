@@ -37,7 +37,7 @@ public class WARProductExportOperation extends FeatureExportOperation {
   private static final String STATUS_SUBENTRY = "!SUBENTRY"; //$NON-NLS-1$
   private static final String MAC_JAVA_FRAMEWORK 
     = "/System/Library/Frameworks/JavaVM.framework"; //$NON-NLS-1$
-  private String featureLocation;
+
   private String root;
   private IProduct product;
   private static String errorMessage;
@@ -119,7 +119,7 @@ public class WARProductExportOperation extends FeatureExportOperation {
       try {
         // create a feature to wrap all plug-ins and features
         String featureID = "org.eclipse.pde.container.feature"; //$NON-NLS-1$
-        featureLocation = fBuildTempLocation + File.separator + featureID;
+        String featureLocation = fBuildTempLocation + File.separator + featureID;
         createFeature( featureID,
                        featureLocation,
                        configurations,
@@ -188,7 +188,7 @@ public class WARProductExportOperation extends FeatureExportOperation {
     }
   }
 
-  protected String[] getPaths() {
+  protected String[] getPaths(final String featureLocation) {
     String[] paths = super.getPaths();
     String[] all = new String[ paths.length + 1 ];
     all[ 0 ] = featureLocation
@@ -209,7 +209,7 @@ public class WARProductExportOperation extends FeatureExportOperation {
       }
     }
     Properties properties = new Properties();
-    handleRootFiles( configurations, properties );
+    handleRootFiles( configurations, properties, featureLocation );
     handleJREInfo( configurations, properties );
     handleExportSource( properties );
     File fileToSave 
@@ -218,7 +218,8 @@ public class WARProductExportOperation extends FeatureExportOperation {
   }
 
   private void handleRootFiles( final String[][] configurations,
-                                final Properties properties ) 
+                                final Properties properties,
+                                final String featureLocation) 
     throws IOException
   {
     if( configurations.length > 0 ) {
@@ -227,12 +228,13 @@ public class WARProductExportOperation extends FeatureExportOperation {
                           + "." + configurations[ 0 ][ 1 ]  //$NON-NLS-1$
                           + "." + configurations[ 0 ][ 2 ]; //$NON-NLS-1$
       properties.put( rootPrefix, getRootFileLocations( false ) );
-      prepareWARFile( properties, rootPrefix );
+      prepareWARFile( properties, rootPrefix, featureLocation );
     }
   }
   
   private void prepareWARFile( final Properties properties,
-                               final String rootPrefix ) 
+                               final String rootPrefix,
+                               final String featureLocation) 
     throws IOException
   {
     if( product instanceof IWARProduct ) {
@@ -240,18 +242,18 @@ public class WARProductExportOperation extends FeatureExportOperation {
       IWorkspaceRoot wsRoot = ResourcesPlugin.getWorkspace().getRoot();
       IFile launchIni = wsRoot.getFile( warProduct.getLaunchIni() );
       String launchIniPath 
-        = createWarContent( launchIni.getLocation(), "launch.ini" ); //$NON-NLS-1$
+        = createWarContent( launchIni.getLocation(), "launch.ini", featureLocation ); //$NON-NLS-1$
       IFile webXml = wsRoot.getFile( warProduct.getWebXml() );
-      String webXmlPath = createWarContent( webXml.getLocation(), "web.xml" ); //$NON-NLS-1$
+      String webXmlPath = createWarContent( webXml.getLocation(), "web.xml", featureLocation ); //$NON-NLS-1$
       properties.put( rootPrefix, "absolute:file:" + webXmlPath  //$NON-NLS-1$
                                   + ",absolute:file:" + launchIniPath ); //$NON-NLS-1$
-      String libDir = createLibDir();
+      String libDir = createLibDir(featureLocation);
       copyLibraries( libDir );
       properties.put( rootPrefix + ".folder." + "lib", "absolute:" + libDir ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
   }
 
-  private String createLibDir() throws IOException {
+  private static String createLibDir(final String featureLocation) throws IOException {
     String location = featureLocation;
     File dir = new File( location, "lib" ); //$NON-NLS-1$
     if (! dir.mkdirs()){
@@ -279,8 +281,9 @@ public class WARProductExportOperation extends FeatureExportOperation {
     CoreUtility.readFile( new FileInputStream( template ), destinationFile );      
   }
 
-  private String createWarContent( final IPath pathToContent, 
-                                   final String fileName ) 
+  private static String createWarContent( final IPath pathToContent, 
+                                   final String fileName, 
+                                   final String featureLocation ) 
     throws IOException 
   {
     File destinationFile = new File( featureLocation, fileName );
