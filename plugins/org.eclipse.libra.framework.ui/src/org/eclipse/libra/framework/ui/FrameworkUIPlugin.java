@@ -36,7 +36,7 @@ import org.eclipse.wst.server.core.IServer;
 
 
 public class FrameworkUIPlugin extends AbstractUIPlugin {
-	protected static FrameworkUIPlugin singleton;
+	private static FrameworkUIPlugin singleton;
 
 	protected Map<String, ImageDescriptor> imageDescriptors = new HashMap<String, ImageDescriptor>();
 
@@ -60,6 +60,7 @@ public class FrameworkUIPlugin extends AbstractUIPlugin {
 
 	public FrameworkUIPlugin() {
 		super();
+		singleton = this;
 	}
 
 	protected ImageRegistry createImageRegistry() {
