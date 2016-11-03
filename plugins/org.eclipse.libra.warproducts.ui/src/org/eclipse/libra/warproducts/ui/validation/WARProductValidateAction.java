@@ -10,7 +10,6 @@
 package org.eclipse.libra.warproducts.ui.validation;
 
 import java.util.*;
-import java.util.Map.Entry;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -112,9 +111,11 @@ public class WARProductValidateAction extends Action {
   }
 
   private static void verifyPDEErrors( final Map<Object,Object[]> map ) {
-    for(final Entry<?,?> entry: map.entrySet()){
-      Object currentKey = entry.getKey();
-      ResolverError[] errors = (ResolverError[]) entry.getValue();
+    final ArrayList<Object> keys = new ArrayList<Object>(map.size());
+    keys.addAll( map.keySet() );
+    
+    for(final Object currentKey: keys){
+      ResolverError[] errors = (ResolverError[]) map.get( currentKey );
       ResolverError[] validErrors = validateErrors( errors );
       map.remove( currentKey );
       if( validErrors.length > 0 ) {
