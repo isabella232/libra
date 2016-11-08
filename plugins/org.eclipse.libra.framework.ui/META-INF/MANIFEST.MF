@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.libra.framework.ui;singleton:=true
-Bundle-Version: 0.3.2.qualifier
+Bundle-Version: 0.3.3.qualifier
 Bundle-Activator: org.eclipse.libra.framework.ui.FrameworkUIPlugin
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
@@ -28,7 +28,7 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.2.0,4.0.0)",
  org.eclipse.libra.framework.core,
  org.eclipse.gef
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: org.eclipse.libra.framework.editor.ui.console;version="[0.1.0,2.0.0)",
  org.eclipse.libra.framework.editor.ui.dependencies;version="[0.1.0,2.0.0)",
  org.eclipse.libra.framework.editor.ui.overview;version="[0.1.0,2.0.0)"

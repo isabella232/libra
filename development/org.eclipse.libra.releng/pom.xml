@@ -4,18 +4,18 @@
 
 	<groupId>org.eclipse.libra</groupId>
 	<artifactId>org.eclipse.libra_parent</artifactId>
-	<version>0.3.2-SNAPSHOT</version>
+	<version>0.3.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Libra Parent POM</name>
 
 	<properties>
 		<tycho-version>0.26.0</tycho-version>
-		<eclipse-site>http://download.eclipse.org/eclipse/updates/4.6/</eclipse-site>
+		<eclipse-site>http://download.eclipse.org/eclipse/updates/4.7milestones/</eclipse-site>
 		<emf-site>http://download.eclipse.org/modeling/emf/emf/updates/2.12/</emf-site>
-		<dtp-site>http://download.eclipse.org/datatools/downloads/drops/M_updates_1.12.0/</dtp-site>
+		<dtp-site>http://download.eclipse.org/datatools/downloads/drops/N_updates_1.12.0/v20140606-1324/</dtp-site>
 		<gef-site>http://download.eclipse.org/tools/gef/updates/releases</gef-site>
-		<wtp-site>http://download.eclipse.org/webtools/downloads/drops/R3.8.0/R-3.8.0-20160608130753/repository/</wtp-site>
-		<wtp-tests-site>http://download.eclipse.org/webtools/downloads/drops/R3.8.0/R-3.8.0-20160608130753/repositoryunittests/</wtp-tests-site>
+		<wtp-site>http://download.eclipse.org/webtools/downloads/drops/R3.9.0/S-3.9.0M3-20161031000121/repository/</wtp-site>
+		<wtp-tests-site>http://download.eclipse.org/webtools/downloads/drops/R3.9.0/S-3.9.0M3-20161031000121/repositoryunittests/</wtp-tests-site>
 		<orbit-site>http://download.eclipse.org/tools/orbit/downloads/drops/R20160520211859/repository/</orbit-site>
 		<license-site>http://download.eclipse.org/cbi/updates/license</license-site>
 		<debug-options></debug-options> <!-- empty by default -->
@@ -145,7 +145,7 @@
 					<configuration>
 						<sourceEncoding>utf-8</sourceEncoding>
 						<minimumTokens>100</minimumTokens>
-						<targetJdk>1.5</targetJdk>
+						<targetJdk>1.8</targetJdk>
 						<format>xml</format>
 						<failOnViolation>false</failOnViolation>
 					</configuration>

@@ -99,7 +99,9 @@ public class WARProductExportOperation extends FeatureExportOperation {
     this.root = root;
   }
 
-  protected IStatus run( final IProgressMonitor monitor ) {
+  protected IStatus run( final IProgressMonitor monitor0 ) {
+    final SubMonitor monitor = SubMonitor.convert( monitor0 );
+    
     IStatus result = null;
     String[][] configurations = fInfo.targets;
     if( configurations == null ) {
@@ -129,7 +131,7 @@ public class WARProductExportOperation extends FeatureExportOperation {
                   null,
                   featureLocation,
                   configurations,
-                  new SubProgressMonitor( monitor, 8 ) );
+                  monitor.split( 8 ) );
       } catch( final IOException e ) {
         PDECore.log( e );
       } catch( final InvocationTargetException e ) {
@@ -154,7 +156,7 @@ public class WARProductExportOperation extends FeatureExportOperation {
             PDECore.log( e );
           }
         }
-        cleanup( null, new SubProgressMonitor( monitor, 1 ) );
+        cleanup( monitor.split ( 1 ) );
       }
       if( hasAntErrors() ) {
         String compilationErrors 
