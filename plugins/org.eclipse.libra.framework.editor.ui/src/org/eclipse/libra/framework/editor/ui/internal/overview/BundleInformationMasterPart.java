@@ -62,10 +62,11 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.ui.IWorkbenchCommandConstants;
+import org.eclipse.ui.commands.ICommandImageService;
 import org.eclipse.ui.forms.SectionPart;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
-import org.eclipse.ui.internal.browser.ImageResource;
 import org.eclipse.ui.internal.ide.StringMatcher;
 
 
@@ -309,7 +310,8 @@ public class BundleInformationMasterPart extends SectionPart {
 			}
 		});
 
-		toolBarManager.add(new Action("Refresh", ImageResource.getImageDescriptor(ImageResource.IMG_ELCL_NAV_REFRESH)) {
+		final ICommandImageService service = this.masterDetailsBlock.getEditorPage().getSite().getWorkbenchWindow().getService(ICommandImageService.class);
+		toolBarManager.add(new Action("Refresh", service.getImageDescriptor(IWorkbenchCommandConstants.FILE_REFRESH)) {
 
 			@Override
 			public void run() {
