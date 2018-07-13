@@ -3,7 +3,7 @@
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="osgi.enterprise" version="0.0.0"/>
-<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20160520211859/repository/"/>
+<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20180606145124/repository/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.emf.sdk.feature.group" version="0.0.0"/>
@@ -24,11 +24,11 @@
 <unit id="org.eclipse.jst.server_sdk.feature.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.wst.server_adapters.sdk.feature.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.wst.web_sdk.feature.feature.group" version="0.0.0"/>
-<repository location="http://download.eclipse.org/webtools/downloads/drops/R3.9.0/S-3.9.0M3-20161031000121/repository/"/>
+<repository location="http://download.eclipse.org/webtools/downloads/drops/R3.10.0/R-3.10.0-20180611164516/repository/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.wst.common_tests.feature.feature.group" version="0.0.0"/>
-<repository location="http://download.eclipse.org/webtools/downloads/drops/R3.9.0/S-3.9.0M3-20161031000121/repositoryunittests/"/>
+<repository location="http://download.eclipse.org/webtools/downloads/drops/R3.10.0/R-3.10.0-20180611164516/repositoryunittests/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.datatools.enablement.sdk.feature.feature.group" version="0.0.0"/>
@@ -40,11 +40,8 @@
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.sdk.ide" version="0.0.0"/>
-<repository location="http://download.eclipse.org/eclipse/updates/4.7milestones"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.jpt.jpa.feature.feature.group" version="3.5.0.v201610131832"/>
-<repository location="http://download.eclipse.org/releases/oxygen"/>
+<unit id="org.eclipse.jpt.jpa.feature.feature.group"/>
+<repository location="http://download.eclipse.org/releases/photon/"/>
 </location>
 </locations>
 </target>
