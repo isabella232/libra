@@ -28,6 +28,7 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -62,12 +63,13 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.IWorkbenchCommandConstants;
+import org.eclipse.ui.commands.ICommandImageService;
 import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.ManagedForm;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
-import org.eclipse.ui.internal.browser.ImageResource;
 import org.eclipse.wst.server.ui.ServerUICore;
 import org.eclipse.wst.server.ui.internal.editor.ServerEditorPartInput;
 import org.eclipse.wst.server.ui.internal.editor.ServerResourceCommandManager;
@@ -273,10 +275,11 @@ public class BundleDependencyEditorPage extends AbstractBundleEditorPage impleme
 				new BundleDependencyUpdateJob(true).schedule();
 			}
 		};
-		backAction.setImageDescriptor(ImageResource
-				.getImageDescriptor(org.eclipse.ui.internal.browser.ImageResource.IMG_ELCL_NAV_BACKWARD));
-		backAction.setHoverImageDescriptor(ImageResource.getImageDescriptor(ImageResource.IMG_CLCL_NAV_BACKWARD));
-		backAction.setDisabledImageDescriptor(ImageResource.getImageDescriptor(ImageResource.IMG_DLCL_NAV_BACKWARD));
+		final ICommandImageService service = getSite().getWorkbenchWindow().getService(ICommandImageService.class);
+		final ImageDescriptor imgDescBack = service.getImageDescriptor(IWorkbenchCommandConstants.NAVIGATE_BACK);
+		backAction.setImageDescriptor(imgDescBack);
+		backAction.setHoverImageDescriptor(imgDescBack);
+		backAction.setDisabledImageDescriptor(imgDescBack);
 		backAction.setEnabled(false);
 		toolBarManager.add(backAction);
 
@@ -290,13 +293,14 @@ public class BundleDependencyEditorPage extends AbstractBundleEditorPage impleme
 				new BundleDependencyUpdateJob(true).schedule();
 			}
 		};
-		forwardAction.setImageDescriptor(ImageResource.getImageDescriptor(ImageResource.IMG_ELCL_NAV_FORWARD));
-		forwardAction.setHoverImageDescriptor(ImageResource.getImageDescriptor(ImageResource.IMG_CLCL_NAV_FORWARD));
-		forwardAction.setDisabledImageDescriptor(ImageResource.getImageDescriptor(ImageResource.IMG_DLCL_NAV_FORWARD));
+		ImageDescriptor imgDescFwd = service.getImageDescriptor(IWorkbenchCommandConstants.NAVIGATE_FORWARD);
+		forwardAction.setImageDescriptor(imgDescFwd);
+		forwardAction.setHoverImageDescriptor(imgDescFwd);
+		forwardAction.setDisabledImageDescriptor(imgDescFwd);
 		forwardAction.setEnabled(false);
 		toolBarManager.add(forwardAction);
 
-		refreshAction = new Action("Refresh from server", ImageResource.getImageDescriptor(ImageResource.IMG_ELCL_NAV_REFRESH)) {
+		refreshAction = new Action("Refresh from server", service.getImageDescriptor(IWorkbenchCommandConstants.FILE_REFRESH)) {
 
 			@Override
 			public void run() {

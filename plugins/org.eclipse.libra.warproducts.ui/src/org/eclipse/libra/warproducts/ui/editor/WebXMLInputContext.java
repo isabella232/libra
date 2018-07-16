@@ -10,6 +10,7 @@
 *******************************************************************************/ 
 package org.eclipse.libra.warproducts.ui.editor;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 import org.eclipse.core.resources.IFile;
@@ -55,7 +56,7 @@ public class WebXMLInputContext extends XMLInputContext {
     if( isReconciling ) {
       IFile file = ( ( IFileEditorInput ) input ).getFile();
       model.setUnderlyingResource( file );
-      model.setCharset( file.getCharset() );
+      model.setCharset( Charset.forName( file.getCharset() ) );
     }
     return model;
   }

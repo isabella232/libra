@@ -87,7 +87,7 @@ public class FrameworkInstanceConfiguration {
 	private ITargetDefinition loadTarget() throws CoreException {
 
 		targetDefinition = null;
-		ITargetPlatformService service = TargetDefinitionUtil.getTargetPlatformService();
+		ITargetPlatformService service = FrameworkCorePlugin.getTargetPlatformService();
 		
 		ITargetHandle[] targets = service.getTargets(new NullProgressMonitor());
 		String name = runtimeInstance.getServer().getName();

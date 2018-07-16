@@ -21,10 +21,10 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.equinox.frameworkadmin.BundleInfo;
+import org.eclipse.libra.framework.core.FrameworkCorePlugin;
 import org.eclipse.libra.framework.core.FrameworkInstanceConfiguration;
 import org.eclipse.libra.framework.core.FrameworkInstanceDelegate;
 import org.eclipse.libra.framework.core.OSGIFrameworkInstanceBehaviorDelegate;
-import org.eclipse.libra.framework.core.TargetDefinitionUtil;
 import org.eclipse.libra.framework.core.Trace;
 import org.eclipse.libra.framework.knopflerfish.internal.KnopflerfishFrameworkInstanceBehavior;
 import org.eclipse.pde.core.target.ITargetDefinition;
@@ -128,7 +128,7 @@ public class KnopflerfishFrameworkInstance extends FrameworkInstanceDelegate
 		
 
 		IPath installPath = getServer().getRuntime().getLocation();
-		ITargetPlatformService service = TargetDefinitionUtil.getTargetPlatformService();
+		ITargetPlatformService service = FrameworkCorePlugin.getTargetPlatformService();
 
 		ITargetDefinition targetDefinition = service.newTarget();
 		targetDefinition.setName(getServer().getName());
@@ -183,7 +183,7 @@ public class KnopflerfishFrameworkInstance extends FrameworkInstanceDelegate
 
 	private static ITargetLocation[] getDefaultBundleContainers(IPath installPath) {
 		ITargetLocation[] containers = new ITargetLocation[8];
-		ITargetPlatformService service = TargetDefinitionUtil.getTargetPlatformService();
+		ITargetPlatformService service = FrameworkCorePlugin.getTargetPlatformService();
 		containers[0] =  service.newDirectoryLocation(
 						installPath.append("osgi").makeAbsolute()
 								.toPortableString());

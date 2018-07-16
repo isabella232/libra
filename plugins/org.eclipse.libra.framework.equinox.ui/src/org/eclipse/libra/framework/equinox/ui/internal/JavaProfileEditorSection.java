@@ -17,9 +17,9 @@ import java.beans.PropertyChangeListener;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.libra.framework.core.FrameworkCorePlugin;
 import org.eclipse.libra.framework.core.IOSGIExecutionEnvironment;
 import org.eclipse.libra.framework.core.IOSGIFrameworkInstance;
-import org.eclipse.libra.framework.core.TargetDefinitionUtil;
 import org.eclipse.libra.framework.equinox.IEquinoxFrameworkInstance;
 import org.eclipse.libra.framework.ui.ContextIds;
 import org.eclipse.libra.framework.ui.Messages;
@@ -216,7 +216,7 @@ public class JavaProfileEditorSection extends ServerEditorSection {
 					ITargetDefinition newTarget = wizard.getTargetDefinition();
 					frameworkInstance.getFrameworkInstanceConfiguration()
 							.setTargetDefinition(newTarget);
-					ITargetPlatformService service = TargetDefinitionUtil.getTargetPlatformService();
+					ITargetPlatformService service = FrameworkCorePlugin.getTargetPlatformService();
 					service.saveTargetDefinition(newTarget);
 				}
 			}

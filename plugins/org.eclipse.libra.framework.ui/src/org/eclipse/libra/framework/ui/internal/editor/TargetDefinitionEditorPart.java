@@ -35,10 +35,10 @@ import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.launching.environments.IExecutionEnvironment;
 import org.eclipse.jdt.launching.environments.IExecutionEnvironmentsManager;
 import org.eclipse.jface.window.Window;
+import org.eclipse.libra.framework.core.FrameworkCorePlugin;
 import org.eclipse.libra.framework.core.FrameworkInstanceConfiguration;
 import org.eclipse.libra.framework.core.IOSGIFrameworkInstance;
 import org.eclipse.libra.framework.core.IOSGIFrameworkWorkingCopy;
-import org.eclipse.libra.framework.core.TargetDefinitionUtil;
 import org.eclipse.libra.framework.core.Trace;
 import org.eclipse.pde.core.target.ITargetDefinition;
 import org.eclipse.pde.core.target.ITargetPlatformService;
@@ -719,7 +719,7 @@ public class TargetDefinitionEditorPart extends ServerEditorPart {
 		try {
 			runtimeInstance.getFrameworkInstanceConfiguration()
 					.setTargetDefinition(getTargetDefinition());
-			ITargetPlatformService service = TargetDefinitionUtil.getTargetPlatformService();
+			ITargetPlatformService service = FrameworkCorePlugin.getTargetPlatformService();
 			service.saveTargetDefinition(getTargetDefinition());
 		} catch (CoreException e) {
 			e.printStackTrace();

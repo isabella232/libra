@@ -28,9 +28,9 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.libra.framework.core.FrameworkCorePlugin;
 import org.eclipse.libra.framework.core.FrameworkInstanceDelegate;
 import org.eclipse.libra.framework.core.IOSGIFrameworkInstance;
-import org.eclipse.libra.framework.core.TargetDefinitionUtil;
 import org.eclipse.libra.framework.ui.ContextIds;
 import org.eclipse.libra.framework.ui.FrameworkUIPlugin;
 import org.eclipse.libra.framework.ui.Messages;
@@ -442,7 +442,7 @@ public class FrameworkInstanceLocationEditorSection extends ServerEditorSection 
 					// Replace all references to the original with the new target
 					ITargetDefinition newTarget = wizard.getTargetDefinition();
 					frameworkInstance.getFrameworkInstanceConfiguration().setTargetDefinition(newTarget);
-					ITargetPlatformService service = TargetDefinitionUtil.getTargetPlatformService();
+					ITargetPlatformService service = FrameworkCorePlugin.getTargetPlatformService();
 					service.saveTargetDefinition(newTarget);
 				}
 			}

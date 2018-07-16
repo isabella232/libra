@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.libra.framework.editor.core.IOSGiFrameworkConsole;
 import org.eclipse.libra.framework.editor.ui.internal.AbstractBundleEditorPage;
@@ -33,12 +34,13 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IWorkbenchCommandConstants;
+import org.eclipse.ui.commands.ICommandImageService;
 import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.ManagedForm;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
-import org.eclipse.ui.internal.browser.ImageResource;
 import org.eclipse.wst.server.ui.ServerUICore;
 
 
@@ -167,10 +169,12 @@ public class ServerConsoleEditorPage extends AbstractBundleEditorPage {
 				executeCommand(cmdLine);
 			}
 		};
-		backAction.setImageDescriptor(ImageResource
-				.getImageDescriptor(org.eclipse.ui.internal.browser.ImageResource.IMG_ELCL_NAV_BACKWARD));
-		backAction.setHoverImageDescriptor(ImageResource.getImageDescriptor(ImageResource.IMG_CLCL_NAV_BACKWARD));
-		backAction.setDisabledImageDescriptor(ImageResource.getImageDescriptor(ImageResource.IMG_DLCL_NAV_BACKWARD));
+		
+		final ICommandImageService service = getSite().getWorkbenchWindow().getService(ICommandImageService.class);
+		final ImageDescriptor imgDescBack = service.getImageDescriptor(IWorkbenchCommandConstants.NAVIGATE_BACK);
+		backAction.setImageDescriptor(imgDescBack);
+		backAction.setHoverImageDescriptor(imgDescBack);
+		backAction.setDisabledImageDescriptor(imgDescBack);
 		backAction.setEnabled(false);
 		toolBarManager.add(backAction);
 
@@ -182,13 +186,14 @@ public class ServerConsoleEditorPage extends AbstractBundleEditorPage {
 				executeCommand(cmdLine);
 			}
 		};
-		forwardAction.setImageDescriptor(ImageResource.getImageDescriptor(ImageResource.IMG_ELCL_NAV_FORWARD));
-		forwardAction.setHoverImageDescriptor(ImageResource.getImageDescriptor(ImageResource.IMG_CLCL_NAV_FORWARD));
-		forwardAction.setDisabledImageDescriptor(ImageResource.getImageDescriptor(ImageResource.IMG_DLCL_NAV_FORWARD));
+		ImageDescriptor imgDescFwd = service.getImageDescriptor(IWorkbenchCommandConstants.NAVIGATE_FORWARD);
+		forwardAction.setImageDescriptor(imgDescFwd);
+		forwardAction.setHoverImageDescriptor(imgDescFwd);
+		forwardAction.setDisabledImageDescriptor(imgDescFwd);
 		forwardAction.setEnabled(false);
 		toolBarManager.add(forwardAction);
 
-		refreshAction = new Action("Refresh from server", ImageResource.getImageDescriptor(ImageResource.IMG_ELCL_NAV_REFRESH)) {
+		refreshAction = new Action("Refresh from server", service.getImageDescriptor(IWorkbenchCommandConstants.FILE_REFRESH)) {
 
 			@Override
 			public void run() {

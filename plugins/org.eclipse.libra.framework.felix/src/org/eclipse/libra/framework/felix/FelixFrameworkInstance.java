@@ -16,10 +16,10 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.libra.framework.core.FrameworkCorePlugin;
 import org.eclipse.libra.framework.core.FrameworkInstanceConfiguration;
 import org.eclipse.libra.framework.core.FrameworkInstanceDelegate;
 import org.eclipse.libra.framework.core.OSGIFrameworkInstanceBehaviorDelegate;
-import org.eclipse.libra.framework.core.TargetDefinitionUtil;
 import org.eclipse.libra.framework.core.Trace;
 import org.eclipse.libra.framework.felix.internal.FelixRuntimeInstanceBehavior;
 import org.eclipse.pde.core.target.ITargetDefinition;
@@ -113,7 +113,7 @@ public class FelixFrameworkInstance extends FrameworkInstanceDelegate implements
 
 	private static ITargetLocation[] getDefaultBundleContainers(IPath installPath) {
 		ITargetLocation[] containers = new ITargetLocation[2];
-		ITargetPlatformService service = TargetDefinitionUtil.getTargetPlatformService();
+		ITargetPlatformService service = FrameworkCorePlugin.getTargetPlatformService();
 
 		containers[0] = service.newDirectoryLocation(
 				installPath.append("bin").makeAbsolute()
@@ -130,7 +130,7 @@ public class FelixFrameworkInstance extends FrameworkInstanceDelegate implements
 	public ITargetDefinition createDefaultTarget() throws CoreException {
 		IPath installPath = getServer().getRuntime().getLocation();
 
-		ITargetPlatformService service = TargetDefinitionUtil.getTargetPlatformService();
+		ITargetPlatformService service = FrameworkCorePlugin.getTargetPlatformService();
 
 		ITargetDefinition targetDefinition = service.newTarget();
 		targetDefinition.setName(getServer().getName());

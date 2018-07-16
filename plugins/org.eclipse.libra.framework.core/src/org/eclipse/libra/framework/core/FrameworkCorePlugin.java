@@ -22,7 +22,7 @@ import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.osgi.service.debug.DebugOptions;
 import org.eclipse.pde.core.project.IBundleProjectDescription;
 import org.eclipse.pde.core.project.IBundleProjectService;
-import org.eclipse.pde.internal.core.PDECore;
+import org.eclipse.pde.core.target.ITargetPlatformService;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -34,6 +34,14 @@ public class FrameworkCorePlugin extends AbstractUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.libra.framework.core"; //$NON-NLS-1$
+
+	private ServiceReference<IBundleProjectService> bundleProjectServiceRef;
+	private IBundleProjectService bundleProjectService;
+
+	private ServiceReference<ITargetPlatformService> targetPlatformServiceRef;
+	private ITargetPlatformService targetPlatformService;
+
+	private static FrameworkCorePlugin plugin;
 
 	/**
 	 * The constructor
@@ -79,6 +87,13 @@ public class FrameworkCorePlugin extends AbstractUIPlugin {
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		plugin = this;
+
+		this.bundleProjectServiceRef = context.getServiceReference(IBundleProjectService.class);
+		this.bundleProjectService = context.getService(bundleProjectServiceRef);
+
+		this.targetPlatformServiceRef = context.getServiceReference(ITargetPlatformService.class);
+		this.targetPlatformService = context.getService(targetPlatformServiceRef);
 	}
 
 	/*
@@ -87,7 +102,23 @@ public class FrameworkCorePlugin extends AbstractUIPlugin {
 	 */
 	@Override
 	public void stop(BundleContext context) throws Exception {
+		context.ungetService(this.bundleProjectServiceRef);
+		this.bundleProjectService=null;
+		this.bundleProjectServiceRef=null;
+
+		context.ungetService(this.targetPlatformServiceRef);
+		this.targetPlatformService=null;
+		this.targetPlatformServiceRef=null;
+
+		plugin = null;
 		super.stop(context);
+	}
+
+	public static ITargetPlatformService getTargetPlatformService() {
+		if (plugin==null)
+			return null;
+		
+		return plugin.targetPlatformService;
 	}
 
 	public static String getPreference(String id) {
@@ -99,10 +130,9 @@ public class FrameworkCorePlugin extends AbstractUIPlugin {
 	}
 	
 	public static IBundleProjectService getBundleProjectService() {
-		PDECore instance = PDECore.getDefault();
-		if (instance == null)
+		if (plugin == null)
 			return null;
-		return (IBundleProjectService) instance.acquireService(IBundleProjectService.class.getName());
+		return plugin.bundleProjectService;
 	}
 	
 	public static IBundleProjectDescription getDescription(IProject project) throws CoreException {
