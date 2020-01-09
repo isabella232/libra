@@ -19,7 +19,7 @@
 		<!-- <gef-site>http://download.eclipse.org/tools/gef/updates/releases</gef-site> -->
 		<wtp-site>http://download.eclipse.org/webtools/downloads/drops/R3.13.0/R-3.13.0-20190308131645/repository/</wtp-site>
 		<wtp-tests-site>http://download.eclipse.org/webtools/downloads/drops/R3.13.0/R-3.13.0-20190308131645/repositoryunittests/</wtp-tests-site>
-		<orbit-site>http://download.eclipse.org/tools/orbit/downloads/drops/S20190219190953/repository/</orbit-site>
+		<orbit-site>http://download.eclipse.org/tools/orbit/downloads/drops/R20190226160451/repository/</orbit-site>
 		<license-site>http://download.eclipse.org/cbi/updates/license</license-site>
 		<debug-options></debug-options> <!-- empty by default -->
 	</properties>
