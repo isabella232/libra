@@ -10,16 +10,16 @@
 
 	<properties>
 		<tycho-version>1.4.0</tycho-version>
-		<eclipse-site>http://download.eclipse.org/releases/2019-03/201903201000/</eclipse-site>
-		<emf-site>http://download.eclipse.org/releases/2019-03/201903201000/</emf-site>
-		<dtp-site>http://download.eclipse.org/releases/2019-03/201903201000/</dtp-site>
-		<gef-site>http://download.eclipse.org/releases/2019-03/201903201000/</gef-site>
+		<eclipse-site>https://download.eclipse.org/releases/2020-09/202009161000/</eclipse-site>
+		<emf-site    >https://download.eclipse.org/releases/2020-09/202009161000/</emf-site>
+		<dtp-site    >https://download.eclipse.org/releases/2020-09/202009161000/</dtp-site>
+		<gef-site    >https://download.eclipse.org/releases/2020-09/202009161000/</gef-site>
 		<!-- <emf-site>http://download.eclipse.org/modeling/emf/emf/updates/2.12/</emf-site> -->
 		<!-- <dtp-site>http://download.eclipse.org/datatools/downloads/drops/N_updates_1.12.0/v20140606-1324/</dtp-site> -->
 		<!-- <gef-site>http://download.eclipse.org/tools/gef/updates/releases</gef-site> -->
-		<wtp-site>http://download.eclipse.org/webtools/downloads/drops/R3.13.0/R-3.13.0-20190308131645/repository/</wtp-site>
-		<wtp-tests-site>http://download.eclipse.org/webtools/downloads/drops/R3.13.0/R-3.13.0-20190308131645/repositoryunittests/</wtp-tests-site>
-		<orbit-site>http://download.eclipse.org/tools/orbit/downloads/drops/R20190226160451/repository/</orbit-site>
+		<wtp-site    >https://download.eclipse.org/webtools/downloads/drops/R3.19.0/R-3.19.0-20200828030223/repository/</wtp-site>
+		<wtp-tests-site>https://download.eclipse.org/webtools/downloads/drops/R3.19.0/R-3.19.0-20200828030223/repositoryunittests/</wtp-tests-site>
+		<orbit-site  >https://download.eclipse.org/tools/orbit/downloads/drops/R20200831200620/repository/</orbit-site>
 		<license-site>http://download.eclipse.org/cbi/updates/license</license-site>
 		<debug-options></debug-options> <!-- empty by default -->
 	</properties>
