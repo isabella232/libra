@@ -64,10 +64,10 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.IWorkbenchCommandConstants;
 import org.eclipse.ui.commands.ICommandImageService;
+import org.eclipse.ui.dialogs.SearchPattern;
 import org.eclipse.ui.forms.SectionPart;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
-import org.eclipse.ui.internal.ide.StringMatcher;
 
 
 /**
@@ -164,13 +164,14 @@ public class BundleInformationMasterPart extends SectionPart {
 			}
 		});
 		bundleTableViewer.addFilter(new ViewerFilter() {
+			private final SearchPattern matcher = new SearchPattern();
 
 			@Override
 			public boolean select(Viewer viewer, Object parentElement, Object element) {
 				if (element instanceof IBundle && filterText.getText().length() > 0
 						&& !TYPE_FILTER_TEXT.equals(filterText.getText())) {
-					StringMatcher matcher = new StringMatcher(filterText.getText() + "*", true, false);
-					return (matcher.match(((IBundle) element).getSymbolicName()));
+					matcher.setPattern(filterText.getText() + "*");
+					return (matcher.matches(((IBundle) element).getSymbolicName()));
 				}
 				return true;
 			}

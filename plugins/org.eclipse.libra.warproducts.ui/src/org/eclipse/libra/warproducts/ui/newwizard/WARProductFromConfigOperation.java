@@ -111,6 +111,10 @@ public class WARProductFromConfigOperation
     throws CoreException
   {
     // fetch the plug-ins models
+
+    /*
+     * workspaceId and targetId are no more necessary
+     * 
     String workspaceId = IPDELauncherConstants.SELECTED_WORKSPACE_PLUGINS;
     String targetId = IPDELauncherConstants.SELECTED_TARGET_PLUGINS;
     String configType = launchConfig.getType().getIdentifier();
@@ -120,13 +124,12 @@ public class WARProductFromConfigOperation
       workspaceId = IPDELauncherConstants.WORKSPACE_BUNDLES;
       targetId = IPDELauncherConstants.TARGET_BUNDLES;
     }
+    */
+    
     Set<String> set = new HashSet<String>();
-    Map<IPluginModelBase, String> map = BundleLauncherHelper.getWorkspaceBundleMap(launchConfig,
-                                                          set,
-                                                          workspaceId );
-    map.putAll( BundleLauncherHelper.getTargetBundleMap( launchConfig,
-                                                         set,
-                                                         targetId ) );
+    Map<IPluginModelBase, String> map = BundleLauncherHelper.getWorkspaceBundleMap( launchConfig, set /*, workspaceId */ );
+    map.putAll( BundleLauncherHelper.getTargetBundleMap( launchConfig, set /*,targetId */ ) );
+    
     addPlugins( factory, product, map );
     handleDefaultConfig( product, factory );
   }

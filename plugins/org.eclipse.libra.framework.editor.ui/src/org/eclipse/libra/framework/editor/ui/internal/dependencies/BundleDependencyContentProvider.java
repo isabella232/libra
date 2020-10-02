@@ -27,7 +27,7 @@ import org.eclipse.libra.framework.editor.core.model.IBundle;
 import org.eclipse.libra.framework.editor.core.model.IPackageImport;
 import org.eclipse.libra.framework.editor.core.model.IServiceReference;
 import org.eclipse.libra.framework.editor.ui.internal.SearchControl;
-import org.eclipse.ui.internal.ide.StringMatcher;
+import org.eclipse.ui.dialogs.SearchPattern;
 import org.eclipse.zest.core.viewers.GraphViewer;
 import org.eclipse.zest.core.viewers.IGraphContentProvider;
 
@@ -59,7 +59,9 @@ public class BundleDependencyContentProvider implements IGraphContentProvider, I
 	private boolean showServices = false;
 
 	private final GraphViewer viewer;
-
+	
+	private final SearchPattern matcher = new SearchPattern();
+	
 	public BundleDependencyContentProvider(GraphViewer viewer, SearchControl control) {
 		this.viewer = viewer;
 		this.searchControl = control;
@@ -102,13 +104,15 @@ public class BundleDependencyContentProvider implements IGraphContentProvider, I
 			if (!"type filter text".equals(searchControl.getSearchText().getText())
 					&& searchControl.getSearchText().getText().trim().length() > 0) {
 				String searchText = searchControl.getSearchText().getText().trim() + "*";
-				StringMatcher matcher = new StringMatcher(searchText, true, false);
+				
+				matcher.setPattern(searchText);
+				
 				for (IBundle dep : new HashSet<IBundle>(bundleset)) {
 					boolean filter = true;
-					if (matcher.match(dep.getSymbolicName())) {
+					if (matcher.matches(dep.getSymbolicName())) {
 						filter = false;
 					}
-					if (matcher.match(dep.getSymbolicName() + " (" + dep.getVersion() + ")")) {
+					if (matcher.matches(dep.getSymbolicName() + " (" + dep.getVersion() + ")")) {
 						filter = false;
 					}
 					if (filter) {
