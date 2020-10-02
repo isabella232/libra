@@ -15,7 +15,6 @@
  *******************************************************************************/
 package org.eclipse.libra.framework.ui;
 
-import org.eclipse.libra.framework.ui.FrameworkUIPlugin;
 import org.eclipse.osgi.util.NLS;
 
 /**
