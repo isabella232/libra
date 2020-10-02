@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.libra.framework.core;singleton:=true
-Bundle-Version: 0.3.5.qualifier
+Bundle-Version: 4.17.0.qualifier
 Bundle-Activator: org.eclipse.libra.framework.core.FrameworkCorePlugin
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
@@ -21,7 +21,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.equinox.frameworkadmin,
  org.eclipse.wst.web;bundle-version="1.1.401",
  org.eclipse.wst.common.project.facet.core;bundle-version="1.4.102",
- org.eclipse.libra.framework.editor.core;bundle-version="[0.1.0,2.0.0)";visibility:=reexport
+ org.eclipse.libra.framework.editor.core;visibility:=reexport
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.core.resources,
