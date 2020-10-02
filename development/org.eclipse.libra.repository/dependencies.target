@@ -3,16 +3,16 @@
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="osgi.enterprise" version="0.0.0"/>
-<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20180606145124/repository/"/>
+<repository location="https://download.eclipse.org/tools/orbit/downloads/drops/R20200831200620/repository/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.emf.sdk.feature.group" version="0.0.0"/>
-<repository location="http://download.eclipse.org/modeling/emf/emf/updates/2.12/"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.gef.sdk.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.zest.sdk.feature.group" version="0.0.0"/>
-<repository location="http://download.eclipse.org/tools/gef/updates/releases"/>
+<unit id="org.eclipse.datatools.enablement.sdk.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.sdk.ide" version="0.0.0"/>
+<unit id="org.eclipse.jpt.jpa.feature.feature.group"/>
+<repository location="https://download.eclipse.org/releases/2020-09/202009161000/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.jpt.jpa_sdk.feature.feature.group" version="0.0.0"/>
@@ -24,24 +24,11 @@
 <unit id="org.eclipse.jst.server_sdk.feature.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.wst.server_adapters.sdk.feature.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.wst.web_sdk.feature.feature.group" version="0.0.0"/>
-<repository location="http://download.eclipse.org/webtools/downloads/drops/R3.10.0/R-3.10.0-20180611164516/repository/"/>
+<repository location="https://download.eclipse.org/webtools/downloads/drops/R3.19.0/R-3.19.0-20200828030223/repository/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.wst.common_tests.feature.feature.group" version="0.0.0"/>
-<repository location="http://download.eclipse.org/webtools/downloads/drops/R3.10.0/R-3.10.0-20180611164516/repositoryunittests/"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.datatools.enablement.sdk.feature.feature.group" version="0.0.0"/>
-<repository location="http://download.eclipse.org/datatools/downloads/drops/N_updates_1.12.0/v20140606-1324/"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.license.feature.group" version="0.0.0"/>
-<repository location="http://download.eclipse.org/cbi/updates/license"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.sdk.ide" version="0.0.0"/>
-<unit id="org.eclipse.jpt.jpa.feature.feature.group"/>
-<repository location="http://download.eclipse.org/releases/photon/"/>
+<repository location="https://download.eclipse.org/webtools/downloads/drops/R3.19.0/R-3.19.0-20200828030223/repositoryunittests/"/>
 </location>
 </locations>
 </target>
